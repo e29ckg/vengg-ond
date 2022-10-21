@@ -40,7 +40,9 @@ require_once('../../server/authen.php');
                             <div class="col-12 ">
                                 <div class="card">
                                     <div class="card-body">
-                                        <h4>{{d.id}} : {{d.status}}</h4>
+                                        <h4>{{d.id}}  
+                                        <span class="badge bg-warning" v-if="d.status ==2">รออนุมัติ</span>
+                                        </h4>
                                     <div class="row">
                                         <div class="col-5">
                                             <div class="card">
@@ -48,9 +50,9 @@ require_once('../../server/authen.php');
                                                 <div class="card-body">
                                                     <h5 class="card-title">{{d.user1}}</h5>
                                                     <p class="card-text">
-                                                        {{d.ven_date1}} |  {{d.ven_com_num_all}} | {{d.ven_month}} | {{d.DN}} | {{d.u_role}}
-                                                        
-                                                        
+                                                        {{date_thai(d.ven_date1)}}<br>
+                                                        ตำสั่งที่ {{d.ven_com_num_all}} เวรเดือน {{date_thai_my(d.ven_month)}}  <br> 
+                                                        {{d.DN}} | {{d.u_role}} {{d.price}}                                                        
                                                     </p>
                                                     {{d.img1}} 
                                                 </div>
@@ -67,7 +69,9 @@ require_once('../../server/authen.php');
                                                 <div class="card-body">
                                                     <h5 class="card-title">{{d.user2}}</h5>
                                                     <p class="card-text">
-                                                    {{d.ven_date2}} | {{d.ven_com_num_all}} | {{d.ven_month}} | {{d.DN}} | {{d.u_role}}
+                                                    {{date_thai(d.ven_date2)}}<br>
+                                                    ตำสั่งที่ {{d.ven_com_num_all}} เวรเดือน {{date_thai_my(d.ven_month)}}  <br> 
+                                                        {{d.DN}} | {{d.u_role}} {{d.price}}
                                                     </p>
                                                     {{d.img2}}
                                                 </div>

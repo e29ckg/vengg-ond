@@ -87,6 +87,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             /**สร้างเอกสาร docx */
             $templateProcessor = new TemplateProcessor('ven_tm.docx');//เลือกไฟล์ template ที่เราสร้างไว้
             $templateProcessor->setValue('doc_date', $doc_date);//อัดตัวแปร รายตัว
+            $templateProcessor->setValue('ven_ch_id', $res->id);//อัดตัวแปร รายตัว
             $templateProcessor->setValue('ven_com_num_all', $ven_com_num_all);//อัดตัวแปร รายตัว
             $templateProcessor->setValue('ven_com_date', $ven_com_date);
             $templateProcessor->setValue('ven_com_name', $ven_com_name);
