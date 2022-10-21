@@ -39,7 +39,7 @@ $datas = array();
         }
      
         http_response_code(200);
-        echo json_encode(array('false' => true, 'message' => 'ไม่พบข้อมูล '));
+        echo json_encode(array('false' => true, 'message' => 'ไม่พบข้อมูล (เตรียมผู้อยู่เวร) '));
     
     }catch(PDOException $e){
         echo "Faild to connect to database" . $e->getMessage();
