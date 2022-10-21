@@ -49,7 +49,8 @@ require_once('../../server/authen.php');
                                                         <td >  
                                                             <!-- เลขคำสั่งที่ {{va.ven_Ch_num}} | ลงวันที่ {{va.ven_Ch_date}} | {{va.ven_Ch_name}} ({{va.ven_name}}) -->
                                                             | {{va.id}} | {{va.name1}} <<>> {{va.name2}} <br> 
-                                                            {{va.create_at}} | {{va.status == 2 ? 'รออนุมัติ' : ''}} <br>
+                                                            วันที่เขียน {{date_thai(va.create_at)}} | 
+                                                            <span class="badge bg-warning" v-if="va.status ==2">รออนุมัติ</span> <br>
                                                             {{date_thai(va.ven_date1)}} <<>> {{date_thai(va.ven_date2)}}
                                                             <!-- {{va}} -->
     
