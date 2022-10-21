@@ -91,7 +91,7 @@ require_once('../../server/authen.php');
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel">คำนำหน้าชื่อ</h5>
+                                <h5 class="modal-title" id="staticBackdropLabel">ตำแหน่ง</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="close_modal_form()" ref="close_modal_form"></button>
                             </div>
                             <form @submit.prevent="dep_save">
@@ -99,7 +99,7 @@ require_once('../../server/authen.php');
                                 
                                     <div class="row">
                                         <div class="col-12 mb-3">
-                                            <label for="name" class="form-label" >username</label>
+                                            <label for="name" class="form-label" >ตำแหน่ง</label>
                                             <input type="text" class="form-control" id="name" aria-describedby="emailHelp" v-model="form.name">
                                             <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
                                         </div>                                       

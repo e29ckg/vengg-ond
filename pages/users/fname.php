@@ -99,7 +99,7 @@ require_once('../../server/authen.php');
                                 
                                     <div class="row">
                                         <div class="col-12 mb-3">
-                                            <label for="name" class="form-label" >username</label>
+                                            <label for="name" class="form-label" >คำนำหน้าชื่อ</label>
                                             <input type="text" class="form-control" id="name" aria-describedby="emailHelp" v-model="form.name">
                                             <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
                                         </div>                                       
