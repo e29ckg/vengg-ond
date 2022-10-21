@@ -17,7 +17,7 @@ $datas = array();
 
     // The request is using the POST method
     try{
-        $sql = "SELECT id, ven_date, ven_time, u_name, u_role, DN, ven.status
+        $sql = "SELECT id, ven_date, ven_time, user_id, u_name, u_role, DN, ven.status
         FROM ven    
         WHERE status = 1 OR status = 2
         ORDER BY ven_date DESC, ven_time ASC
@@ -31,13 +31,17 @@ $datas = array();
             foreach($result as $rs){
                 $rs->DN == 'กลางวัน' ? $d = '☀️' : $d = '🌙';
                 $bgcolor = getColor($rs->u_role);
-                if($rs->status == 2){
+                if($rs->status == 2 ){
                     $bgcolor ='yellow' ;
                     $textC = 'black';
-                }else{
-                    $bgcolor = $bgcolor ;
-                    $textC = 'write';
-
+                }else{      
+                    if($rs->user_id == $_SESSION['AD_ID']){
+                        $bgcolor = 'Gold' ;
+                        $textC = 'write';
+                    } else{
+                        $bgcolor = $bgcolor ;
+                        $textC = 'write';
+                    }
                 }
                 array_push($datas,array(
                     'id'    => $rs->id,
