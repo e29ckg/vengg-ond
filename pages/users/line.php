@@ -24,7 +24,7 @@ require_once('../../server/authen.php');
             <div class="page-content" id="usersLine" v-cloak>
                 <div class="row">
                     <div class="col-12 text-center">
-                       <a :href="url_base+'/vengg/server/service/line/sendline.php'" target="_blank">Link สำหรับแจ้งเตือน {{url_base}}/vengg/server/service/line/sendline.php</a> 
+                       <a :href="url_base+'/vengg/server/service/line/sendline.php'" target="_blank">Link สำหรับแจ้งเตือน GET {{url_base}}/vengg/server/service/line/sendline.php</a> 
                         
                     </div>
                 </div>
