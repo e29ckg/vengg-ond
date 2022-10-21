@@ -35,10 +35,16 @@
                     </a>
                     <ul class="submenu <?php echo isActive('asu') ?>">                        
                         <li class="submenu-item <?php echo isActiveFile('ven_approve') ?>">
-                            <a href="../asu/ven_approve.php">อนุมัติใบเปลี่ยนเวร</a>
+                            <a href="../asu/ven_approve.php">
+                                <i class="bi bi-arrow-left-right"></i>
+                                <span>อนุมัติใบเปลี่ยนเวร</span>
+                            </a>
                         </li>                        
                         <li class="submenu-item <?php echo isActiveFile('report') ?>">
-                            <a href="../asu/report.php">รายงานการจัดเวร</a>
+                            <a href="../asu/report.php">
+                                <i class="bi bi-clipboard-check"></i>
+                                <span>รายงานการจัดเวร</span>
+                            </a>
                         </li>                        
                         <li class="submenu-item <?php echo isActiveFile('ven_set') ?>">
                             <a href="../asu/ven_set.php" target="_blank">จัดเวร</a>
