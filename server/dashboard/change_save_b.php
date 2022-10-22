@@ -78,17 +78,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             foreach($res_VU as $ru){
                 if($ru->ven_date == $ven_date){
                     http_response_code(200);
-                    echo json_encode(array('status' => false, 'message' => $u_name2.' วันที่ '.DateThai($ven_date).' มีเวรอยู่แล้ว'));
+                    echo json_encode(array('status' => false, 'message' => $u_name2."\n".'วันที่ '.DateThai($ven_date).' มีเวรอยู่แล้ว.'));
                     exit;
                 }
                 if($ch_v1->DN == 'กลางวัน' && $ru->ven_date == $ven_date_d1 && $ru->DN == 'กลางคืน'){
                     http_response_code(200);
-                    echo json_encode(array('status' => false, 'message' => $u_name2.' วันที่ '.DateThai($ven_date_d1).' มีเวรกลางคืน'));
+                    echo json_encode(array('status' => false, 'message' => $u_name2."\n".'วันที่ '.DateThai($ven_date_d1).' มีเวรกลางคืน'));
                     exit;
                 }
                 if($ch_v1->DN == 'กลางคืน'  && $ru->ven_date == $ven_date_u1 && $ru->DN == 'กลางวัน'){
                     http_response_code(200);
-                    echo json_encode(array('status' => false, 'message' => $u_name2.' วันที่ '.DateThai($ven_date_u1).' มีเวรกลางวัน'));
+                    echo json_encode(array('status' => false, 'message' => $u_name2."\n".'วันที่ '.DateThai($ven_date_u1).' มีเวรกลางวัน'));
                     exit;
                 }
                 
@@ -134,8 +134,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
          
         $conn->beginTransaction();
         // /**  สร้างเวรใบ1 */
-        $sql = "INSERT INTO ven(id, ven_date, ven_time, DN, ven_month, ven_com_id, ven_com_idb, user_id, u_name, u_role, ven_name, ven_com_name, ven_com_num_all, ref1, ref2, price, `status`, update_at, create_at) 
-                    VALUE(:id, :ven_date, :ven_time, :DN, :ven_month, :ven_com_id, :ven_com_idb, :user_id, :u_name, :u_role, :ven_name, :ven_com_name, :ven_com_num_all, :ref1, :ref2, :price, :status, :update_at, :create_at);";        
+        $sql = "INSERT INTO ven(id, ven_date, ven_time, DN, ven_month, ven_com_id, ven_com_idb, user_id, u_name, u_role, ven_name, ven_com_name, ven_com_num_all, ref1, ref2, price, gcal_id, `status`, update_at, create_at) 
+                    VALUE(:id, :ven_date, :ven_time, :DN, :ven_month, :ven_com_id, :ven_com_idb, :user_id, :u_name, :u_role, :ven_name, :ven_com_name, :ven_com_num_all, :ref1, :ref2, :price, :gcal_id, :status, :update_at, :create_at);";        
         $query = $conn->prepare($sql);
         $query->bindParam(':id',$idv1, PDO::PARAM_INT);
         $query->bindParam(':ven_date',$rsv1->ven_date, PDO::PARAM_STR);
@@ -153,6 +153,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $query->bindParam(':ref1',$ref , PDO::PARAM_STR);
         $query->bindParam(':ref2',$rsv1->ref1 , PDO::PARAM_STR);
         $query->bindParam(':price',$rsv1->price , PDO::PARAM_STR);
+        $query->bindParam(':gcal_id',$rsv1->gcal_id , PDO::PARAM_STR);
         $query->bindParam(':status',$status , PDO::PARAM_INT);
         $query->bindParam(':update_at',$create_at , PDO::PARAM_STR);
         $query->bindParam(':create_at',$create_at , PDO::PARAM_STR);

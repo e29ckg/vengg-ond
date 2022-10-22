@@ -22,7 +22,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // The request is using the POST method
     try{
-        $sql = "SELECT vc.id , vc.ven_month, vc.ven_date1, vc.ven_date2, v.ven_com_idb, v.ven_com_name, vc.ven_com_num_all, vc.DN, vc.u_role, vc.user_id1, vc.ven_id1, vc.ven_id2, vc.user_id2, vc.status, vc.create_at
+        $sql = "SELECT vc.id , vc.ven_month, vc.ven_date1, vc.ven_date2, v.ven_com_idb, v.ven_com_name, 
+                        vc.ven_com_num_all, vc.DN, vc.u_role, vc.user_id1, vc.ven_id1, vc.ven_id2, vc.user_id2, 
+                        vc.ven_id1_old, vc.ven_id2_old, vc.status, vc.create_at
                 FROM ven_change as vc  
                 INNER JOIN ven as v ON v.id = vc.ven_id1
                 WHERE vc.id = :id";
@@ -82,7 +84,40 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $ven_date2       = ' ในวันที่ '.DateThai_full($res->ven_date2).' ตั้งแต่เวลา '.$time.' นาฬิกา'; 
             }
 
+            $sql = "SELECT id, create_at
+                    FROM ven_change 
+                    WHERE (ven_id1 = '$res->ven_id1_old') OR (ven_id2 = '$res->ven_id1_old') 
+                        OR (ven_id1 = '$res->ven_id2_old') OR (ven_id2 = '$res->ven_id2_old')";
+            
+            $query = $conn->prepare($sql);
+            $query->execute();
+            $res_vc_old = $query->fetchAll(PDO::FETCH_OBJ);
+            $comment='';
+            if($query->rowCount()){
+                foreach($res_vc_old as $rs){                    
+                    $comment = ' และบันทึกการเปลี่ยนเวรวันที่ '.DateThai_full($rs->create_at).' ['.$rs->id.']';
+                }
+            }
 
+
+// if(isset($model->ven_id1_old)){
+//     $modelV = VenChange::find()
+//     ->where(['ven_id1'   => $model->ven_id1_old])
+//     ->orWhere(['ven_id2' => $model->ven_id1_old])
+//     ->andWhere("id <> '$model->id'")
+//     ->orderBy(['id' => SORT_DESC])
+//     ->one(); 
+
+//     if(isset($modelV)){
+//         // foreach ($model_VC as $modelV):                
+//             $sms    .= ' และใบเปลี่ยนเวร';
+//             // $sms .= 'เลขที่ '.$modelV->id;
+//             $sms    .= 'ลงวันที่ '. Ven::DateThai_full($modelV->create_at);
+//             $sms    .= ' (เลขอ้างอิง '. $modelV->id .')';
+//         // endforeach;
+//         // $Pdf_print = '_pdf_AA';
+//     }
+// }
 
             /**สร้างเอกสาร docx */
             $templateProcessor = new TemplateProcessor('ven_tm.docx');//เลือกไฟล์ template ที่เราสร้างไว้
@@ -91,6 +126,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $templateProcessor->setValue('ven_com_num_all', $ven_com_num_all);//อัดตัวแปร รายตัว
             $templateProcessor->setValue('ven_com_date', $ven_com_date);
             $templateProcessor->setValue('ven_com_name', $ven_com_name);
+            $templateProcessor->setValue('comment', $comment);
             $templateProcessor->setValue('name1', $name1);
             $templateProcessor->setValue('name2', $name2);
             $templateProcessor->setValue('name_dep1', $name_dep1);

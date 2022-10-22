@@ -140,4 +140,61 @@ function thainumDigit($num){
     return str_replace(array( '0' , '1' , '2' , '3' , '4' , '5' , '6' ,'7' , '8' , '9' ),
     array( "๐" , "๑" , "๒" , "๓" , "๔" , "๕" , "๖" , "๗" , "๘" , "๙" ),$num);
 };
+
+function gcal_insert($name,$start){
+    $message_data = [
+        "action"=>"insert",
+        "dataEvent"=>[
+            "summary" => $name,
+            "description" => "",
+            "start" => $start,
+            "end" => $start,
+            "colorId" => 1
+        ]                        
+    ];
+    return gcal_send_date($message_data);
+    
+}
+function gcal_remove($id){
+    $message_data = [
+        "action"    => "remove",
+        "eventId"   => $id ,
+                                
+    ];
+    return gcal_send_date($message_data);
+    
+}
+function gcal_update($id,$name,$desc="",$colerId=1){
+    $message_data = [
+        "action"    => "update",
+        "eventId"   => $id ,
+        "dataEvent"=>[
+            "summary" => $name,
+            "description" => "",
+            // "start" => $start,
+            // "end" => $start,
+            "colorId" => $colerId
+        ]                     
+    ];
+    return gcal_send_date($message_data);
+    
+}
+
+function gcal_send_date($message_data){
+    $url = 'http://127.0.0.1/service/google/calendar/calendar.php';
+    $headers = array('Method: POST', 'Content-type: application/json');
+    $message_data = json_encode($message_data);
+
+    $ch = curl_init();
+    curl_setopt($ch, CURLOPT_URL, $url);
+    curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0);
+    curl_setopt($ch, CURLOPT_POSTFIELDS, $message_data);
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+    $res = curl_exec($ch);
+    // // close the connection, release resources used
+    curl_close($ch);
+    return $res;
+}
+
 ?>

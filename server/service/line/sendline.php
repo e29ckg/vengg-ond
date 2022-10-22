@@ -60,10 +60,37 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 }    
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+	/**
+	 * 	post
+	 * 
+	 * 	token or username
+	 * 	message
+	 * 
+	 */
 	
 	$date_now = date("Y-m-d H:i:s");
-	$sToken 	= $data->token;
-	$sMessage 	= $data->message;
+	$sMessage = '';
+
+	if(isset($data->token)){
+		$sToken 	= $data->token;
+	}else{
+		if(isset($data->username)){
+			$sql = "SELECT * FROM line WHERE name = '$data->username'";
+			$query = $conn->prepare($sql);
+			$query->execute();
+			$res = $query->fetch(PDO::FETCH_OBJ);
+			$sToken = $res->token;
+		}else{
+			http_response_code(200);
+			echo json_encode(array('status' => true, 'message' => 'ไม่พบข้อมูล Token'));
+			exit;
+		}
+	}
+
+	$sMessage .= $data->message;
+	$sMessage .= "\n";
+	$sMessage .= $date_now;
+
 	
 	http_response_code(200);
 	echo sendLine($sToken,$sMessage);
