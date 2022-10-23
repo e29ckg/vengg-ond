@@ -21,43 +21,61 @@ $datas = array();
     try{
         $conn->beginTransaction();
         
-        $sql = "SELECT * FROM ven_change WHERE id=:id";
-        $query = $conn->prepare($sql);
-        $query->bindParam(':id',$id, PDO::PARAM_STR);
-        $query->execute();
-        $result = $query->fetch(PDO::FETCH_OBJ);
+        // $sql = "SELECT * FROM ven_change WHERE id=:id";
+        // $query = $conn->prepare($sql);
+        // $query->bindParam(':id',$id, PDO::PARAM_STR);
+        // $query->execute();
+        // $result = $query->fetch(PDO::FETCH_OBJ);
 
-        if($query->rowCount() > 0){                        //count($result)  for odbc
+        $sql = "UPDATE ven_change as vc
+        LEFT JOIN ven AS v1 ON v1.id = vc.ven_id1
+        LEFT JOIN ven AS v2 ON v2.id = vc.ven_id2
+        LEFT JOIN ven AS v1o ON v1o.id = vc.ven_id1_old
+        LEFT JOIN ven AS v2o ON v2o.id = vc.ven_id2_old								
+        SET 
+            vc.`status` = 1,
+            v1.`status` = 1,
+            v2.`status` = 1,
+            v1o.`status` = 4,
+            v2o.`status` = 4
+        WHERE vc.id = :id";
+        $query2 = $conn->prepare($sql);
+        $query2->bindParam(':id',$id, PDO::PARAM_STR);
+        $query2->execute();
+        $conn->commit();
 
-            $sql = "UPDATE ven_change SET status = 1 WHERE id=:id";
-            $query = $conn->prepare($sql);
-            $query->bindParam(':id',$id, PDO::PARAM_STR);
-            $query->execute();
-            
-            $sql = "UPDATE ven SET status = 1 WHERE id=:id";
-            $query = $conn->prepare($sql);
-            $query->bindParam(':id',$result->ven_id1, PDO::PARAM_STR);
-            $query->execute();
 
-            $sql = "UPDATE ven SET status = 1 WHERE id=:id";
-            $query = $conn->prepare($sql);
-            $query->bindParam(':id',$result->ven_id2, PDO::PARAM_STR);
-            $query->execute();
+        if($query2->rowCount()){                        //count($result)  for odbc
+
+            // $sql = "UPDATE ven_change SET status = 1 WHERE id=:id";
+            // $query = $conn->prepare($sql);
+            // $query->bindParam(':id',$id, PDO::PARAM_STR);
+            // $query->execute();
             
-            $sql = "UPDATE ven SET status = 4 WHERE id=:id";
-            $query = $conn->prepare($sql);
-            $query->bindParam(':id',$result->ven_id1_old, PDO::PARAM_STR);
-            $query->execute();
+            // $sql = "UPDATE ven SET status = 1 WHERE id=:id";
+            // $query = $conn->prepare($sql);
+            // $query->bindParam(':id',$result->ven_id1, PDO::PARAM_STR);
+            // $query->execute();
+
+            // $sql = "UPDATE ven SET status = 1 WHERE id=:id";
+            // $query = $conn->prepare($sql);
+            // $query->bindParam(':id',$result->ven_id2, PDO::PARAM_STR);
+            // $query->execute();
             
-            $sql = "UPDATE ven SET status = 4 WHERE id=:id";
-            $query = $conn->prepare($sql);
-            $query->bindParam(':id',$result->ven_id2_old, PDO::PARAM_STR);
-            $query->execute();
+            // $sql = "UPDATE ven SET status = 4 WHERE id=:id";
+            // $query = $conn->prepare($sql);
+            // $query->bindParam(':id',$result->ven_id1_old, PDO::PARAM_STR);
+            // $query->execute();
+            
+            // $sql = "UPDATE ven SET status = 4 WHERE id=:id";
+            // $query = $conn->prepare($sql);
+            // $query->bindParam(':id',$result->ven_id2_old, PDO::PARAM_STR);
+            // $query->execute();
             
             
-            $conn->commit();
+            // $conn->commit();
             http_response_code(200);
-            echo json_encode(array('status' => true, 'message' => 'สำเร็จ', 'respJSON' => $result ));
+            echo json_encode(array('status' => true, 'message' => 'สำเร็จ'));
             exit;
         }
      

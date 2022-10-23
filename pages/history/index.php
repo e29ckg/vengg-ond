@@ -81,8 +81,9 @@ require_once('../../server/authen.php');
                                     </div>
                                     <div class="row">
                                         <div class="col text-center" v-if="d.status == 2">
-                                            <button class="btn btn-primary me-2" @click="print(d.id)">Download ใบเปลี่ยนเวร</button>
-                                            <button class="btn btn-danger"  @click="ch_cancle(d.id)">ยกเลิก</button>
+                                            <button class="btn btn-primary me-2" @click="print(d.id)" :disabled="isLoading">{{isLoading ? 'loading..' : 'บันทึกเปลี่ยนเวร'}}</button>
+                                            <button class="btn btn-warning me-2" @click="print_2(d.id)" :disabled="isLoading">{{isLoading ? 'loading..' : 'ใบเปลี่ยนเวร'}}</button>
+                                            <button class="btn btn-danger"  @click="ch_cancle(d.id)" :disabled="isLoading">{{isLoading ? 'loading..' : 'ยกเลิก'}}</button>
                                         </div>
                                         <div class="col text-center" v-else>
                                             สถานะ อนุมัติแล้ว

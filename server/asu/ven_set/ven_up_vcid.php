@@ -48,12 +48,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             
             foreach($data_event->ven_com_id as $cvi){
                 $x++;
-                $sql    = "SELECT ven_com_name, ven_com_num FROM ven_com WHERE id = $cvi";
+                $sql    = "SELECT ven_com_name, ven_com_num, ven_name FROM ven_com WHERE id = $cvi";
                 $query  = $conn->prepare($sql);
                 $query->execute();
                 $res    = $query->fetch(PDO::FETCH_OBJ);
                 $ven_com_num_all    .= $res->ven_com_num;
-                $ven_com_name       .= $res->ven_com_name ;
+                $ven_com_name       .= $res->ven_name ;
                 if($x == $y){
                     $ven_com_name       .= '';
                     $ven_com_num_all    .= '';

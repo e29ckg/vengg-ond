@@ -155,29 +155,28 @@ function gcal_insert($name,$start){
     return gcal_send_date($message_data);
     
 }
-function gcal_remove($id){
+function gcal_remove($gcal_id){
     $message_data = [
         "action"    => "remove",
-        "eventId"   => $id ,
+        "eventId"   => $gcal_id ,
                                 
     ];
     return gcal_send_date($message_data);
     
 }
-function gcal_update($id,$name,$desc="",$colerId=1){
+function gcal_update($gcal_id,$name,$desc=null,$colerId=1){
     $message_data = [
         "action"    => "update",
-        "eventId"   => $id ,
+        "eventId"   => $gcal_id ,
         "dataEvent"=>[
             "summary" => $name,
-            "description" => "",
+            "description" => $desc,
             // "start" => $start,
             // "end" => $start,
             "colorId" => $colerId
         ]                     
     ];
-    return gcal_send_date($message_data);
-    
+    return gcal_send_date($message_data);    
 }
 
 function gcal_send_date($message_data){

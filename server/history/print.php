@@ -80,8 +80,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $ven_date1       = DateThai_full($res->ven_date1).' ตั้งแต่เวลา '.$time.' นาฬิกา';   
             if($res->ven_id2 !=''){
                 $ven_date2       = ' และข้าพเจ้าจะมาปฎิบัติหน้าที่แทน '. $name2 .' ในวันที่ '.DateThai_full($res->ven_date2).' ตั้งแต่เวลา '.$time.' นาฬิกา'; 
+                $vd = DateThai_full($res->ven_date2);
             }else{
                 $ven_date2       = ' ในวันที่ '.DateThai_full($res->ven_date2).' ตั้งแต่เวลา '.$time.' นาฬิกา'; 
+                $vd = '-';
             }
 
             $sql = "SELECT id, create_at
@@ -137,7 +139,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
            
             http_response_code(200);
-            echo json_encode(array('status' => true, 'message' => 'OK', 'respJSON' => $res));
+            echo json_encode(array(
+                'status' => true, 
+                'message' => 'OK', 
+                'respJSON' => [
+                    'doc_date'  => $doc_date,
+                    'id'   => $res->id,
+                    'ven_com_num_all'=> $ven_com_num_all,
+                    'ven_com_date'   => $ven_com_date,
+                    'ven_com_name'   => $ven_com_name,
+                    'comment'   => $comment,
+                    'name1'   => $name1,
+                    'name2'   => $name2,
+                    'name_dep1'   => $name_dep1,
+                    'name_dep2'   => $name_dep2,
+                    'ven_date1'   => DateThai_full($res->ven_date1),
+                    'ven_date2'   => $vd
+                ]
+            ));
             exit;
         }
      

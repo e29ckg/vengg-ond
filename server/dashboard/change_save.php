@@ -142,82 +142,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
         }
-
-        //  $sql_VU = "SELECT * FROM ven WHERE user_id = $rsv1->user_id AND ven_date = '$rsv2->ven_date' AND (status=1 OR status=2)";
-        //  $query_VU = $conn->prepare($sql_VU);
-        //  $query_VU->execute();
-        //  $res_VU = $query_VU->fetch(PDO::FETCH_OBJ);
-        //   if($res_VU){
-        //       http_response_code(200);
-        //       echo json_encode(array('status' => false, 'message' =>  $rsv1->u_name.' วันที่ '.DateThai($rsv2->ven_date).' มีเวรอยู่แล้ว', 'respJSON' => $res_VU));
-        //       exit;
-        //   }
-
-        //  $sql_VU = "SELECT * FROM ven WHERE user_id = $rsv2->user_id AND ven_date = '$rsv1->ven_date' AND (status=1 OR status=2)  LIMIT 1 ";
-        //  $query_VU = $conn->prepare($sql_VU);
-        //  $query_VU->execute();
-        //  $res_VU = $query_VU->fetch(PDO::FETCH_OBJ);
-        //   if($res_VU){
-        //       http_response_code(200);
-        //       echo json_encode(array('status' => false, 'message' => $rsv2->u_name.' วันที่ '.DateThai($rsv1->ven_date).' มีเวรอยู่แล้ว', 'respJSON' => $res_VU));
-        //       exit;
-        //   }
-
-          
-        //   if($rsv2->DN =='กลางคืน'){
-        //       $ven_date_u1 = date("Y-m-d", strtotime('+1 day', strtotime($rsv2->ven_date)));
-        //       $sql = "SELECT * FROM ven WHERE user_id = $rsv1->user_id AND ven_date = '$ven_date_u1' AND DN='กลางวัน'AND (status=1 OR status=2)  LIMIT 1";
-        //       $query = $conn->prepare($sql);
-        //       $query->execute();
-        //       $res = $query->fetch(PDO::FETCH_OBJ);
-        //       if($res){
-        //           http_response_code(200);
-        //           echo json_encode(array('status' => false, 'message' => $rsv1->u_name.' วันที่ '.DateThai($ven_date_u1).' มีเวรกลางวัน', 'respJSON' => $res));
-        //           exit;
-        //       }
-        //   }
-        //   if($rsv1->DN =='กลางคืน'){
-        //       $ven_date_u1 = date("Y-m-d", strtotime('+1 day', strtotime($rsv1->ven_date)));
-        //       $sql = "SELECT * FROM ven WHERE user_id = $rsv2->user_id AND ven_date = '$ven_date_u1' AND DN='กลางวัน' AND (status=1 OR status=2)  LIMIT 1";
-        //       $query = $conn->prepare($sql);
-        //       $query->execute();
-        //       $res = $query->fetch(PDO::FETCH_OBJ);
-        //       if($res){
-        //           http_response_code(200);
-        //           echo json_encode(array('status' => false, 'message' => $rsv2->u_name.' วันที่ '.DateThai($ven_date_u1).' มีเวรกลางวัน', 'respJSON' => $res));
-        //           exit;
-        //       }
-        //   }
-
-
-        //   if($rsv1->DN =='กลางวัน'){
-        //       $ven_date_u1 = date("Y-m-d", strtotime('-1 day', strtotime($rsv2->ven_date)));
-        //       $sql = "SELECT * FROM ven 
-        //                 WHERE user_id = $rsv1->user_id AND ven_date = '$ven_date_u1' AND DN='กลางคืน' AND (status=1 OR status=2)  LIMIT 1";
-        //       $query = $conn->prepare($sql);
-        //       $query->execute();
-        //       $res = $query->fetch(PDO::FETCH_OBJ);
-        //       if($res){
-        //           http_response_code(200);
-        //           echo json_encode(array('status' => false, 'message' => $rsv1->u_name.' วันที่ '.DateThai($ven_date_u1).' มีเวรกลางคืน', 'respJSON' => $res));
-        //           exit;
-        //       }
-        //   } 
-        //   if($rsv1->DN =='กลางวัน'){
-        //       $ven_date_u1 = date("Y-m-d", strtotime('-1 day', strtotime($rsv1->ven_date)));
-        //       $sql = "SELECT * FROM ven WHERE user_id = $rsv2->user_id AND ven_date = '$ven_date_u1' AND DN='กลางคืน' AND (status=1 OR status=2)  LIMIT 1";
-        //       $query = $conn->prepare($sql);
-        //       $query->execute();
-        //       $res = $query->fetch(PDO::FETCH_OBJ);
-        //       if($res){
-        //           http_response_code(200);
-        //           echo json_encode(array('status' => false, 'message' => $rsv2->u_name.' วันที่ '.DateThai($ven_date_u1).' มีเวรกลางคืน', 'respJSON' => $res));
-        //           exit;
-        //       }
-        //   } 
-
-
-          /** end เช็ควันเวลาที่อยู่เวรไม่ได้ */
+        /** end เช็ควันเวลาที่อยู่เวรไม่ได้ */
         
         
           $conn->beginTransaction();
@@ -316,6 +241,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
         $conn->commit();
 
+        /** google calendar */
+        // gcal_update($rsv1->gcal_id,$rsv2->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);
+        // gcal_update($rsv2->gcal_id,$rsv1->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);
+        
         //ส่ง line ot ven_admin
         $sql = "SELECT * FROM line WHERE name = 'ven_admin'";
         $query = $conn->prepare($sql);

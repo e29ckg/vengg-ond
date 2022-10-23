@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
            
            
             /******************** เช็คคำสั่ง****************** */ 
-            $sql_vcid = "SELECT id, ref, ven_com_name, ven_com_num FROM ven_com WHERE ven_month = '$ven_month' AND ven_name = '$ven_name' LIMIT 1 ";
+            $sql_vcid = "SELECT id, ref, ven_com_name, ven_name, ven_com_num FROM ven_com WHERE ven_month = '$ven_month' AND ven_name = '$ven_name' LIMIT 1 ";
             $query_vcid = $conn->prepare($sql_vcid);
             $query_vcid->execute();
             $res_vcid = $query_vcid->fetch(PDO::FETCH_OBJ);
@@ -115,7 +115,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 array_push($ven_com_id,$res_vcid->id);
                 $ven_com_idb        = $res_vcid->id;
                 $r_ref              = $res_vcid->ref;
-                $ven_com_name       = $res_vcid->ven_com_name;
+                $ven_com_name       = $res_vcid->ven_name;
+                // $ven_com_name       = $res_vcid->ven_com_name;
                 $ven_com_num_all    = $res_vcid->ven_com_num;
             }else{
                 $ven_com_idb        = '';

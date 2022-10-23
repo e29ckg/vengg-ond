@@ -70,7 +70,7 @@ Vue.createApp({
                 this.alert("success",response.data.message,timer=1000)
 
               } else{
-                this.alert("wanger",response.data.message,timer=0)
+                this.alert("warning",response.data.message,timer=0)
               }
           })
           .catch(function (error) {
@@ -92,7 +92,7 @@ Vue.createApp({
             this.alert("success",response.data.message,timer=1000)
             window.open('../../uploads/ven.docx','_blank')
           } else{
-            this.alert("wanger",response.data.message,timer=0)
+            this.alert("warning",response.data.message,timer=0)
           }
       })
       .catch(function (error) {
@@ -102,6 +102,26 @@ Vue.createApp({
         this.isLoading = false;
       })
 
+    },
+    print_2(id){
+      this.isLoading = true;
+      axios.post('../../server/history/print.php',{id:id})
+      .then(response => {
+        if (response.data.status) {
+          this.alert("success",response.data.message,timer=1000)
+          var print = JSON.stringify(response.data.respJSON);    
+          localStorage.setItem("print",print);
+          window.open('./report-print.php','_blank')
+          } else{
+            this.alert("warning",response.data.message,timer=0)
+          }
+      })
+      .catch(function (error) {
+          console.log(error);
+      })
+      .finally(() => {
+        this.isLoading = false;
+      })
     },
 
     
