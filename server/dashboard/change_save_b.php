@@ -227,7 +227,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->commit();
 
         /** google calendar */
-        // gcal_update($rsv1->gcal_id,$u_name2,$rsv1->u_name.'>>>'.$u_name2,5);
+        gcal_update($rsv1->gcal_id,$u_name2,$rsv1->u_name.'>>>'.$u_name2,5);
 
         /** ส่ง line to ven_admin */
         $sql = "SELECT * FROM line WHERE name = 'ven_admin'";

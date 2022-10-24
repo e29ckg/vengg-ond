@@ -5,7 +5,7 @@ header("Access-Control-Allow-Methods: GET,HEAD,OPTIONS,POST,PUT");
 header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
 // header("'Access-Control-Allow-Credentials', 'true'");
 // header('Content-Type: application/javascript');
-header("Content-Type: application/json; charset=utf-8");
+// header("Content-Type: application/json; charset=utf-8");
 
 include "./server/connect.php";
 include "./server/function.php";
@@ -24,41 +24,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	// echo gcal_update($gcal_id,$name,'',5);
 	
 	// echo gcal_remove($gcal_id);
-	$datas =array();
-	$id = 1666155312;
 
-	// $sql = "SELECT * FROM ven WHERE ven_month='2022-11' AND status=1 AND gcal_id IS NULL";
+	$datas =array();
+
+	// $sql = "SELECT * FROM ven WHERE ven_month='2022-11' AND status=2 AND gcal_id IS NULL";
 	$sql = "SELECT * FROM ven WHERE ven_month='2022-11' AND gcal_id IS NOT NULL";
 	$query = $conn->prepare($sql);  
 	// $query->bindParam(':id',$id, PDO::PARAM_STR);
 	$query->execute();
 	$result = $query->fetchAll(PDO::FETCH_OBJ);
 	if($query->rowCount()){
+		$n = 0;
 		foreach($result as $rs){
-				$name = $rs->u_name;
-				$start = $rs->ven_date.' '.$rs->ven_time;
-	// 			// $start = '2022-10-22 22:29:00';
+			$name = $rs->u_name;
+			$start = $rs->ven_date.' '.$rs->ven_time;
+			// $start = '2022-10-22 22:29:00';
 
-				// $res = json_decode(gcal_insert($name,$start));
-				// $sql = "UPDATE ven SET gcal_id =:gcal_id WHERE id = :id"; 
-				// $gcal_id =$res->resp->id;
-				
-				$res = gcal_remove($rs->gcal_id);
-				$sql = "UPDATE ven SET gcal_id =:gcal_id WHERE id = :id";   
-				$gcal_id =null;
+			/**เพิม */
+			// $res = json_decode(gcal_insert($name,$start));
+			// $sql = "UPDATE ven SET gcal_id =:gcal_id WHERE id = :id"; 
+			// $gcal_id =$res->resp->id;
+			
+			/** ลบ */
+			$res = gcal_remove($rs->gcal_id);
+			$sql = "UPDATE ven SET gcal_id =:gcal_id WHERE id = :id";   
+			$gcal_id = null;
 
-				$query = $conn->prepare($sql);
-				$query->bindParam(':gcal_id',$gcal_id, PDO::PARAM_STR);
-				$query->bindParam(':id',$rs->id, PDO::PARAM_INT);
-				$query->execute(); 
+			$query = $conn->prepare($sql);
+			$query->bindParam(':gcal_id',$gcal_id, PDO::PARAM_STR);
+			$query->bindParam(':id',$rs->id, PDO::PARAM_INT);
+			$query->execute(); 
 
-			array_push($datas,array(
-				'id'    => $rs->id,
-				'start' => $rs->ven_date.' '.$rs->ven_time
-			));
+			echo $rs->id .' | '.$res->resp->id."<br>";
+
+			// array_push($datas,array(
+			// 	'id'    => $rs->id,
+			// 	'gcal_id' => $res->resp->id
+
+			// ));
+			
+			$n++;
+			if($n==10){
+				$n=0;
+				sleep(1);
+				echo "sleep 1 s<br>";
+			}
 		}
 		http_response_code(200);
-		echo json_encode(array('status' => true, 'massege' => 'สำเร็จ', 'respJSON' => $res));
+		echo json_encode(array('status' => true, 'massege' => 'สำเร็จ', 'respJSON' => $datas));
 		exit;
 	}else{
 		http_response_code(200);

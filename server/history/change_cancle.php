@@ -53,8 +53,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if($query2->rowCount()){   
 
                 /**google calendar */
-                // if($result->gcal_id1){gcal_update($result->gcal_id1,$result->u_name_old1,'',1);}
-                // if($result->gcal_id2){gcal_update($result->gcal_id2,$result->u_name_old2,'',1);}
+                if($result->gcal_id1){gcal_update($result->gcal_id1,$result->u_name_old1,'',1);}
+                if($result->gcal_id2){gcal_update($result->gcal_id2,$result->u_name_old2,'',1);}
+
+                //ส่ง line ot ven_admin
+                $sql = "SELECT token FROM line WHERE name = 'ven_admin'";
+                $query = $conn->prepare($sql);
+                $query->execute();
+                $res = $query->fetch(PDO::FETCH_OBJ);
+                $sToken = $res->token;
+                $sMessage = 'มีการยกเลิกเวร '.$id."\n";
+                $res_line = sendLine($sToken,$sMessage);
 
                 http_response_code(200);
                 echo json_encode(array('status' => true, 'message' => 'สำเร็จ'));
