@@ -17,6 +17,7 @@ function isMimeValid($tmp_name){
     finfo_close( $finfo );
     return false;
 }
+
 function sendLine($sToken,$sMessage){
     $chOne = curl_init(); 
 	curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify"); 
@@ -29,14 +30,14 @@ function sendLine($sToken,$sMessage){
 	curl_setopt( $chOne, CURLOPT_RETURNTRANSFER, 1); 
 	$result = curl_exec( $chOne );
     //Result error 
-	if(curl_error($chOne)) 
-	{ 
-		return 'error:' . curl_error($chOne); 
-	} 
-	else { 
-		$result_ = json_decode($result, true); 
-		return "status : ".$result_['status']; echo "message : ". $result_['message'];
-	} 
+	// if(curl_error($chOne)) 
+	// { 
+	// 	return 'error:' . curl_error($chOne); 
+	// } 
+	// else { 
+	// 	$result_ = json_decode($result, true); 
+	// 	return "status : ".$result_['status']; echo "message : ". $result_['message'];
+	// } 
 	curl_close( $chOne );
 
 

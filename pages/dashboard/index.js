@@ -159,6 +159,9 @@ Vue.createApp({
       this.$refs.show_modal_b.click()
     },
     change_save(){
+      
+      
+
       this.isLoading = true;
       axios.post('../../server/dashboard/change_save.php',{ch_v1:this.ch_v1, ch_v2:this.ch_v2})
       .then(response => {
@@ -169,6 +172,10 @@ Vue.createApp({
             this.$refs.close_modal_b.click()
             this.alert('success',response.data.message,1000) 
             window.open('../history/index.php','_self')
+            // axios.post('../../server/service/line/sendline_user.php',{
+            //   username:'ven_admin', 
+            //   message:'มีการเปลียนเวร ' + this.ch_v1.u_name + '<->' + this.ch_v2.u_name + "\n" + this.ch_v1.ven_date +'+'+ this.ch_v2.ven_date 
+            // })
           } else{
             this.alert('warning',response.data.message,0) 
           }

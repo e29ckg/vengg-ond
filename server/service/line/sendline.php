@@ -39,7 +39,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	
 			foreach($result as $rs){
 				$rs->DN == 'กลางวัน' ? $sMessage .= "☀️ ": $sMessage .= "🌙 " ; 
-				$sMessage .= $rs->u_name."\n";
+				$sMessage .= $rs->u_name;
+				// if(count( json_decode($rs->ven_com_id)) > 1){
+				// 	$sMessage .= '*';
+				// }  
+				$sMessage .= "\n";
 			}
 		
 			http_response_code(200);
