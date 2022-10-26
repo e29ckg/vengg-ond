@@ -18,7 +18,7 @@ $datas = array();
 
     // The request is using the POST method
     try{
-        $sql = "SELECT * FROM ven_change GROUP BY ven_month ORDER BY ven_month DESC LIMIT 20";
+        $sql = "SELECT ven_month FROM ven_change GROUP BY ven_month ORDER BY ven_month DESC LIMIT 20";
         $query = $conn->prepare($sql);
         // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
         $query->execute();
@@ -27,7 +27,7 @@ $datas = array();
         $sql = "SELECT vc.*
                 FROM ven_change AS vc
                 WHERE status=1 OR status=2 
-                ORDER BY id DESC LIMIT 100";
+                LIMIT 100";
         $query = $conn->prepare($sql);
         // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
         $query->execute();
