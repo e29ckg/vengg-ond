@@ -39,9 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	
 			foreach($result as $rs){
 				$rs->DN == 'กลางวัน' ? $sMessage .= "☀️ ": $sMessage .= "🌙 " ; 
-
-				// $sMessage .= $rs->ven_time; 
-
 				$sMessage .= $rs->u_name;
 				// if(count( json_decode($rs->ven_com_id)) > 1){
 				// 	$sMessage .= '*';

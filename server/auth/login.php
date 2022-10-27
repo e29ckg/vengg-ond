@@ -46,7 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 		$res = $query->fetch(PDO::FETCH_OBJ);
         if($query->rowCount()){
             $sToken     = $res->token;  
-            $sMessage   = $row->name.''. $row->sname;
+            $sMessage   = $row->name.' '. $row->sname;
             $sMessage   .=  ' เข้าสู่ระบบเวร ';
             sendLine($sToken,$sMessage);
         }
