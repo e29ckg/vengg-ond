@@ -27,7 +27,7 @@ $datas = array();
         $sql = "SELECT vc.*
                 FROM ven_change AS vc
                 WHERE status=1 OR status=2 
-                ORDER BY id DESC LIMIT 100";
+                ORDER BY id DESC LIMIT 200";
         $query = $conn->prepare($sql);
         // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
         $query->execute();
@@ -46,10 +46,10 @@ $datas = array();
                 $profile2 = $query->fetch(PDO::FETCH_OBJ);
                 
                 array_push($datas,array(
-                    'id'    => $rs->id,
-                    'ven_month'  => $rs->ven_month,
-                    'ven_date1'  => $rs->ven_date1,
-                    'ven_date2'  => $rs->ven_date2,
+                    'id'        => $rs->id,
+                    'ven_month' => $rs->ven_month,
+                    'ven_date1' => $rs->ven_date1,
+                    'ven_date2' => $rs->ven_date2,
                     'user_id1'  => $rs->user_id1,
                     'user_id2'  => $rs->user_id2,
                     'name1' => $profile1->fname.$profile1->name.' '.$profile1->sname,
