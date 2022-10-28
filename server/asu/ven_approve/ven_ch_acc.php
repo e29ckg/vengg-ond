@@ -58,10 +58,10 @@ $datas = array();
             $query->execute();
             $res  = $query->fetch(PDO::FETCH_OBJ);
             if($query->rowCount()){ 
-                gcal_update($res->v1_gcal_id,$res->v1_name,$desc=null,$colerId=1);
-                if(isset($res->v2_gcal_id)){
-                    gcal_update($res->v2_gcal_id,$res->v2_name,$desc=null,$colerId=1);
-                }
+                // gcal_update($res->v1_gcal_id,$res->v1_name,$desc=null,$colerId=1);
+                // if(isset($res->v2_gcal_id)){
+                //     gcal_update($res->v2_gcal_id,$res->v2_name,$desc=null,$colerId=1);
+                // }
             }
             // $sql = "UPDATE ven_change SET status = 1 WHERE id=:id";
             // $query = $conn->prepare($sql);
