@@ -104,7 +104,7 @@ require_once('../../server/authen.php');
                                     <tr v-for="d,i in datas">
                                         <td>{{date_thai_dt(d.ven_date)}}</td>
                                         <td>
-                                            <!-- {{d.ven_time}} -->
+                                            {{d.ven_time}}
 
                                             <li class="list-group-item h-100" v-for="dvt in d.ven_time">
                                                 {{dvt == '08:30' ? '08.30 - 16.30 น.' : '16.30 - 08.30 น.'}}

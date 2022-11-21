@@ -30,11 +30,18 @@ $datas = array();
 
         if($query->rowCount() > 0){                        //count($result)  for odbc
             foreach($result as $rs){
+                if($rs->img != null && $rs->img != '' && file_exists('../../uploads/users/' . $rs->img )){
+                    $img_link = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/uploads/users/'. $rs->img;
+
+                }else{
+                    $img_link = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/assets/images/profiles/nopic.png';
+                }
                 array_push($datas,array(
                     'uid' => $rs->user_id,
                     'username' => $rs->username,
                     'name'  => $rs->fname.$rs->name.' '.$rs->sname,
                     'dep'   => $rs->dep,
+                    'img'   => $img_link,
                     'status'   => $rs->status,
                 ));
             }
