@@ -18,33 +18,51 @@ $data = json_decode(file_get_contents("php://input"));
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$date_now 		= date("Y-m-d");	
+	$date_tomorrow 	= date("Y-m-d",strtotime("+1 day")); 
+	$sToken 		= "";
+	$sMessage 		= "";
 
-	$sToken = "";
-	$sMessage = "";
-
-	$sql = "SELECT * FROM line WHERE name = 'ven' AND status=1";
-	$query = $conn->prepare($sql);
+	$sql 	= "SELECT * FROM line WHERE name = 'ven' AND status=1";
+	$query 	= $conn->prepare($sql);
 	$query->execute();
-	$res = $query->fetch(PDO::FETCH_OBJ);
+	$res 	= $query->fetch(PDO::FETCH_OBJ);
 	
 	if($query->rowCount()){
 		$sToken = $res->token;
-		$sMessage .= 'ตารางเวร '.DateThai($date_now)."\n";	
+		$sMessage .= 'ตารางเวร ';	
 		$sql = "SELECT v.*
 				FROM ven as v
-				WHERE v.ven_date = '$date_now' AND (v.status=1 OR v.status=2)
-				ORDER BY v.ven_time ASC";
+				WHERE v.ven_date >= '$date_now' AND v.ven_date <= '$date_tomorrow' AND (v.status=1 OR v.status=2)
+				ORDER BY v.ven_date, v.ven_time ASC";
 		$query = $conn->prepare($sql);
 		$query->execute();
 		$result = $query->fetchAll(PDO::FETCH_OBJ);
 
+		$date_rs = '';
 		foreach($result as $rs){
-			$rs->DN == 'กลางวัน' ? $sMessage .= "☀️ ": $sMessage .= "🌙 " ; 
-			$sMessage .= $rs->u_name;
-			// if(count( json_decode($rs->ven_com_id)) > 1){
-			// 	$sMessage .= '*';
-			// }  
-			$sMessage .= "\n";
+			if($date_rs != $rs->ven_date){
+				$sMessage 	.= "\n".DateThai($rs->ven_date)."\n";
+				$date_rs 	=  $rs->ven_date;
+			}
+			if(date("H:i:s") < $rs->ven_time && $date_now == $rs->ven_date){
+				$rs->DN == 'กลางวัน' ? $sMessage .= "☀️ ": $sMessage .= "🌙 " ; 
+				$sMessage .= $rs->u_name;
+
+				if($rs->workgroup != 'ผู้พิพากษา'){
+					// $sMessage .= "\n";
+					// $sMessage .= '(โทร : ' . $rs->phone .')';
+				}  
+				$sMessage .= "\n";
+			}else{
+				$rs->DN == 'กลางวัน' ? $sMessage .= "☀️ ": $sMessage .= "🌙 " ; 
+				$sMessage .= $rs->u_name;
+
+				if($rs->workgroup != 'ผู้พิพากษา'){
+					// $sMessage .= "\n";
+					// $sMessage .= '(โทร : ' . $rs->phone .')';
+				}  
+				$sMessage .= "\n";
+			}
 		}
 		
 		http_response_code(200);

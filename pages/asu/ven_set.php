@@ -190,7 +190,14 @@ require_once('../../server/authen.php');
               <tbody>
                 <tr>
                   <th scope="row">id</th>
-                  <td>{{data_event.id}}</td>
+                  <td>
+                    {{data_event.id}}
+                    {{data_event.status == 5 ? 'ปิดการใช้งานชั่วคราว':''}}
+
+                    <button v-if="data_event.status == 5 || data_event.status == 1" @click="ven_dis_open(data_event.id)" class="btn btn-danger">
+                    {{data_event.status == 5 ? 'เปิดการใช้งานชั่วคราว':'ปิดการใช้งานชั่วคราว'}}
+                    </button>
+                  </td>
                 </tr>
                 <tr>
                   <th scope="row">วันที่ เวลา</th>

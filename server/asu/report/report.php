@@ -28,7 +28,8 @@ $datas = array();
 
 
 
-        $sql = "SELECT * FROM ven WHERE ven_month = '$vc->ven_month' AND status=2 ORDER BY ven_date ASC, ven_time ASC";
+        // $sql = "SELECT * FROM ven WHERE ven_month = '$vc->ven_month' AND status=2 ORDER BY ven_date ASC, ven_time ASC";
+        $sql = "SELECT * FROM ven WHERE ven_month = '$vc->ven_month' AND (status=1 OR status=2) ORDER BY ven_date ASC, ven_time ASC";
         $query = $conn->prepare($sql);
         $query->execute();
         $result = $query->fetchAll(PDO::FETCH_OBJ);

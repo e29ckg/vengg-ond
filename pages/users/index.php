@@ -7,6 +7,7 @@ require_once('../../server/authen.php');
 
 <head>
     <?php require_once('../includes/_header.php') ?>
+    
 </head>
 <body>
     <div id="app">
@@ -47,6 +48,7 @@ require_once('../../server/authen.php');
                                             <thead>
                                                 <tr>
                                                 <th scope="col">#</th>
+                                                <th scope="col">#</th>
                                                 <th scope="col">ชื่อ-สกุล</th>
                                                 <th scope="col">สถานะ</th>
                                                 <th scope="col">act</th>
@@ -54,8 +56,10 @@ require_once('../../server/authen.php');
                                             </thead>
                                             <tbody>
                                                 <tr v-for="d,index in datas">
-                                                    <th scope="row">{{index+1}}</th>
-                                                    
+                                                    <th scope="row">{{d.st}}</th>
+                                                    <th scope="row" @click="b_user_img(d.uid,index)">
+                                                        <img :src="d.img" alt="Photo"  height="160">
+                                                    </th>
                                                     <td>
                                                         <p @click="view(d.uid)">
                                                             <i class="bi bi-person-circle"></i> {{d.name}}</b>({{d.username}}) 
@@ -64,14 +68,11 @@ require_once('../../server/authen.php');
                                                         </p>
                                                     </td>
                                                     <td>
-                                                        <div class="form-check form-switch" v-if="d.status == 10" >
-                                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" @click="user_status(d.uid,1)" checked >
+                                                        <div class="form-check form-switch"  >
+                                                            <input class="form-check-input" type="checkbox" :id="'flexSwitchCheckChecked' + index" @click="user_status(d.uid)" :checked="d.status == 10 ? true : false" >
                                                             <!-- <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch checkbox input</label> -->
                                                         </div>
-                                                        <div class="form-check form-switch" v-else>
-                                                            <input class="form-check-input" type="checkbox" id="flexSwitchCheckChecked" @click="user_status(d.uid,10)" >
-                                                            <!-- <label class="form-check-label" for="flexSwitchCheckChecked">Checked switch checkbox input</label> -->
-                                                        </div>
+                                                        
                                                     </td>
                                                     <td>
                                                         <!-- <button class="btn btn-primary btn-sm me-2 mb-1" @click="view(d.uid)">view</button>     -->
@@ -136,6 +137,14 @@ require_once('../../server/authen.php');
                                             <td>{{user.bank_comment}}</td>
                                         </tr>                                            
                                     </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <td colspan="2">
+                                                <button class="btn btn-warning btn-sm me-2 mb-1" @click="user_update(user.id)">แก้ไข</button>
+                                            </td>
+                                        </tr>
+                                        
+                                    </tfoot>
                                 </table>
                                 <!-- {{user}} -->
                             </div>
@@ -222,6 +231,10 @@ require_once('../../server/authen.php');
                                             <label for="bank_comment" class="form-label">สาขา</label>
                                             <input type="text" class="form-control" id="bank_comment" v-model="user_form.bank_comment">
                                         </div>                                           
+                                        <div class="col mb-3">
+                                            <label for="st" class="form-label">ลำดับที่</label>
+                                            <input type="text" class="form-control" id="st" v-model="user_form.st">
+                                        </div>                                            
                                     </div>
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary">บันทึก</button>
@@ -298,6 +311,10 @@ require_once('../../server/authen.php');
                                             <label for="bank_comment_uuf" class="form-label">สาขา</label>
                                             <input type="text" class="form-control" id="bank_comment_uff" v-model="user_form.bank_comment">
                                         </div>                                           
+                                        <div class="col mb-3">
+                                            <label for="st" class="form-label">ลำดับที่</label>
+                                            <input type="text" class="form-control" id="st" v-model="user_form.st">
+                                        </div>                                           
                                     </div>
                                     <div class="row">
                                         <button type="submit" class="btn btn-primary">บันทึก</button>
@@ -357,9 +374,53 @@ require_once('../../server/authen.php');
                         </div>
                     </div>
                 </div>
-            </div>
 
+                 <!-- Button trigger modal user update form-->
+                 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#myModal" ref="show_user_img" hidden>
+                    Launch static backdrop modal
+                </button>
+                <!-- Modal -->
+                <div  class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">{{user_img.title}}</h5>
+                                
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" ref="close_user_img"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row mb-3" >
+                                    <div class="col-sm-12" >
+                                        <img class="img-fluid" :src="user_img.img" alt="Photo" v-if="user_img.img">
+                                    </div>
+                                </div>
+                                                
+                                <form @submit="onUpload">
+                                    <!-- <input type="file" name="file" id="file" @change="previewFiles"> -->
+                                    <input type="hidden" name="pro_id" :value="user_img.id">
+                                    <div class="input-group">
+                                        <div class="custom-file">
+                                            <input type="file" class="custom-file-input" id="file" name="file" @change="onChangeInput()" ref="myFiles" :value="user_img.val">
+                                            <label class="custom-file-label" for="exampleInputFile" > </label>
+                                        </div>
+                                        <div class="input-group-append">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-bs-dismiss="modal" >Close</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                
+            </div>
             <?php require_once('../includes/_footer.php') ?>
+
         </div>
     </div>
     <script src="../../assets/vendors/perfect-scrollbar/perfect-scrollbar.min.js"></script>

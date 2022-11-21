@@ -11,7 +11,8 @@ include "../function.php";
 $data = json_decode(file_get_contents("php://input"));
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user_id = $data->user_id;
+    // $user_id = $data->user_id;
+    $user_id = $_SESSION['AD_ID']; 
     
     $datas = array();
 
@@ -47,6 +48,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $query->execute();
                 $user2 = $query->fetch(PDO::FETCH_OBJ);
 
+                // $user1->img ? $img1 = $user1->img : $img1 = 'none.png';
+
+                if($user1->img != null && $user1->img != '' && file_exists('../../uploads/users/' . $user1->img )){
+                    $img_link = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/uploads/users/'. $user1->img;
+    
+                }else{
+                    $img_link = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/assets/images/profiles/nopic.png';
+                }
+
+                if($user2->img != null && $user2->img != '' && file_exists('../../uploads/users/' . $user2->img )){
+                    $img_link2 = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/uploads/users/'. $user2->img;
+    
+                }else{
+                    $img_link2 = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/assets/images/profiles/nopic.png';
+                }
+                
+
                 array_push($datas,array(
                     'id'    => $rs->id,
                     'ven_month' => $rs->ven_month,
@@ -56,9 +74,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'DN' => $rs->DN,
                     'u_role' => $rs->u_role,
                     'user1' => $user1->fname.$user1->name.' '.$user1->sname,
-                    'img1' => $user1->img,
+                    'img1' => $img_link,
                     'user2' => $user2->fname.$user2->name.' '.$user2->sname,
-                    'img2' => $user2->img,
+                    'img2' => $img_link2,
                     'status' => $rs->status,
                 ));
             }

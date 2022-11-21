@@ -21,7 +21,7 @@ $datas = array();
         INNER JOIN `profile` as p ON v.user_id = p.user_id
         WHERE v.status = 1 OR v.status = 2 AND p.`status` = 10
         ORDER BY v.ven_date DESC, v.ven_time ASC
-        LIMIT 200";
+        LIMIT 800";
         $query = $conn->prepare($sql);
         // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
         $query->execute();

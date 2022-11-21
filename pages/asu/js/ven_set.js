@@ -380,6 +380,40 @@ Vue.createApp({
     })
     
   },
+  ven_dis_open(id){
+    Swal.fire({
+      title: 'Are you sure?',
+      text  : "You won't be able to revert this!",
+      icon  : 'warning',
+      showCancelButton  : true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor : '#d33',
+      confirmButtonText : 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        axios.post('../../server/asu/ven_set/ven_dis_open.php',{id:id})
+          .then(response => {
+              
+              if (response.data.status) {
+                icon = "success";
+                message = response.data.message;
+                this.alert(icon,message,1000)
+                this.$refs['close_modal'].click()
+                this.get_vens()
+              }else{
+                icon = "warning";
+                message = response.data.message;
+                this.alert(icon,message)
+              } 
+          })
+          .catch(function (error) {
+              console.log(error);
+          });
+      }
+    })
+    
+  },
+
   close_m(){
     this.get_vens()
   },   

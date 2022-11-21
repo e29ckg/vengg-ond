@@ -50,6 +50,7 @@ $datas = array();
                 phone = :phone,
                 bank_account = :bank_account,
                 bank_comment = :bank_comment,
+                st = :st,
                 updated_at = :updated_at
                 WHERE user_id = :user_id";
         $query = $conn->prepare($sql);
@@ -61,6 +62,7 @@ $datas = array();
         $query->bindParam(':phone',$user->phone, PDO::PARAM_STR);
         $query->bindParam(':bank_account',$user->bank_account, PDO::PARAM_STR);
         $query->bindParam(':bank_comment',$user->bank_comment, PDO::PARAM_STR);
+        $query->bindParam(':st',$user->st, PDO::PARAM_STR);
         $query->bindParam(':updated_at',$date_time, PDO::PARAM_STR);       
         $query->bindParam(':user_id',$user->user_id, PDO::PARAM_INT);       
         $query->execute();   

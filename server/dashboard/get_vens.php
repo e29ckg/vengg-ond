@@ -11,7 +11,13 @@ include "../connect.php";
 // $data = json_decode(file_get_contents("php://input"));
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+ 
+if(isset($_SESSION['AD_ID'])){
+    $ssid = $_SESSION['AD_ID'];
 
+}else{
+    $ssid = '';
+}
 $datas = array();
 
 
@@ -21,7 +27,7 @@ $datas = array();
         FROM ven    
         WHERE status = 1 OR status = 2
         ORDER BY ven_date DESC, ven_time ASC
-        LIMIT 200";
+        LIMIT 800";
         $query = $conn->prepare($sql);
         // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
         $query->execute();
@@ -30,7 +36,7 @@ $datas = array();
         if($query->rowCount() > 0){                        //count($result)  for odbc
             foreach($result as $rs){
                 $rs->DN == 'กลางวัน' ? $d = '☀️' : $d = '🌙';
-                $bgcolor = getColor($rs->u_role);
+                $bgcolor = getColor($rs->u_role, $rs->DN);
                 if($rs->status == 2 ){
                     $bgcolor ='yellow' ;
                     $textC = 'black';
@@ -53,12 +59,12 @@ $datas = array();
                 ));
             }
             http_response_code(200);
-            echo json_encode(array('status' => true, 'message' => 'สำเร็จ', 'respJSON' => $datas));
+            echo json_encode(array('status' => true, 'message' => 'สำเร็จ', 'respJSON' => $datas, 'ssid' => $ssid));
             exit;
         }
      
         http_response_code(200);
-        echo json_encode(array('status' => true, 'message' => 'ไม่พบข้อมูล ', 'respJSON' => $datas));
+        echo json_encode(array('status' => true, 'message' => 'ไม่พบข้อมูล ', 'respJSON' => $datas, 'ssid' => $ssid));
     
     }catch(PDOException $e){
         echo "Faild to connect to database" . $e->getMessage();
@@ -67,15 +73,27 @@ $datas = array();
     }
 }
 
-function getColor($d){
-    $color=[
-        'ผู้พิพากษา'=>'GoldenRod',
-        'ผอ./แทน'=>'Coral',
-        // 'ผอ./แทน'=>'Chocolate',
-        // 'ผอ./แทน'=>'HotPink',
-        'จนท.1'=>'DarkCyan',
-        'จนท.'=>'CadetBlue'
-    ];
+function getColor($d,$dn=null){
+    if($dn == 'กลางคืน'){
+        $color=[
+            'ผู้พิพากษา'=>'blueviolet',
+            'ผอ./แทน'=>'Coral',
+            // 'ผอ./แทน'=>'Chocolate',
+            // 'ผอ./แทน'=>'HotPink',
+            'จนท.1'=>'DarkCyan',
+            'จนท'=>'Blue'
+        ];
+    }else{
+        $color=[
+            'ผู้พิพากษา'=>'GoldenRod',
+            // 'ผอ./แทน'=>'Coral',
+            'ผอ./แทน'=>'green',
+            // 'ผอ./แทน'=>'HotPink',
+            'จนท.1'=>'DarkCyan',
+            'จนท'=>'CadetBlue'
+        ];
+    }
+
     return isset($color[$d]) ? $color[$d] : ''; 
 }
 

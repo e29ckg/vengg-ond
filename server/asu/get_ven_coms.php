@@ -18,7 +18,7 @@ $datas = array();
 
     // The request is using the POST method
     try{
-        $sql = "SELECT * FROM ven_com GROUP BY ven_month ORDER BY ven_month DESC LIMIT 20";
+        $sql = "SELECT ven_month FROM ven_com GROUP BY ven_month ORDER BY ven_month DESC LIMIT 20";
         $query = $conn->prepare($sql);
         // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
         $query->execute();
