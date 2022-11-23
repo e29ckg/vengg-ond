@@ -17,7 +17,8 @@ include "../../function.php";
 $data = json_decode(file_get_contents("php://input"));
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
-	$date_now = date("Y-m-d");
+	$date_now 		= date("Y-m-d");	
+
 	$sToken = "";
 	$sMessage = "";
 
@@ -30,24 +31,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 		$sToken = $res->token;
 		$sMessage .= 'ตารางเวร '.DateThai($date_now)."\n";	
 		$sql = "SELECT v.*
-					FROM ven as v
-					WHERE v.ven_date = '$date_now' AND (v.status=1 OR v.status=2)
-					ORDER BY v.ven_time ASC";
-			$query = $conn->prepare($sql);
-			$query->execute();
-			$result = $query->fetchAll(PDO::FETCH_OBJ);
-	
-			foreach($result as $rs){
-				$rs->DN == 'กลางวัน' ? $sMessage .= "☀️ ": $sMessage .= "🌙 " ; 
-				$sMessage .= $rs->u_name;
-				// if(count( json_decode($rs->ven_com_id)) > 1){
-				// 	$sMessage .= '*';
-				// }  
-				$sMessage .= "\n";
-			}
+				FROM ven as v
+				WHERE v.ven_date = '$date_now' AND (v.status=1 OR v.status=2)
+				ORDER BY v.ven_time ASC";
+		$query = $conn->prepare($sql);
+		$query->execute();
+		$result = $query->fetchAll(PDO::FETCH_OBJ);
+
+		foreach($result as $rs){
+			$rs->DN == 'กลางวัน' ? $sMessage .= "☀️ ": $sMessage .= "🌙 " ; 
+			$sMessage .= $rs->u_name;
+			// if(count( json_decode($rs->ven_com_id)) > 1){
+			// 	$sMessage .= '*';
+			// }  
+			$sMessage .= "\n";
+		}
 		
-			http_response_code(200);
-			echo sendLine($sToken,$sMessage);
+		http_response_code(200);
+		echo sendLine($sToken,$sMessage);
 
 	}else{
 		$sql = "SELECT * FROM line WHERE name = 'admin'";

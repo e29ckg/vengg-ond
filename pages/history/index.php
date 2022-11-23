@@ -31,6 +31,7 @@ require_once('../../server/authen.php');
 
                 <!-- Content wrapper -->
                 <div class="content-wrapper" id="index" v-cloak>
+                    
                     <!-- {{ssid}} -->
                     {{!datas ? 'NO-DATA':''}}
                     <div class="container-xxl flex-grow-1 container-p-y" v-if="datas" >  
@@ -46,7 +47,7 @@ require_once('../../server/authen.php');
                                     <div class="row">
                                         <div class="col-5">
                                             <div class="card">
-                                                <img :src="'../../assets/images/profiles/nopic.png'" class="img-thumbnail rounded-start" alt="data_event.img" height="100" >
+                                                <img :src="d.img1" class="img-thumbnail rounded-start" alt="data_event.img">
                                                 <div class="card-body">
                                                     <h5 class="card-title">{{d.user1}}</h5>
                                                     <p class="card-text">
@@ -54,7 +55,7 @@ require_once('../../server/authen.php');
                                                         ตำสั่งที่ {{d.ven_com_num_all}} เวรเดือน {{date_thai_my(d.ven_month)}}  <br> 
                                                         {{d.DN}} | {{d.u_role}} {{d.price}}                                                        
                                                     </p>
-                                                    {{d.img1}} 
+                                                    <!-- {{d.img1}}  -->
                                                 </div>
                                             </div>                                            
                                         </div>
@@ -65,7 +66,7 @@ require_once('../../server/authen.php');
                                         </div>
                                         <div class="col-5">
                                             <div class="card">
-                                                <img :src="'../../assets/images/profiles/nopic.png'" class="img-thumbnail rounded-start" alt="data_event.img" height="100">
+                                                <img :src="d.img2" class="img-thumbnail rounded-start" alt="data_event.img" height="100">
                                                 <div class="card-body">
                                                     <h5 class="card-title">{{d.user2}}</h5>
                                                     <p class="card-text">
@@ -73,7 +74,7 @@ require_once('../../server/authen.php');
                                                     ตำสั่งที่ {{d.ven_com_num_all}} เวรเดือน {{date_thai_my(d.ven_month)}}  <br> 
                                                         {{d.DN}} | {{d.u_role}} {{d.price}}
                                                     </p>
-                                                    {{d.img2}}
+                                                    <!-- {{d.img2}} -->
                                                 </div>
                                             </div>
 

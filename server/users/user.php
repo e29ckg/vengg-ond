@@ -46,7 +46,7 @@ $datas = array();
         echo json_encode(array('false' => true, 'massege' => 'ไม่พบข้อมูล '));
     
     }catch(PDOException $e){
-        echo "Faild to connect to database" . $e->getMessage();
+        // echo "Faild to connect to database" . $e->getMessage();
         http_response_code(400);
         echo json_encode(array('status' => false, 'massege' => 'เกิดข้อผิดพลาด..' . $e->getMessage()));
     }

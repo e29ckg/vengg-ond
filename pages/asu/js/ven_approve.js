@@ -1,7 +1,7 @@
 Vue.createApp({
   data() {
     return {
-      q:'2254',
+      q:'',
       ven_app_g :'',
       ven_app :'',
       
@@ -9,18 +9,19 @@ Vue.createApp({
     }
   },
   mounted(){
-    this.url_base = window.location.protocol + '//' + window.location.host;
-    this.url_base_app = window.location.protocol + '//' + window.location.host + '/adminphp/';
+
     // const d = 
     this.get_ven_ch()
   },
   watch: {
-    
+    q(){
+      this.get_ven_ch()
+    }
   },
   methods: {
     get_ven_ch(){
       this.isLoading = true
-      axios.get('../../server/asu/ven_approve/get_ven_ch.php')
+      axios.post('../../server/asu/ven_approve/get_ven_ch.php',{q:this.q})
       .then(response => {
           if (response.data.status) {
               this.ven_app_g = response.data.respJSON_G;
@@ -147,17 +148,13 @@ Vue.createApp({
       return result = month_th[( date.getMonth()+1 )]+" "+( date.getFullYear()+543 );
     },
     date_thai(day){
-      var monthNamesThai = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤษจิกายน","ธันวาคม"];
-      var dayNames = ["วันอาทิตย์ที่","วันจันทร์ที่","วันอังคารที่","วันพุทธที่","วันพฤหัสบดีที่","วันศุกร์ที่","วันเสาร์ที่"];
+      var monthNamesThai = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+      var dayNames = ["วันอาทิตย์ที่","วันจันทร์ที่","วันอังคารที่","วันพุธที่","วันพฤหัสบดีที่","วันศุกร์ที่","วันเสาร์ที่"];
       var monthNamesEng = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       var dayNamesEng = ['Sunday','Monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
       var d = new Date(day);
       return d.getDate() + ' ' + monthNamesThai[d.getMonth()] + "  " + (d.getFullYear() + 543)
     },
-
-
-
-
 
 
     get_ven_name_subs(){
@@ -273,21 +270,16 @@ Vue.createApp({
         }
       })
     },
-
-    alert(icon,message,timer=0){
-      swal.fire({
-      icon: icon,
-      title: message,
-      showConfirmButton: true,
-      timer: timer
-    });
-  },
-
-
     
 
-
-
+    alert(icon,message,timer=0){
+        swal.fire({
+        icon: icon,
+        title: message,
+        showConfirmButton: true,
+        timer: timer
+      });
+    },
     
   },
   

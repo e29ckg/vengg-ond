@@ -29,7 +29,7 @@ require_once('../../server/authen.php');
                 <!-- {{ven_users}}             -->
                 <!-- {{users}} -->
                 <section class="row" v-for="vn,vni in ven_names">
-                    <div v-for="vns, vnsi in ven_name_subs" >                         
+                    <div v-for="vns, vnsi in ven_name_subs" v-if="ven_name_subs.length > 0">                         
                         <div class="col" >
                             <div class="card-body" v-if="vn.id == vns.ven_name_id">
                                 <h5 class="card-title" :style="'background-color: '+vns.color+' ;'" >{{vn.name}} ({{vn.DN == 'กลางวัน' ? '☀️' : '🌙'}} {{vn.DN}}) {{vns.name}} </h5>

@@ -56,6 +56,7 @@ Vue.createApp({
     users:[],
     u_id2:'',
     u_name2:'',
+    u_img2:'',
     act:'a',
     ch_a:false,
     ch_b:false,
@@ -65,7 +66,8 @@ Vue.createApp({
   },
   mounted(){
     this.url_base = window.location.protocol + '//' + window.location.host;
-    this.ssid = localStorage.getItem("ss_uid")
+    
+    
     this.ven_month = new Date();
     this.get_vens()
     this.cal_render()
@@ -134,6 +136,7 @@ Vue.createApp({
           // console.log(response.data.respJSON);
           if (response.data.status) {
               this.datas = response.data.respJSON;
+              this.ssid = response.data.ssid
               this.cal_render()
           } 
       })
@@ -149,13 +152,15 @@ Vue.createApp({
       this.ch_v2 = this.data_event
 
     },
-    change_b(uid,u_name){
+    change_b(uid,u_name,img){
       console.log(uid)
       console.log(u_name)
-      this.act = 'b'
-      this.ch_v1 = this.data_event
-      this.user_id2 = uid
-      this.u_name2 = u_name
+      console.log(img)
+      this.act        = 'b'
+      this.ch_v1      = this.data_event
+      this.user_id2   = uid
+      this.u_name2    = u_name
+      this.u_img2     = img
       this.$refs.show_modal_b.click()
     },
     change_save(){
@@ -243,10 +248,29 @@ Vue.createApp({
     close_m_b(){
       this.$refs.close_modal.click()
     },
+    report_jk(ven_date,DN){
+      this.isLoading = true;
+      axios.post('../../server/dashboard/report_jk.php',{ven_date:ven_date,DN:DN})
+      .then(response => {
+          if (response.data.status) {
+            this.alert("success",response.data.message,timer=1000)
+            window.open('../../uploads/ven_jk.docx','_blank')
+          } else{
+            this.alert("warning",response.data.message,timer=0)
+          }
+      })
+      .catch(function (error) {
+          console.log(error);
+      })
+      .finally(() => {
+        this.isLoading = false;
+      })
+
+    },
 
     date_thai(day){
-      var monthNamesThai = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤษจิกายน","ธันวาคม"];
-      var dayNames = ["วันอาทิตย์ที่","วันจันทร์ที่","วันอังคารที่","วันพุทธที่","วันพฤหัสบดีที่","วันศุกร์ที่","วันเสาร์ที่"];
+      var monthNamesThai = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
+      var dayNames = ["วันอาทิตย์ที่","วันจันทร์ที่","วันอังคารที่","วันพุธที่","วันพฤหัสบดีที่","วันศุกร์ที่","วันเสาร์ที่"];
       var monthNamesEng = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
       var dayNamesEng = ['Sunday','Monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
       var d = new Date(day);

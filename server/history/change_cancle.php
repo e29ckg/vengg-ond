@@ -53,63 +53,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if($query2->rowCount()){   
 
                 /**google calendar */
-                if($result->gcal_id1){gcal_update($result->gcal_id1,$result->u_name_old1,'',1);}
-                if($result->gcal_id2){gcal_update($result->gcal_id2,$result->u_name_old2,'',1);}
+                // if($result->gcal_id1){gcal_update($result->gcal_id1,$result->u_name_old1,'',1);}
+                // if($result->gcal_id2){gcal_update($result->gcal_id2,$result->u_name_old2,'',1);}
 
                 //ส่ง line ot ven_admin
                 $sql = "SELECT token FROM line WHERE name = 'ven_admin'";
-                $query = $conn->prepare($sql);
-                $query->execute();
-                $res = $query->fetch(PDO::FETCH_OBJ);
-                $sToken = $res->token;
-                $sMessage = 'มีการยกเลิกเวร '.$id."\n";
-                $res_line = sendLine($sToken,$sMessage);
-
+                $query_line = $conn->prepare($sql);
+                $query_line->execute();
+                $res = $query_line->fetch(PDO::FETCH_OBJ);
+                if($query_line->rowCount()){
+                    $sToken = $res->token;
+                    $sMessage = 'มีการยกเลิกเวร '.$id."\n";
+                    $res_line = sendLine($sToken,$sMessage);
+                }
                 http_response_code(200);
                 echo json_encode(array('status' => true, 'message' => 'สำเร็จ'));
                 exit;
             }  
-    // $st = 1;
-    //         $sql = "UPDATE ven SET ven.status = :status WHERE id = :id";
-    //         $query = $conn->prepare($sql);
-    //         $query->bindParam(':status',$st, PDO::PARAM_INT);
-    //         $query->bindParam(':id',$result->ven_id1_old, PDO::PARAM_INT);
-    //         $query->execute();
-            
-    //         $st = 1;
-    //         $sql = "UPDATE ven SET ven.status = :status WHERE id = :id";
-    //         $query = $conn->prepare($sql);
-    //         $query->bindParam(':status',$st, PDO::PARAM_INT);
-    //         $query->bindParam(':id',$result->ven_id2_old, PDO::PARAM_INT);
-    //         $query->execute();
-            
-    //         $st = 77;
-    //         $sql = "UPDATE ven SET ven.status = :status WHERE id = :id";
-    //         $query = $conn->prepare($sql);
-    //         $query->bindParam(':status',$st, PDO::PARAM_INT);
-    //         $query->bindParam(':id',$result->ven_id1, PDO::PARAM_INT);
-    //         $query->execute();
-
-    //         $sql = "UPDATE ven SET ven.status = :status WHERE id = :id";
-    //         $query = $conn->prepare($sql);
-    //         $query->bindParam(':status',$st, PDO::PARAM_INT);
-    //         $query->bindParam(':id',$result->ven_id2, PDO::PARAM_INT);
-    //         $query->execute();
-            
-    //         $sql = "UPDATE ven_change SET ven_change.status = :status WHERE id = :id";
-    //         $query = $conn->prepare($sql);
-    //         $query->bindParam(':status',$st, PDO::PARAM_INT);
-    //         $query->bindParam(':id',$result->id, PDO::PARAM_INT);
-    //         $query->execute();
-
-           
-
             
         }
     
     }catch(PDOException $e){
         $conn->rollback();
-        echo "Faild to connect to database" . $e->getMessage();
+        // echo "Faild to connect to database" . $e->getMessage();
         http_response_code(400);
         echo json_encode(array('status' => false, 'message' => 'เกิดข้อผิดพลาด..' . $e->getMessage()));
     }

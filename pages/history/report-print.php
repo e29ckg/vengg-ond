@@ -23,7 +23,7 @@ require_once('../../server/authen.php');
         * {
             font-family : Sarabun;
             /* font-size   : small; */
-            font-size   : 17px;
+            font-size   : 14px;
         }
         .udl {
             border-bottom: 1px solid #aaa;
@@ -86,19 +86,23 @@ require_once('../../server/authen.php');
           </div>
         </div>
 
-        <div class="row mb-2" v-if="datas.comment">
+        <div class="row mb-2" v-if="datas.vcod">
           <div class="col-2" >            
            ลงวันที่ 
           </div>
           <div class="col-10 text-center udl">
             {{datas.ven_com_date}}
           </div>
-          <div class="col-2" > 
 
+          <div class="row mt-2 mb-2" v-for="da in datas.vcod">
+            <div class="col-2" > 
+              
+            </div>
+            <div class="col-10 text-center udl" >
+              {{da}}
+            </div>
           </div>
-          <div class="col-10 udl" >
-            {{datas.comment}}
-          </div>
+
           <div class="col-1 text-start">
             ให้ 
           </div>
@@ -128,13 +132,14 @@ require_once('../../server/authen.php');
           <div class="col-2 text-start">            
            อยู่เวร 
           </div>
-          <div class="col-5 text-center udl">
+          <div class="col-4 text-center udl">
             {{datas.ven_com_name}}
-          </div>
-          <div class="col-2 text-center">
-            วันที่ 
-          </div>
-          <div class="col-3 text-center udl">
+      </div>
+      <div class="col-1 text-center">
+        วันที่
+      </div>
+        
+        <div class="col-5 text-center udl">
             {{datas.ven_date1}}
           </div>
         </div>
@@ -144,7 +149,7 @@ require_once('../../server/authen.php');
            เนื่องจาก 
           </div>
           <div class="col-11 text-center mt-1 udl">
-            ติดภาระกิจจำเป็น
+            {{datas.comment == null || datas.comment == '' ? 'ติดภาระกิจจำเป็น' : datas.comment}}
           </div>          
         </div>
 
@@ -152,17 +157,17 @@ require_once('../../server/authen.php');
           <div class="col-3 text-start">            
            จึงขอเปลี่ยนเวรกับ 
           </div>
-          <div class="col-6 text-center udl">
+          <div class="col-9 text-center udl">
             {{datas.name2}}
           </div>          
-          <div class="col-3 text-start udl">            
+          <!-- <div class="col-3 text-start udl">            
            
-          </div>
+          </div> -->
         </div>
 
         <div class="row mb-4 ">
           <div class="col-8 text-start">            
-           เป็นผู้ปฎิบัติหน้าที่แทน และข้าพเจ้าจะมาปฎิบัติหน้าที่แทนในวันที่
+            เป็นผู้ปฎิบัติหน้าที่แทน และข้าพเจ้าจะมาปฎิบัติหน้าที่แทนในวันที่
           </div>
           <div class="col-4 text-center udl">            
           {{datas.ven_date2}}

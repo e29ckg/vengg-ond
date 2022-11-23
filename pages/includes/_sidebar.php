@@ -28,19 +28,19 @@
                     </a>
                 </li>
                 <?php if($_SESSION['AD_ROLE'] == '9'){ ?>
-                <li class="sidebar-item  has-sub <?php echo isActive('asu') ?>">
-                    <a href="#" class='sidebar-link'>
-                        <i class="bi bi-stack"></i>
-                        <span>อำนวยการ</span>
-                    </a>
-                    <ul class="submenu <?php echo isActive('asu') ?>">                        
-                        <li class="submenu-item <?php echo isActiveFile('ven_approve') ?>">
-                            <a href="../asu/ven_approve.php">
-                                <i class="bi bi-arrow-left-right"></i>
-                                <span>อนุมัติใบเปลี่ยนเวร</span>
-                            </a>
-                        </li>                        
-                        <li class="submenu-item <?php echo isActiveFile('report') ?>">
+                    <li class="sidebar-item  has-sub <?php echo isActive('asu') ?>">
+                        <a href="#" class='sidebar-link'>
+                            <i class="bi bi-stack"></i>
+                            <span>อำนวยการ</span>
+                        </a>
+                        <ul class="submenu <?php echo isActive('asu') ?>">                        
+                            <li class="submenu-item <?php echo isActiveFile('ven_approve') ?>">
+                                <a href="../asu/ven_approve.php">
+                                    <i class="bi bi-arrow-left-right"></i>
+                                    <span>อนุมัติใบเปลี่ยนเวร</span>
+                                </a>
+                            </li>                        
+                            <li class="submenu-item <?php echo isActiveFile('report') ?>">
                             <a href="../asu/report.php">
                                 <i class="bi bi-clipboard-check"></i>
                                 <span>รายงานการจัดเวร</span>
@@ -61,6 +61,12 @@
                         
                     </ul>
                 </li>
+                <li class="sidebar-item <?php echo isActive('fnu') ?>">
+                    <a href="../fnu/ven/" class='sidebar-link' target="_blank">
+                        <i class="bi bi-cash"></i>
+                        <span>การเงิน</span>
+                    </a>
+                </li>    
                 
                 <li class="sidebar-item  has-sub <?php echo isActive('users') ?>">
                     <a href="#" class='sidebar-link'>
@@ -89,59 +95,8 @@
                     </ul>
                 </li>
                 <?php } ?>
-                <!-- <li class="sidebar-item  has-sub">
-                    <a href="#" class='sidebar-link'>
-                        <i class="bi bi-stack"></i>
-                        <span>Components</span>
-                    </a>
-                    <ul class="submenu ">
-                        <li class="submenu-item ">
-                            <a href="component-alert.html">Alert</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-badge.html">Badge</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-breadcrumb.html">Breadcrumb</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-button.html">Button</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-card.html">Card</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-carousel.html">Carousel</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-dropdown.html">Dropdown</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-list-group.html">List Group</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-modal.html">Modal</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-navs.html">Navs</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-pagination.html">Pagination</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-progress.html">Progress</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-spinner.html">Spinner</a>
-                        </li>
-                        <li class="submenu-item ">
-                            <a href="component-tooltip.html">Tooltip</a>
-                        </li>
-                    </ul>
-                </li> -->
-
                 
-
+                
             </ul>
         </div>
         <button class="sidebar-toggler btn x"><i data-feather="x"></i></button>

@@ -19,7 +19,8 @@ $datas = array();
     // The request is using the POST method
     try{
 
-        $sql = "SELECT * FROM ven WHERE ven_month = '2022-11' AND status=2 ORDER BY ven_time ASC, ven_date ASC";
+        // $sql = "SELECT * FROM ven WHERE ven_month = '2022-11' AND status=2 ORDER BY ven_time ASC, ven_date ASC";
+        $sql = "SELECT * FROM ven WHERE ven_month = '2022-11' AND (status=1 OR status=2)  ORDER BY ven_time ASC, ven_date ASC";
         $query = $conn->prepare($sql);
         $query->execute();
         $result = $query->fetchAll(PDO::FETCH_OBJ);
@@ -91,7 +92,7 @@ $datas = array();
         echo json_encode(array('false' => true, 'message' => 'ไม่พบข้อมูล '));
     
     }catch(PDOException $e){
-        echo "Faild to connect to database" . $e->getMessage();
+        // echo "Faild to connect to database" . $e->getMessage();
         http_response_code(400);
         echo json_encode(array('status' => false, 'message' => 'เกิดข้อผิดพลาด..' . $e->getMessage()));
     }

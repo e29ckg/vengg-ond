@@ -19,17 +19,21 @@ Vue.createApp({
         phone : '',
         bank_account : '',
         bank_comment : '',
+        st : '',
         act : 'insert',
       },
       user_role_form:{'username':'',password:'',repassword:'',role:''},
 
-      sel_fname : [],
-      sel_dep : [],
+      sel_fname     : [],
+      sel_dep       : [],
       sel_workgroup : [],
+      user_img      : {
+        uid:'',
+        title:'',
+        val:''
+      },
 
-    
-
-    isLoading : false,
+      isLoading : false,
   }
   },
   mounted(){
@@ -125,7 +129,7 @@ Vue.createApp({
     },
     close_modal_user_form(){
       this.user_form = {username : '', password : '', repassword : '', fname : '', name : '', sname : '', dep : '',
-                        workgroup : '', phone : '', bank_account : '', bank_comment : '', act : 'insert'}
+                        workgroup : '', phone : '', bank_account : '', bank_comment : '', st : '', act : 'insert'}
     },
     get_sel_fname(){
       axios.post('../../server/users/get_sel_fname.php')
@@ -172,6 +176,7 @@ Vue.createApp({
       });
     },
     user_update(uid){
+      this.$refs.close_modal_user.click()
       this.isLoading = true
       axios.post('../../server/users/user.php',{uid:uid})
       .then(response => {
@@ -258,11 +263,11 @@ Vue.createApp({
         this.isLoading = false;
       })  
     },
-    user_status(id,st){
-      if(st == 1){
+    user_status(id){
+      // if(st == 1){
         
-            this.isLoading = true;
-            axios.post('../../server/users/user_update_status.php',{user_id:id,st:st})
+            // this.isLoading = true;
+            axios.post('../../server/users/user_update_status.php',{user_id:id})
                 .then(response => {
                     
                     if (response.data.status) {
@@ -279,34 +284,10 @@ Vue.createApp({
                 .catch(function (error) {
                     console.log(error);
                 })
-                .finally(() => {
-                  this.isLoading = false;
-                })   
+                // .finally(() => {
+                //   this.isLoading = false;
+                // })   
         
-
-      }else{
-        this.isLoading = true;
-        axios.post('../../server/users/user_update_status.php',{user_id:id,st:st})
-                .then(response => {
-                    
-                    if (response.data.status) {
-                        let icon = 'success'
-                        let message = response.data.message
-                        this.alert(icon,message,timer=1500)
-                        this.get_users()
-                    }else{
-                      let icon = 'error'
-                      let message = response.data.message
-                      this.alert(icon,message,timer=0)
-                    }
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
-                .finally(() => {
-                  this.isLoading = false;
-                })   
-      }
     },
     ch_search_user(){
       console.log(this.q)
@@ -328,6 +309,61 @@ Vue.createApp({
         this.get_users()
       }
     },
+
+    b_user_img(uid,index){
+      this.user_img.uid = uid;   
+      this.user_img.img = this.datas[index].img;   
+      this.$refs.show_user_img.click()     
+    },
+    onChangeInput(event){
+      this.onUpload()
+    },
+    onUpload(){
+      // console.log(this.$refs.myFiles.files[0].name);
+      var image = this.$refs.myFiles.files
+      if (image.length > 0) {
+        if(image[0].type == 'image/jpeg' || image[0].type =='image/png') {
+          var formData = new FormData();
+          // var imagefile = document.querySelector('#file');
+          // var imagefile = document.querySelector('#file');
+          formData.append("sendimage", image[0]);
+          formData.append("uid", this.user_img.uid);
+          axios.post('../../server/users/upload_img.php', 
+            formData, 
+            {headers:{'Content-Type': 'multipart/form-data'}
+          })
+            .then(response => {
+                if (response.data.status) {
+                  swal.fire({
+                    icon: 'success',
+                    title: response.data.message,
+                    showConfirmButton: true,
+                    timer: 1500
+                  });
+                  this.get_users();
+                  this.user_img.img = response.data.img;
+                  this.$refs.close_user_img.click()
+
+                }else {
+                    swal.fire({
+                        icon: 'error',
+                        title: response.data.message,
+                        showConfirmButton: true,
+                        timer: 1500
+                    });
+                }
+            })
+        } else{
+            swal.fire({
+                icon: 'error',
+                title: "ไฟล์ที่อัพโหลดต้องเป็นไฟล์ jpeg หรือ png เท่านั้น",
+                showConfirmButton: true,
+                timer: 1500
+            });
+          }
+      }
+
+    } ,
   },
   
         

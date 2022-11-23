@@ -242,20 +242,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->commit();
 
         /** google calendar */
-        gcal_update($rsv1->gcal_id,$rsv2->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);
-        gcal_update($rsv2->gcal_id,$rsv1->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);
+        // gcal_update($rsv1->gcal_id,$rsv2->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);
+        // gcal_update($rsv2->gcal_id,$rsv1->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);
         
         //ส่ง line ot ven_admin
         $sql = "SELECT token FROM line WHERE name = 'ven_admin'";
-        $query = $conn->prepare($sql);
-        $query->execute();
-        $res = $query->fetch(PDO::FETCH_OBJ);
-        $sToken = $res->token;
-        $sMessage = 'มีการเปลี่ยนเวร '.$chid."\n";
-        $sMessage .= $rsv2->u_name.'<<>>'.$rsv1->u_name."\n";
-        $sMessage .= $rsv2->ven_date.'<<>>'.$rsv1->ven_date."\n";
-        $sMessage .= '('.$create_at.')';
-        $res_line = sendLine($sToken,$sMessage);
+        $query_line = $conn->prepare($sql);
+        $query_line->execute();
+        $res = $query_line->fetch(PDO::FETCH_OBJ);
+        if($query_line->rowCount()){
+            $sToken = $res->token;
+            $sMessage = 'มีการเปลี่ยนเวร '.$chid."\n";
+            $sMessage .= $rsv2->u_name.'<<>>'.$rsv1->u_name."\n";
+            $sMessage .= $rsv2->ven_date.'<<>>'.$rsv1->ven_date."\n";
+            $sMessage .= '('.$create_at.')';
+            $res_line = sendLine($sToken,$sMessage);
+        }
 
         http_response_code(200);
         echo json_encode(array(
@@ -268,7 +270,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
     }catch(PDOException $e){
         $conn->rollback();
-        echo "Faild to connect to database" . $e->getMessage();
+        // echo "Faild to connect to database" . $e->getMessage();
         http_response_code(400);
         echo json_encode(array('status' => false, 'message' => 'เกิดข้อผิดพลาด..' . $e->getMessage()));
     }

@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try{
         $sql = "SELECT vc.id , vc.ven_month, vc.ven_date1, vc.ven_date2, v.ven_com_idb, v.ven_com_name, 
                         vc.ven_com_num_all, vc.DN, vc.u_role, vc.user_id1, vc.ven_id1, vc.ven_id2, vc.user_id2, 
-                        vc.ven_id1_old, vc.ven_id2_old, vc.status, vc.create_at
+                        vc.ven_id1_old, vc.ven_id2_old, vc.comment, vc.status, vc.create_at
                 FROM ven_change as vc  
                 INNER JOIN ven as v ON v.id = vc.ven_id1
                 WHERE vc.id = :id";
@@ -78,6 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
             $res->DN == 'กลางวัน' ? $time = '08.30 – 16.30' : $time = '16.30 – 08.30 ';  
             $ven_date1       = DateThai_full($res->ven_date1).' ตั้งแต่เวลา '.$time.' นาฬิกา';   
+            $vd1       = DateThai_full($res->ven_date1).' เวลา '.$time.' นาฬิกา';   
             if($res->ven_id2 !=''){
                 $ven_date2       = ' และข้าพเจ้าจะมาปฎิบัติหน้าที่แทน '. $name2 .' ในวันที่ '.DateThai_full($res->ven_date2).' ตั้งแต่เวลา '.$time.' นาฬิกา'; 
                 $vd = DateThai_full($res->ven_date2);
@@ -94,10 +95,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $query = $conn->prepare($sql);
             $query->execute();
             $res_vc_old = $query->fetchAll(PDO::FETCH_OBJ);
-            $comment='';
+            $vcod = [];
+            $vcod_doc = '';
             if($query->rowCount()){
                 foreach($res_vc_old as $rs){                    
-                    $comment = ' และบันทึกการเปลี่ยนเวรวันที่ '.DateThai_full($rs->create_at).' ['.$rs->id.']';
+                    $vcod_doc .= ' และบันทึกการเปลี่ยนเวรวันที่ '.DateThai_full($rs->create_at).' ['.$rs->id.']';
+                    array_push($vcod,' และบันทึกการเปลี่ยนเวรวันที่ '.DateThai_full($rs->create_at).' ['.$rs->id.']');
                 }
             }
 
@@ -128,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $templateProcessor->setValue('ven_com_num_all', $ven_com_num_all);//อัดตัวแปร รายตัว
             $templateProcessor->setValue('ven_com_date', $ven_com_date);
             $templateProcessor->setValue('ven_com_name', $ven_com_name);
-            $templateProcessor->setValue('comment', $comment);
+            $templateProcessor->setValue('comment', $vcod_doc);
             $templateProcessor->setValue('name1', $name1);
             $templateProcessor->setValue('name2', $name2);
             $templateProcessor->setValue('name_dep1', $name_dep1);
@@ -148,12 +151,13 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     'ven_com_num_all'=> $ven_com_num_all,
                     'ven_com_date'   => $ven_com_date,
                     'ven_com_name'   => $ven_com_name,
-                    'comment'   => $comment,
+                    'vcod'   => $vcod,
+                    'comment'   => $res->comment,
                     'name1'   => $name1,
                     'name2'   => $name2,
                     'name_dep1'   => $name_dep1,
                     'name_dep2'   => $name_dep2,
-                    'ven_date1'   => DateThai_full($res->ven_date1),
+                    'ven_date1'   => $vd1,
                     'ven_date2'   => $vd
                 ]
             ));
@@ -164,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo json_encode(array('status' => true, 'message' => 'ไม่พบข้อมูล '));
     
     }catch(PDOException $e){
-        echo "Faild to connect to database" . $e->getMessage();
+        // echo "Faild to connect to database" . $e->getMessage();
         http_response_code(400);
         echo json_encode(array('status' => false, 'message' => 'เกิดข้อผิดพลาด..' . $e->getMessage()));
     }

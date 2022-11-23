@@ -63,33 +63,7 @@ $datas = array();
                 //     gcal_update($res->v2_gcal_id,$res->v2_name,$desc=null,$colerId=1);
                 // }
             }
-            // $sql = "UPDATE ven_change SET status = 1 WHERE id=:id";
-            // $query = $conn->prepare($sql);
-            // $query->bindParam(':id',$id, PDO::PARAM_STR);
-            // $query->execute();
             
-            // $sql = "UPDATE ven SET status = 1 WHERE id=:id";
-            // $query = $conn->prepare($sql);
-            // $query->bindParam(':id',$result->ven_id1, PDO::PARAM_STR);
-            // $query->execute();
-
-            // $sql = "UPDATE ven SET status = 1 WHERE id=:id";
-            // $query = $conn->prepare($sql);
-            // $query->bindParam(':id',$result->ven_id2, PDO::PARAM_STR);
-            // $query->execute();
-            
-            // $sql = "UPDATE ven SET status = 4 WHERE id=:id";
-            // $query = $conn->prepare($sql);
-            // $query->bindParam(':id',$result->ven_id1_old, PDO::PARAM_STR);
-            // $query->execute();
-            
-            // $sql = "UPDATE ven SET status = 4 WHERE id=:id";
-            // $query = $conn->prepare($sql);
-            // $query->bindParam(':id',$result->ven_id2_old, PDO::PARAM_STR);
-            // $query->execute();
-            
-            
-            // $conn->commit();
             http_response_code(200);
             echo json_encode(array('status' => true, 'message' => 'สำเร็จ'));
             exit;
@@ -100,7 +74,7 @@ $datas = array();
     
     }catch(PDOException $e){
         $conn->rollback();
-        echo "Faild to connect to database" . $e->getMessage();
+        // echo "Faild to connect to database" . $e->getMessage();
         http_response_code(400);
         echo json_encode(array('status' => false, 'message' => 'เกิดข้อผิดพลาด..' . $e->getMessage()));
     }

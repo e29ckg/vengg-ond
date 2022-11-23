@@ -18,7 +18,7 @@ $datas = array();
 
     // The request is using the POST method
     try{
-        $sql = "SELECT * FROM ven_com GROUP BY ven_month ORDER BY ven_month DESC LIMIT 20";
+        $sql = "SELECT ven_month FROM ven_com GROUP BY ven_month ORDER BY ven_month DESC LIMIT 20";
         $query = $conn->prepare($sql);
         // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
         $query->execute();
@@ -48,7 +48,7 @@ $datas = array();
         echo json_encode(array('status' => false, 'message' => 'ไม่พบข้อมูล '));
     
     }catch(PDOException $e){
-        echo "Faild to connect to database" . $e->getMessage();
+        // echo "Faild to connect to database" . $e->getMessage();
         http_response_code(400);
         echo json_encode(array('status' => false, 'message' => 'เกิดข้อผิดพลาด..' . $e->getMessage()));
     }

@@ -95,42 +95,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
         }
-        // $sql_VU = "SELECT * FROM ven WHERE user_id = $user_id2 AND ven_date = '$rsv1->ven_date' AND (status=1 OR status=2) LIMIT 1 ";
-        // $query_VU = $conn->prepare($sql_VU);
-        // $query_VU->execute();
-        // $res_VU = $query_VU->fetch(PDO::FETCH_OBJ);
-        //  if($res_VU){
-        //      http_response_code(200);
-        //      echo json_encode(array('status' => false, 'message' =>  $u_name2.' วันที่ '.DateThai($rsv1->ven_date).' มีเวรอยู่แล้ว'));
-        //      exit;
-        //  }
-
-        //  if($rsv1->DN =='กลางคืน'){
-        //     $ven_date_u1 = date("Y-m-d", strtotime('+1 day', strtotime($rsv1->ven_date)));
-        //     $sql = "SELECT * FROM ven WHERE user_id = $user_id2 AND ven_date = '$ven_date_u1' AND DN='กลางวัน' AND (status=1 OR status=2) LIMIT 1";
-        //     $query = $conn->prepare($sql);
-        //     $query->execute();
-        //     $res = $query->fetch(PDO::FETCH_OBJ);
-        //     if($res){
-        //         http_response_code(200);
-        //         echo json_encode(array('status' => false, 'message' => $u_name2.' วันที่ '.DateThai($ven_date_u1).' มีเวรกลางวัน', 'respJSON' => $res));
-        //         exit;
-        //     }
-        // } 
-
-        // if($rsv1->DN =='กลางวัน'){
-        //     $ven_date_u1 = date("Y-m-d", strtotime('-1 day', strtotime($rsv1->ven_date)));
-        //     $sql = "SELECT * FROM ven 
-        //               WHERE user_id = $user_id2 AND ven_date = '$ven_date_u1' AND DN='กลางคืน' AND (status=1 OR status=2)  LIMIT 1";
-        //     $query = $conn->prepare($sql);
-        //     $query->execute();
-        //     $res = $query->fetch(PDO::FETCH_OBJ);
-        //     if($res){
-        //         http_response_code(200);
-        //         echo json_encode(array('status' => false, 'message' => $u_name2.' วันที่ '.DateThai($ven_date_u1).' มีเวรกลางคืน', 'respJSON' => $res));
-        //         exit;
-        //     }
-        // }   
+        
          
         $conn->beginTransaction();
         // /**  สร้างเวรใบ1 */
@@ -227,19 +192,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->commit();
 
         /** google calendar */
-        gcal_update($rsv1->gcal_id,$u_name2,$rsv1->u_name.'>>>'.$u_name2,5);
+        // gcal_update($rsv1->gcal_id,$u_name2,$rsv1->u_name.'>>>'.$u_name2,5);
 
         /** ส่ง line to ven_admin */
-        $sql = "SELECT * FROM line WHERE name = 'ven_admin'";
-        $query = $conn->prepare($sql);
-        $query->execute();
-        $res = $query->fetch(PDO::FETCH_OBJ);
-        $sToken = $res->token;
-        $sMessage = 'มีการยกเวร '.$chid."\n";
-        $sMessage .= $rsv1->u_name.'<<>>'.$u_name2."\n";
-        $sMessage .= $rsv1->ven_date.'<<>>'.$rsv1->ven_date."\n";
-        $sMessage .= '('.$create_at.')';
-        $res_line = sendLine($sToken,$sMessage);
+        $sql = "SELECT token FROM line WHERE name = 'ven_admin'";
+        $query_line = $conn->prepare($sql);
+        $query_line->execute();
+        $res = $query_line->fetch(PDO::FETCH_OBJ);
+        if($query_line->rowCount()){
+            $sToken = $res->token;
+            $sMessage = 'มีการเปลี่ยนเวร '.$chid."\n";
+            $sMessage .= $rsv2->u_name.'>>'.$rsv1->u_name."\n";
+            $sMessage .= $rsv2->ven_date.'>>'.$rsv1->ven_date."\n";
+            $sMessage .= '('.$create_at.')';
+            $res_line = sendLine($sToken,$sMessage);
+        }
 
         http_response_code(200);
         echo json_encode(array('status' => true, 'message' => 'ok', 'responseJSON' =>'' ));
@@ -247,7 +214,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         
     }catch(PDOException $e){
         $conn->rollback();
-        echo "Faild to connect to database" . $e->getMessage();
+        // echo "Faild to connect to database" . $e->getMessage();
         http_response_code(400);
         echo json_encode(array('status' => false, 'message' => 'เกิดข้อผิดพลาด..' . $e->getMessage()));
     }

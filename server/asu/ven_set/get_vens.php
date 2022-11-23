@@ -19,9 +19,9 @@ $datas = array();
     try{
         $sql = "SELECT v.id, v.ven_date, v.ven_time, p.name, p.sname FROM ven as v 
         INNER JOIN `profile` as p ON v.user_id = p.user_id
-        WHERE (v.status = 1 OR v.status = 2) AND p.`status` = 10
+        WHERE (v.status = 1 OR v.status = 2 OR v.status = 5) AND p.`status` = 10
         ORDER BY v.ven_date DESC, v.ven_time ASC
-        LIMIT 200";
+        LIMIT 500";
         $query = $conn->prepare($sql);
         // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
         $query->execute();
@@ -45,7 +45,7 @@ $datas = array();
         echo json_encode(array('status' => true, 'massege' => 'ไม่พบข้อมูล ', 'respJSON' => $datas));
     
     }catch(PDOException $e){
-        echo "Faild to connect to database" . $e->getMessage();
+        // echo "Faild to connect to database" . $e->getMessage();
         http_response_code(400);
         echo json_encode(array('status' => false, 'massege' => 'เกิดข้อผิดพลาด..' . $e->getMessage()));
     }

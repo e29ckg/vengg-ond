@@ -56,6 +56,7 @@ require_once('../../server/authen.php');
                                                         <td class="text-end col " style="width: 250px;">
                                                             <button class="btn btn-warning btn-sm me-2" @click="view(vc.id)">view</button>
                                                             <button class="btn btn-primary btn-sm m-2" @click="print(vc.id)">พิมพ์เอกสารแนบท้าย</button>
+                                                            <button class="btn btn-primary btn-sm m-2" @click="print2(vc.id)">แนบท้าย2</button>
                                                         </td>
                                                 </tr>
                                             </tbody>

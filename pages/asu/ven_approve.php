@@ -29,10 +29,22 @@ require_once('../../server/authen.php');
                         <!-- {{ven_Chs}} -->
                         <!-- {{ven_Chs_g}} -->
                         <div class="row">
-                            <div class="col-12 text-end mb-2">
+                            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+        
+                                <div class="row ">
+                                    <div class="col-md-10 mx-auto">
+                                        <div class="input-group">
+                                            <input class="form-control border rounded-pill" type="search" value="search" v-model="q" placeholder="ค้นหา" id="example-search-input">
+                                        </div>
+                                    </div>
+                                </div>
+                                
                             </div>
-                            <div class="col col-12" v-if="ven_app_g">                                
-                                <div class="card" v-for='vag in ven_app_g'>
+                            <div class="col-12 text-end mb-2">
+                                <!-- {{ven_app_g}} -->
+                            </div>
+                            <div class="col col-12" v-if="ven_app_g.length > 0">                                
+                                <div class="card"  v-for='vag in ven_app_g' >
                                     <div class="card-body" >
                                         
                                         <table class="table">
@@ -41,25 +53,25 @@ require_once('../../server/authen.php');
                                                     <th colspan="2" class="text-start">
                                                     เวรเดือน {{vag.ven_month}} 
                                                     </th>
-
                                                 </tr>
                                             </thead>
                                             <tbody  v-for="va in ven_app">
                                                 <tr v-if="va.ven_month == vag.ven_month">
-                                                        <td >  
-                                                            <!-- เลขคำสั่งที่ {{va.ven_Ch_num}} | ลงวันที่ {{va.ven_Ch_date}} | {{va.ven_Ch_name}} ({{va.ven_name}}) -->
-                                                            | {{va.id}} | {{va.name1}} <<>> {{va.name2}} <br> 
-                                                            วันที่เขียน {{date_thai(va.create_at)}} | 
-                                                            <span class="badge bg-warning" v-if="va.status ==2">รออนุมัติ</span> <br>
-                                                            {{date_thai(va.ven_date1)}} <<>> {{date_thai(va.ven_date2)}}
-                                                            <!-- {{va}} -->
-    
-                                                        </td>
-                                                       
-                                                        <td class="text-end col " style="width: 150px;">
-                                                            <button class="btn btn-warning btn-sm me-2" @click="ven_ch_app(va.id)" v-if="va.status != 1">อนุมัติ</button>
-                                                            <button class="btn btn-danger btn-sm" @click="ven_ch_cancle(va.id)" v-else>ยกเลิก</button>
-                                                        </td>
+                                                    <td >  
+                                                        <!-- เลขคำสั่งที่ {{va.ven_Ch_num}} | ลงวันที่ {{va.ven_Ch_date}} | {{va.ven_Ch_name}} ({{va.ven_name}}) -->
+                                                        {{va.id}} <br> 
+                                                        วันที่เขียน {{date_thai(va.create_at)}} 
+                                                        <span class="badge bg-warning" v-if="va.status ==2">รออนุมัติ</span> <br>
+                                                        {{va.name1}} <<>> {{va.name2}} <br>                                                          
+                                                        {{date_thai(va.ven_date1)}} <<>> {{date_thai(va.ven_date2)}}
+                                                        <!-- {{va}} -->
+
+                                                    </td>
+                                                    
+                                                    <td class="text-end col " style="width: 150px;">
+                                                        <button class="btn btn-warning btn-sm me-2" @click="ven_ch_app(va.id)" v-if="va.status != 1">อนุมัติ</button>
+                                                        <button class="btn btn-danger btn-sm" @click="ven_ch_cancle(va.id)" v-else>ยกเลิก</button>
+                                                    </td>
                                                 </tr>
                                             </tbody>
                                             <tfoot>
