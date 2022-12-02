@@ -172,7 +172,8 @@ Vue.createApp({
       this.ven_name_sub_form.ven_name_id = ven_name_id
     },
     ven_name_sub_save(){
-      if(this.ven_name_sub_form.name != '' && this.ven_name_sub_form.price != ''){
+      // if(this.ven_name_sub_form.name != '' && this.ven_name_sub_form.price != ''){
+      if(this.ven_name_sub_form.name != '' ){
         axios.post('../../server/asu/ven_name_sub_act.php',{ven_name_sub:this.ven_name_sub_form, act:'insert'})
           .then(response => {
               if (response.data.status) {

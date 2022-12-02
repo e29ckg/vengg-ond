@@ -48,20 +48,22 @@ $datas = array();
 
         if($query2->rowCount()){                        //count($result)  for odbc
 
-            $sql = "SELECT v1.gcal_id AS v1_gcal_id, v1.u_name AS v1_name, v2.gcal_id AS v2_gcal_id, v2.u_name AS v2_name
-                    FROM ven_change as vc
-                    LEFT JOIN ven AS v1 ON v1.id = vc.ven_id1
-                    LEFT JOIN ven AS v2 ON v2.id = vc.ven_id2	
-                    WHERE vc.id = :id";
-            $query = $conn->prepare($sql);
-            $query->bindParam(':id',$id, PDO::PARAM_STR);
-            $query->execute();
-            $res  = $query->fetch(PDO::FETCH_OBJ);
-            if($query->rowCount()){ 
-                // gcal_update($res->v1_gcal_id,$res->v1_name,$desc=null,$colerId=1);
-                // if(isset($res->v2_gcal_id)){
-                //     gcal_update($res->v2_gcal_id,$res->v2_name,$desc=null,$colerId=1);
-                // }
+            if(__GOOGLE_CALENDAR__){
+                $sql = "SELECT v1.gcal_id AS v1_gcal_id, v1.u_name AS v1_name, v2.gcal_id AS v2_gcal_id, v2.u_name AS v2_name
+                        FROM ven_change as vc
+                        LEFT JOIN ven AS v1 ON v1.id = vc.ven_id1
+                        LEFT JOIN ven AS v2 ON v2.id = vc.ven_id2	
+                        WHERE vc.id = :id";
+                $query = $conn->prepare($sql);
+                $query->bindParam(':id',$id, PDO::PARAM_STR);
+                $query->execute();
+                $res  = $query->fetch(PDO::FETCH_OBJ);
+                if($query->rowCount()){ 
+                    gcal_update($res->v1_gcal_id,$res->v1_name,$desc=null,$colerId=1);
+                    if(isset($res->v2_gcal_id)){
+                        gcal_update($res->v2_gcal_id,$res->v2_name,$desc=null,$colerId=1);
+                    }
+               }                
             }
             
             http_response_code(200);

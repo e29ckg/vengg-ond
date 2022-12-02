@@ -7,6 +7,7 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 header("Content-Type: application/json; charset=utf-8");
 
 include "../connect.php";
+include "../function.php";
 
 $data = json_decode(file_get_contents("php://input"));
 $id = $data->id; //id_ven ที่เลือก
@@ -99,6 +100,7 @@ $datas = array();
         $query->bindParam(':ven_date',$date_now, PDO::PARAM_STR);
         $query->execute();
         $res_vfu = $query->fetchAll(PDO::FETCH_OBJ);
+        
         $vfu_arr =array();
         foreach($res_vfu as $rsvfu){
             if($rsvfu->img != null && $rsvfu->img != '' && file_exists('../../uploads/users/' . $rsvfu->img )){
@@ -122,6 +124,7 @@ $datas = array();
                 "ven_com_name" => $rsvfu->ven_com_name,
                 "ven_com_num_all" => $rsvfu->ven_com_num_all,
                 "ven_date" => $rsvfu->ven_date,
+                "ven_date_th" => DateThai_full($rsvfu->ven_date),
                 "ven_month" => $rsvfu->ven_month,
                 "ven_name" => $rsvfu->ven_name,
                 "ven_time" => $rsvfu->ven_time
@@ -161,6 +164,7 @@ $datas = array();
                 "ven_com_name" => $result->ven_com_name,
                 "ven_com_num_all" => $result->ven_com_num_all,
                 "ven_date" => $result->ven_date,
+                "ven_date_th" => DateThai_full($result->ven_date),
                 "ven_month" => $result->ven_month,
                 "ven_name" => $result->ven_name,
                 "ven_time" => $result->ven_time,

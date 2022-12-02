@@ -183,7 +183,7 @@ function gcal_update($gcal_id,$name,$desc=null,$colerId=1){
 }
 
 function gcal_send_date($message_data){
-    $url = 'http://10.37.64.1/service/google/calendar/calendar.php';
+    $url = 'http://127.0.0.1:8888/vengg/server/service/google_calendar/calendar.php';
     $headers = array('Method: POST', 'Content-type: application/json');
     $message_data = json_encode($message_data);
 
@@ -196,7 +196,7 @@ function gcal_send_date($message_data){
     $res = curl_exec($ch);
     // // close the connection, release resources used
     curl_close($ch);
-    return $res;
+    return $res ? $res : false;
 }
 
 ?>

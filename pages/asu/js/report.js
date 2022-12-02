@@ -77,7 +77,7 @@ Vue.createApp({
     }, 
     print2(vcid){
       // this.isLoading = true
-      axios.post('../../server/asu/report/report.php',{vcid:vcid})    
+      axios.post('../../server/asu/report/report2.php',{vcid:vcid})    
           .then(response => {
               if (response.data.status) {
                 var print = JSON.stringify(response.data);    

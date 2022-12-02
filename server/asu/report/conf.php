@@ -50,13 +50,56 @@ $datas = array();
         $query = $conn->prepare($sql);       
         $query->execute();   
 
+        $sql2 = "SELECT * FROM ven WHERE ven_month='$ven_month' AND (status=1 OR status=2) AND (gcal_id IS NULL OR gcal_id='')";
+        $query_g = $conn->prepare($sql2);  
+        $query_g->execute();
+        
+        if($query_g->rowCount()){
+            $result = $query_g->fetchAll(PDO::FETCH_OBJ);
+
+            $n = 0;
+            foreach($result as $rs){
+                $name = $rs->u_name;
+                $start = $rs->ven_date.' '.$rs->ven_time;
+
+                /**เพิม */
+                if(__GOOGLE_CALENDAR__){
+                    $res = json_decode(gcal_insert($name,$start));
+                    if($res){
+                        $gcal_id = $res->resp->id;               
+                        $sql = "UPDATE ven SET gcal_id =:gcal_id WHERE id = :id";    
+        
+                        $query = $conn->prepare($sql);
+                        $query->bindParam(':gcal_id',$gcal_id, PDO::PARAM_STR);
+                        $query->bindParam(':id',$rs->id, PDO::PARAM_INT);
+                        $query->execute(); 
+                        
+                        array_push($datas,array(
+                            'id'    => $rs->id,
+                            'gcal_id' => $res->resp->id
+        
+                        ));
+                    }
+                }
+
+
+                
+                $n++;
+                if($n==10){
+                    $n=0;
+                    sleep(1);                    // echo "sleep 1 s<br>";
+                }
+            }
+           
+        }
+
         if($query->rowCount()){
             http_response_code(200);
-            echo json_encode(array('status' => true, 'message' => 'สำเร็จ '));
+            echo json_encode(array('status' => true, 'message' => 'สำเร็จ ','datas'=>$datas));
             exit;
         } else {
             http_response_code(200);
-            echo json_encode(array('status' => false, 'message' => 'ไม่มีรายการ update'));
+            echo json_encode(array('status' => false, 'message' => 'ไม่มีรายการ update','datas'=>$datas));
             exit;
         }
 

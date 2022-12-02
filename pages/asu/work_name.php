@@ -137,7 +137,7 @@ require_once('../../server/authen.php');
                                     <div class="row mb-2">                                        
                                         <div class="col">
                                             <label for="srt" class="form-label">ลำดับ</label>
-                                            <input type="number" min="1"  max="9" class="form-control" id="srt" v-model="ven_name_sub_form.srt">
+                                            <input type="number" min="0"  max="9" class="form-control" id="srt" v-model="ven_name_sub_form.srt">
                                         </div>
                                         <div class="col">
                                             <label for="namef" class="form-label">ชื่อตำแหน่ง/หน้าที่</label>
@@ -145,7 +145,7 @@ require_once('../../server/authen.php');
                                         </div>
                                         <div class="col">
                                             <label for="price" class="form-label">ค่าเวร</label>
-                                            <input type="number" min="1" class="form-control" id="price" v-model="ven_name_sub_form.price">
+                                            <input type="number" min="0" class="form-control" id="price" v-model="ven_name_sub_form.price">
                                         </div>
                                         <div class="col">
                                             <label for="namefcolor" class="form-label">สี</label>

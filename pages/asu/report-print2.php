@@ -29,19 +29,20 @@ require_once('../../server/authen.php');
   <body>
     <div id="appReports" v-cloak>
         <div class="text-center">
-            <h3>บัญชีแนบท้ายคำสั่งศาลเยาวชนและครอบครัวจังหวัดสตูล ที่ {{datas.vc.ven_com_num}} ลงวันที่ {{date_thai(datas.vc.ven_com_date)}}</h3>
-            <h3>{{datas.vc.ven_name}}</h3>
-            <h4>แนบท้ายคำสั่งที่ {{datas.vc.ven_com_num}} ลงวันที่ {{date_thai(datas.vc.ven_com_date)}}</h4>
-            <h5>ประจำเดือน {{date_thai_my(datas.vc.ven_month)}}</h5>
+            <h5>บัญชีแนบท้ายคำสั่งศาลเยาวชนและครอบครัวจังหวัดสตูล ที่ {{datas.vc.ven_com_num}} ลงวันที่ {{date_thai(datas.vc.ven_com_date)}}</h5>
+            <h5>รายชื่อ ผู้พิพากษาและเจ้าหน้าที่ (ตรวจสอบการจับม รับและส่งตัวผู้ถูกจับตามหมายจับ, ปล่อยชั่วคราว, <br>
+                ผัดฟ้องตาม พ.ร.บ.คุ้มครองเด็กฯ และ พ.ร.บ.ผู้ถูกกระทำด้วยความรุนแรงฯ หมายค้น-จับ)
+              </h5>
+            <h5>ประจำเดือน {{date_thai_my(datas.vc.ven_month)}} ตั้งแต่เวลา 08.30-19.30 น.</h5>
             <!-- {{datas.vc}} -->
         </div>
         <table class="table table-bordered d-print-inline d-print-table ">
             <thead>
                 <tr class="text-center">
                     <th>วัน เดือน ปี</th>
-                    <th>เวลา</th>
-                    <th>รายชื่อผู้พิพากษา</th>
-                    <th>รายชื่อเจ้าหน้าที่</th>
+                    <th>ชื่อ-สกุล</th>
+                    <th>ตำแหน่ง</th>
+                    <th>ปฏิบัติงาน</th>
                     <th>หมายเหตุ</th>
                 </tr>
             </thead>
@@ -49,28 +50,50 @@ require_once('../../server/authen.php');
                 <tr v-for="d in datas.respJSON">
                     <td>{{date_thai_dt(d.ven_date)}}</td>
                     <td>
-                        <li class="list-group-item" v-for="dvt in d.ven_time">
-                            {{dvt == '08:30' ? '8.30 - 16.30 น.' : '16.30 - 8.30 น.'}}
-                        </li>
-                    </td>
+                      <li class="list-group-item" v-for="dun in d.u_name">{{dun}}</li>
+                    </td>                    
                     <td>
-                        <li class="list-group-item" v-for="dunj in d.u_namej"> {{dunj}}</li>
+                      <li class="list-group-item" v-for="dud in d.u_dep"> {{dud}}</li>
+                        
                     </td>
                     <td> 
-                        <li class="list-group-item" v-for="dun in d.u_name">{{dun}}</li>
+                      <li class="list-group-item" v-for="dur in d.cmt">{{dur}}</li>
                     </td>
                     <td>
-                       <li class="list-group-item" v-for="dur in d.cmt">{{dur}}</li>
                     </td>
                 </tr>
+                <tr>
+                  <td colspan="5"></td>
+                </tr>
             </tbody>
+            <tfoot>
+              <tr>
+                <td class="text-end">
+                  หมายเหตุ : 
+                </td>
+                <td colspan="4">
+                  * ให้ปฏิบัติเวรผัดฟ้องตาม พ.ร.บ.คุ้มครองเต็ก, พ.ร.บ.ผู้ถูกระทำด้วยความรุนแรงฯ และรับและส่งตัวผู้ถูกจับตามหมายจับ<br>
+                  ตั้งแต่เวลา ๑๘.๓๐ - ๑๒.๓๐ น.<br>
+                  ๑. ผู้มีรายชื่อลำดับที่ ๑-๓ ให้ปฏิบัติหน้าหน้าที่กรรมการเก็บรักษาเงินด้วย<br>
+                  ๒. ผู้มีรายชื่อลำดับที่ ๒ ให้ปฏิบัติหน้าที่ตรวจเวรรักษาการณ์<br>
+                  ๓. ผู้มีรายชื่อลำดับที่ ๓-๔ ให้ปฏิบัติหน้าที่เวรรักษาการณ์
+
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                </td>
+                <td colspan="3" class="text-center">
+                  <br>
+                  <br>
+                  <br>
+                    (นายไพโรจน์ ไพมณี)<br>
+                    ผู้พิพากษาหัวหน้าศาลเยาวชนและครอบครัวจังหวัดสตูล
+                </td>
+              </tr>
+            </tfoot>
         </table> 
-        <div class="text-end mt-5 me-5 ">
-          <br>
-          <br>
-          <br>
-          <h5>(ชื่อ - สกุล)</h5>
-        </div>
+        
 <!-- {{datas}} -->
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
@@ -88,7 +111,7 @@ require_once('../../server/authen.php');
     mounted(){   
       this.datas = JSON.parse(localStorage.getItem("print"))
       // localStorage.removeItem("print")
-      window.print()
+      // window.print()
     },
     methods: {    
       

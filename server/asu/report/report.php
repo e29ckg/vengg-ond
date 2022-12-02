@@ -26,10 +26,13 @@ $datas = array();
         $query->execute();
         $vc = $query->fetch(PDO::FETCH_OBJ);
 
-
-
-        // $sql = "SELECT * FROM ven WHERE ven_month = '$vc->ven_month' AND status=2 ORDER BY ven_date ASC, ven_time ASC";
-        $sql = "SELECT * FROM ven WHERE ven_month = '$vc->ven_month' AND (status=1 OR status=2) ORDER BY ven_date ASC, ven_time ASC";
+        
+        // $sql = "SELECT * FROM ven WHERE ven_month = '$vc->ven_month' AND (status=1 OR status=2) ORDER BY ven_date ASC, ven_time ASC";
+        $sql = "SELECT v.* , p.dep, p.workgroup
+                FROM ven AS v
+                INNER JOIN `profile` AS p ON p.user_id = v.user_id
+                WHERE v.ven_month = '$vc->ven_month' AND (v.status=1 OR v.status=2) 
+                ORDER BY v.ven_date ASC, v.ven_time ASC";
         $query = $conn->prepare($sql);
         $query->execute();
         $result = $query->fetchAll(PDO::FETCH_OBJ);
@@ -78,13 +81,8 @@ $datas = array();
                                         $OLD_VT = $vt_s;
                                     }
             
-                                    if($OLD_UNAME != $rs->u_name){
-                                        $st_ul      = strlen($rs->u_role);
-                                        $st_urlo    = $rs->u_role;
-                                        if($st_ul > 30){
-                                            $st_urlo = substr($st_urlo, 0, 30);
-                                        }
-                                        if($st_urlo == 'ผู้พิพากษา'){
+                                    if($OLD_UNAME != $rs->u_name){                                        
+                                        if($rs->workgroup == 'ผู้พิพากษา'){
                                             array_push($u_namej,$rs->u_name );
                                         }else{
                                             array_push($u_name,$rs->u_name);

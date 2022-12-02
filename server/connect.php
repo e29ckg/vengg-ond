@@ -3,6 +3,8 @@
 session_start();
 error_reporting(E_ALL);
 // error_reporting(0);
+define("__GOOGLE_CALENDAR__",0);
+
 date_default_timezone_set("Asia/Bangkok");
 
 $servername = "localhost";

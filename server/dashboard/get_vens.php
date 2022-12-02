@@ -22,7 +22,21 @@ $datas = array();
 
 
     // The request is using the POST method
+    
     try{
+        // $sql = "SELECT name, color FROM ven_name_sub";
+        // $query = $conn->prepare($sql);
+        // // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
+        // $query->execute();
+        // $res = $query->fetchAll(PDO::FETCH_OBJ);
+        // $u_roles = array();
+        // $colors = array();
+        // foreach($res as $rs){
+        //     array_push($u_roles,$rs->name);
+        //     array_push($colors,$rs->color);
+        // }
+        
+
         $sql = "SELECT id, ven_date, ven_time, user_id, u_name, u_role, DN, ven.status
         FROM ven    
         WHERE status = 1 OR status = 2
@@ -58,8 +72,9 @@ $datas = array();
                     'textColor' => $textC
                 ));
             }
+            
             http_response_code(200);
-            echo json_encode(array('status' => true, 'message' => 'สำเร็จ', 'respJSON' => $datas, 'ssid' => $ssid));
+            echo json_encode(array('status' => true, 'message' => 'สำเร็จ', 'respJSON' => $datas, 'ssid' => $ssid ));
             exit;
         }
      
@@ -77,17 +92,14 @@ function getColor($d,$dn=null){
     if($dn == 'กลางคืน'){
         $color=[
             'ผู้พิพากษา'=>'blueviolet',
-            'ผอ./แทน'=>'Coral',
-            // 'ผอ./แทน'=>'Chocolate',
-            // 'ผอ./แทน'=>'HotPink',
             'จนท.1'=>'DarkCyan',
             'จนท'=>'Blue'
         ];
     }else{
         $color=[
             'ผู้พิพากษา'=>'GoldenRod',
-            // 'ผอ./แทน'=>'Coral',
             'ผอ./แทน'=>'green',
+            // 'ผอ./แทน'=>'Coral',
             // 'ผอ./แทน'=>'HotPink',
             'จนท.1'=>'DarkCyan',
             'จนท'=>'CadetBlue'

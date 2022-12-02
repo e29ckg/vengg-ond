@@ -68,6 +68,7 @@ try{
         $N_c = 0;
         $D_price = 0;
         $N_price = 0;
+        
         foreach($vens as $ven){
             if($ven->user_id == $user->user_id){
                 if($ven->DN == 'กลางวัน'){
