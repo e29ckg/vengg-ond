@@ -255,8 +255,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if($query_line->rowCount()){
             $sToken = $res->token;
             $sMessage = 'มีการเปลี่ยนเวร '.$chid."\n";
-            $sMessage .= $rsv2->u_name.'<<>>'.$rsv1->u_name."\n";
-            $sMessage .= $rsv2->ven_date.'<<>>'.$rsv1->ven_date."\n";
+            $sMessage .= $rsv1->u_name.'<<>>'.$rsv2->u_name."\n";
+            $sMessage .= $rsv1->ven_date.'<<>>'.$rsv2->ven_date."\n";
             $sMessage .= '('.$create_at.')';
             $res_line = sendLine($sToken,$sMessage);
         }

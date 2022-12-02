@@ -73,7 +73,9 @@ Vue.createApp({
       .then(response => {
           if (response.data.status) {
               this.ven_users = response.data.respJSON;
-          } 
+          } else{
+            this.ven_users = []
+          }
       })
       .catch(function (error) {
           console.log(error);

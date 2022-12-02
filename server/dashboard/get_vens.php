@@ -24,20 +24,14 @@ $datas = array();
     // The request is using the POST method
     
     try{
-        // $sql = "SELECT name, color FROM ven_name_sub";
-        // $query = $conn->prepare($sql);
-        // // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
-        // $query->execute();
-        // $res = $query->fetchAll(PDO::FETCH_OBJ);
-        // $u_roles = array();
-        // $colors = array();
-        // foreach($res as $rs){
-        //     array_push($u_roles,$rs->name);
-        //     array_push($colors,$rs->color);
-        // }
+        $sql = "SELECT name, price, color FROM ven_name_sub";
+        $query = $conn->prepare($sql);
+        // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
+        $query->execute();
+        $res = $query->fetchAll(PDO::FETCH_OBJ);
         
 
-        $sql = "SELECT id, ven_date, ven_time, user_id, u_name, u_role, DN, ven.status
+        $sql = "SELECT id, ven_date, ven_time, user_id, u_name, u_role, DN, price, ven.status
         FROM ven    
         WHERE status = 1 OR status = 2
         ORDER BY ven_date DESC, ven_time ASC
@@ -50,9 +44,9 @@ $datas = array();
         if($query->rowCount() > 0){                        //count($result)  for odbc
             foreach($result as $rs){
                 $rs->DN == 'กลางวัน' ? $d = '☀️' : $d = '🌙';
-                $bgcolor = getColor($rs->u_role, $rs->DN);
+                $bgcolor = getColor($rs->u_role, $rs->price, $rs->DN);
                 if($rs->status == 2 ){
-                    $bgcolor ='yellow' ;
+                    $bgcolor ='Yellow' ;
                     $textC = 'black';
                 }else{      
                     if($rs->user_id == $_SESSION['AD_ID']){
@@ -74,7 +68,7 @@ $datas = array();
             }
             
             http_response_code(200);
-            echo json_encode(array('status' => true, 'message' => 'สำเร็จ', 'respJSON' => $datas, 'ssid' => $ssid ));
+            echo json_encode(array('status' => true, 'message' => 'สำเร็จ', 'respJSON' => $datas, 'ssid' => $ssid));
             exit;
         }
      
@@ -88,25 +82,14 @@ $datas = array();
     }
 }
 
-function getColor($d,$dn=null){
-    if($dn == 'กลางคืน'){
-        $color=[
-            'ผู้พิพากษา'=>'blueviolet',
-            'จนท.1'=>'DarkCyan',
-            'จนท'=>'Blue'
-        ];
-    }else{
-        $color=[
-            'ผู้พิพากษา'=>'GoldenRod',
-            'ผอ./แทน'=>'green',
-            // 'ผอ./แทน'=>'Coral',
-            // 'ผอ./แทน'=>'HotPink',
-            'จนท.1'=>'DarkCyan',
-            'จนท'=>'CadetBlue'
-        ];
+function getColor($d,$price){    
+    $color = '';
+    foreach($GLOBALS['res'] as $rs){
+        if($rs->name == $d && $rs->price == $price){
+            $color = $rs->color;
+        }
     }
-
-    return isset($color[$d]) ? $color[$d] : ''; 
+    return $color; 
 }
 
 

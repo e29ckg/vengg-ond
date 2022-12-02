@@ -70,7 +70,7 @@ try{
         $N_price = 0;
         
         foreach($vens as $ven){
-            if($ven->user_id == $user->user_id){
+            if($ven->user_id == $user->user_id && $ven->price > 0){
                 if($ven->DN == 'กลางวัน'){
                     $D_price += $ven->price;
                     $D_c ++;
@@ -88,7 +88,7 @@ try{
             }
         }
         
-        if(count($ven_users) > 0){
+        if(count($ven_users) > 0){            
             array_push($datas,array(
                 "uid" => $user->user_id,
                 "name" => $user->fname.$user->name.' '.$user->sname,

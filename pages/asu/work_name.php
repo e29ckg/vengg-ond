@@ -57,6 +57,7 @@ require_once('../../server/authen.php');
                                                         {{vns.name}} ({{vns.price ? '💰'+vns.price : '' }}) {{vns.color ? vns.color : ''}} 
                                                     </td>
                                                     <td class="text-center">
+                                                        <button @click="ven_name_s_up(vns.id)" class="btn btn-warning btn-sm me-1">แก้ไข</button>
                                                         <button class="btn btn-danger btn-sm" @click="ven_name_s_del(vns.id)">ลบ</button>
                                                     </td>
                                                 </tr>
@@ -113,6 +114,7 @@ require_once('../../server/authen.php');
                                         </div>
                                     </div>
                                     <div class="d-grid gap-2">
+                                        
                                         <button type="button" class="col-auto me-auto btn btn-danger" v-if="ven_name_form_act !='insert'" @click.prevent="ven_name_del()">ลบ {{ven_name_form.id}}</button>
                                         <button type="submit" class="col-auto btn btn-primary">บันทึก</button>
                                     </div>
@@ -124,12 +126,15 @@ require_once('../../server/authen.php');
                     </div>
                 </div>
 
+                <button type="button" class="btn btn-success btn-sm" data-bs-toggle="modal" data-bs-target="#ven_name_sub" ref="ven_name_sub" hidden>
+                    เพิ่มชื่อเวร
+                </button>
                 <!-- Modal VenName Form -->
                 <div class="modal fade" id="ven_name_sub" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                     <div class="modal-dialog modal-lg">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title" id="staticBackdropLabel"v-if="ven_name_form.act == 'insert'">เพิ่มตำแหน่งหน้าที่</h5>
+                                <h5 class="modal-title" id="staticBackdropLabel">{{ven_name_form_act == 'insert' ? 'เพิ่ม' : 'แก้ไข'}}</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" @click="clear_vnsf" ref="close_vnsf"></button>
                             </div>
                             <div class="modal-body">
@@ -147,9 +152,15 @@ require_once('../../server/authen.php');
                                             <label for="price" class="form-label">ค่าเวร</label>
                                             <input type="number" min="0" class="form-control" id="price" v-model="ven_name_sub_form.price">
                                         </div>
-                                        <div class="col">
+                                        <!-- <div class="col">
                                             <label for="namefcolor" class="form-label">สี</label>
                                             <input type="text" class="form-control" id="namefcolor" v-model="ven_name_sub_form.color">
+                                        </div> -->
+                                        <div class="col">
+                                            <label for="inputColor" >สี</label>
+                                            <select id="inputColor" class="form-control" v-model="ven_name_sub_form.color" :style="'background-color:'+  ven_name_sub_form.color +'; color:white;'">
+                                                <option v-for="color in colors" :value="color" :style="'background-color:'+color+'; color:white;'">{{color}}</option>
+                                            </select>
                                         </div>
                                     </div>
                                     <div class="pull-end">

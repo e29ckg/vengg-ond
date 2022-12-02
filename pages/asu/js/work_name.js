@@ -12,6 +12,7 @@ Vue.createApp({
       ven_name_sub_form : {name : '', price:'',color:''},
       ven_name_sf_act:'insert',
       isLoading : false,
+      colors:['Magenta','BlueViolet','Violet','red','Green','YellowGreen','Brown','Chocolate','DarkBlue','DarkCyan','Maroon']
     }
   },
   mounted(){
@@ -174,7 +175,7 @@ Vue.createApp({
     ven_name_sub_save(){
       // if(this.ven_name_sub_form.name != '' && this.ven_name_sub_form.price != ''){
       if(this.ven_name_sub_form.name != '' ){
-        axios.post('../../server/asu/ven_name_sub_act.php',{ven_name_sub:this.ven_name_sub_form, act:'insert'})
+        axios.post('../../server/asu/ven_name_sub_act.php',{ven_name_sub:this.ven_name_sub_form, act:this.ven_name_sf_act})
           .then(response => {
               if (response.data.status) {
                 this.get_ven_names()
@@ -228,6 +229,27 @@ Vue.createApp({
                   })
         }
       })
+    },
+    ven_name_s_up(id){
+      this.isLoading = true;
+        axios.post('../../server/asu/get_ven_name_sub.php',{id:id})
+        .then(response => {
+            if (response.data.status) {            
+              this.ven_name_sf_act = 'update'
+              this.ven_name_sub_form = response.data.respJSON;
+              this.$refs.ven_name_sub.click()
+
+              // this.alert('success',response.data.message,1000)
+            }else{
+              this.alert('warning',response.data.message,1000)
+            } 
+        })
+        .catch(function (error) {
+            console.log(error);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        })
     },
     alert(icon,message,timer=0){
       swal.fire({

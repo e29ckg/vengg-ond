@@ -8,7 +8,7 @@ $message_data = [
     "eventId" => "e25nfv1clvs65fo2cn140rnh1s"
 ];
 // var_dump(json_encode($post));
-$url = 'http://10.37.64.1/service/google/calendar/check_event_ven.php';
+$url = 'http://127.0.0.1/service/google/calendar/check_event_ven.php';
 $headers = array('Method: POST', 'Content-type: application/json');
 $message_data = json_encode($message_data);
 
@@ -41,7 +41,7 @@ var_dump($res->status);
 
 
     function addEventVen($message_data){
-        // $url = 'http://10.37.64.1/service/google/calendar/calendar.php';
+        // $url = 'http://127.0.0.1/service/google/calendar/calendar.php';
         // $headers = array('Method: POST', 'Content-type: application/json');
         // $message_data = json_encode($message_data);
 
@@ -58,7 +58,7 @@ var_dump($res->status);
     }
 
     function removeEventVen($message_data){
-        // $url = 'http://10.37.64.1/service/google/calendar/calendar.php';
+        // $url = 'http://127.0.0.1/service/google/calendar/calendar.php';
         // $headers = array('Method: POST', 'Content-type: application/json');
         // $message_data = json_encode($message_data);
 
@@ -76,7 +76,7 @@ var_dump($res->status);
         // return $res;
     }
     function calendarVen($message_data){
-        // $url = 'http://10.37.64.1/service/google/calendar/calendar.php';
+        // $url = 'http://127.0.0.1/service/google/calendar/calendar.php';
         // $headers = array('Method: POST', 'Content-type: application/json');
         // $message_data = json_encode($message_data);
 
@@ -95,7 +95,7 @@ var_dump($res->status);
     }
 
     function checkEventVen($message_data){
-        // $url = 'http://10.37.64.1/service/google/calendar/check_event_ven.php';
+        // $url = 'http://127.0.0.1/service/google/calendar/check_event_ven.php';
         // $headers = array('Method: POST', 'Content-type: application/json');
         // $message_data = json_encode($message_data);
 
@@ -115,7 +115,7 @@ var_dump($res->status);
     }
 
    function venGoogleCalendar($message_data){
-        // $url = 'http://10.37.64.1/service/google/calendar/check_event_ven.php';
+        // $url = 'http://127.0.0.1/service/google/calendar/check_event_ven.php';
         // $headers = array('Method: POST', 'Content-type: application/json');
         // $message_data = json_encode($message_data);
 

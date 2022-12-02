@@ -34,7 +34,7 @@ require_once('../../server/authen.php');
                             <div class="card-body" v-if="vn.id == vns.ven_name_id">
                                 <h5 class="card-title" :style="'background-color: '+vns.color+' ;'" >{{vn.name}} ({{vn.DN == 'กลางวัน' ? '☀️' : '🌙'}} {{vn.DN}}) {{vns.name}} </h5>
                                 <ul class="list-group list-group-flush"  >
-                                    <div v-for="vu,vui in ven_users">
+                                    <div v-if="ven_users.length > 0" v-for="vu,vui in ven_users" >
                                         <li class="list-group-item" v-if="vu.ven_name == vn.name && vns.name == vu.uvn">
                                             {{vn.DN == 'กลางวัน' ? '☀️' : '🌙'}}{{vu.order + ' ' +vu.u_name + ' '}}  
                                             <!-- {{vu.id}}  -->

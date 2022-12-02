@@ -44,11 +44,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;                
         }    
         if($act == 'update'){
-            $id     = $ven_name_sub->id;
-            $name   = $ven_name_sub->name;
-            $price   = $ven_name_sub->price;
-            $color   = $ven_name_sub->color;
-            $srt    = $ven_name_sub->srt;
+            $ven_name_sub   = $data->ven_name_sub;
+            $id             = $ven_name_sub->id;
+            $name           = $ven_name_sub->name;
+            $price          = $ven_name_sub->price;
+            $color          = $ven_name_sub->color;
+            $srt            = $ven_name_sub->srt;
 
             $sql = "UPDATE ven_name_sub SET name =:name, price=:price, color=:color, srt=:srt WHERE id = :id";   
 
