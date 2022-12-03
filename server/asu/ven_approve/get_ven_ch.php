@@ -11,7 +11,6 @@ include "../../function.php";
 
 $data = json_decode(file_get_contents("php://input"));
 
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $datas = array();
@@ -38,7 +37,6 @@ $datas = array();
 
         }
         $query = $conn->prepare($sql);
-        // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
         $query->execute();
         $result = $query->fetchAll(PDO::FETCH_OBJ);
 
@@ -48,23 +46,28 @@ $datas = array();
             foreach($result as $rs){
                 if($rs->ven_month != $ven_month){
                     array_push($res_g,array(
-                        "ven_month" => $rs->ven_month
+                        "ven_month" => $rs->ven_month,
+                        "ven_month_th" => DateThai_MY($rs->ven_month)
                     ));
                     $ven_month = $rs->ven_month;
                 }
                             
                 array_push($datas,array(
-                    'id'        => $rs->id,
-                    'ven_month' => $rs->ven_month,
-                    'ven_date1' => $rs->ven_date1,
-                    'ven_date2' => $rs->ven_date2,
-                    'user_id1'  => $rs->user_id1,
-                    'user_id2'  => $rs->user_id2,
-                    'name1' => $rs->p1_fname.$rs->p1_name.' '.$rs->p1_sname,
-                    'name2' => $rs->p2_fname.$rs->p2_name.' '.$rs->p2_sname,
-                    'DN'  => $rs->DN,
-                    'create_at'  =>  date("Y-m-d",strtotime($rs->create_at)),
-                    'status'  => $rs->status
+                    'id'            => $rs->id,
+                    'ven_month'     => $rs->ven_month,
+                    'ven_month_th'  => DateThai_MY($rs->ven_month),
+                    'ven_date1'     => $rs->ven_date1,
+                    'ven_date2'     => $rs->ven_date2,
+                    'ven_date1_th'  => DateThai_full($rs->ven_date1),
+                    'ven_date2_th'  => DateThai_full($rs->ven_date2),
+                    'user_id1'      => $rs->user_id1,
+                    'user_id2'      => $rs->user_id2,
+                    'name1'         => $rs->p1_fname.$rs->p1_name.' '.$rs->p1_sname,
+                    'name2'         => $rs->p2_fname.$rs->p2_name.' '.$rs->p2_sname,
+                    'DN'            => $rs->DN,
+                    'create_at'     =>  date("Y-m-d",strtotime($rs->create_at)),
+                    'create_at_th'  =>  DateThai_full($rs->create_at),
+                    'status'        => $rs->status
                 ));
             }
             http_response_code(200);

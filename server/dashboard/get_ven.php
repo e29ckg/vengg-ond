@@ -10,18 +10,15 @@ include "../connect.php";
 include "../function.php";
 
 $data = json_decode(file_get_contents("php://input"));
-$id = $data->id; //id_ven ที่เลือก
 
-// $user_id = $data->uid;     //user_id ของผู้ใชระบบ
-$user_id = $_SESSION['AD_ID'];     //user_id ของผู้ใชระบบ
-
-$date_now = Date("Y-m-d");
-
+// The request is using the POST method
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-$datas = array();
-
-    // The request is using the POST method
+    $datas = array();
+    $id = $data->id; //id_ven ที่เลือก
+    $user_id = $_SESSION['AD_ID'];     //user_id ของผู้ใชระบบ
+    // $user_id = $data->uid;     //user_id ของผู้ใชระบบ
+    $date_now = Date("Y-m-d");
+    
     try{
         $sql = "SELECT v.*,p.name,p.img 
                 FROM ven as v 
@@ -30,7 +27,6 @@ $datas = array();
                 WHERE v.id = $id 
                 ORDER BY v.ven_date DESC";
         $query = $conn->prepare($sql);
-        // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
         $query->execute();
         $result = $query->fetch(PDO::FETCH_OBJ);
 
@@ -82,7 +78,6 @@ $datas = array();
             )); 
         }
 
-
         /** เวรที่สามารถเปลี่ยนได้ */
         $sql = "SELECT v.*, p.img
                 FROM ven as v  
@@ -103,12 +98,9 @@ $datas = array();
         
         $vfu_arr =array();
         foreach($res_vfu as $rsvfu){
-            if($rsvfu->img != null && $rsvfu->img != '' && file_exists('../../uploads/users/' . $rsvfu->img )){
-                $img_link = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/uploads/users/'. $rsvfu->img;
 
-            }else{
-                $img_link = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/assets/images/profiles/nopic.png';
-            }
+            $img_link = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] ;
+            $img_link .= $rsvfu->img != null && $rsvfu->img != '' && file_exists('../../uploads/users/' . $rsvfu->img ) ? '/vengg/uploads/users/'. $rsvfu->img : '/vengg/assets/images/profiles/nopic.png';
 
             array_push($vfu_arr,array(
                 "id" => $rsvfu->id,
@@ -130,63 +122,43 @@ $datas = array();
                 "ven_time" => $rsvfu->ven_time
             ));
         }
-        // $res_vfu = $query->fetchAll(PDO::FETCH_OBJ);
+          
+        $img = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] ;
+        $img .= $result->img != null && $result->img != '' && file_exists('../../uploads/users/' . $result->img ) ? '/vengg/uploads/users/'. $result->img : '/vengg/assets/images/profiles/nopic.png';
 
-        //หาเวรที่ไม่สามารถเปลี่ยนได้
+        $ven_select = [
+            "id" => $result->id,
+            "DN" => $result->DN,
+            "u_name" => $result->u_name,
+            "u_role" => $result->u_role,
+            "img" => $img,
+            "price" => $result->price,
+            "user_id" => $result->user_id,
+            "ven_com_id" => $result->ven_com_id,
+            "ven_com_idb" => $result->ven_com_idb,
+            "ven_com_name" => $result->ven_com_name,
+            "ven_com_num_all" => $result->ven_com_num_all,
+            "ven_date" => $result->ven_date,
+            "ven_date_th" => DateThai_full($result->ven_date),
+            "ven_month" => $result->ven_month,
+            "ven_name" => $result->ven_name,
+            "ven_time" => $result->ven_time,
+            "status" => $result->status,
+        ];
+
+        http_response_code(200);
+        echo json_encode(array(
+            'status' => true, 
+            'message' => 'สำเร็จ',
+            'respJSON' => $ven_select ,
+            // 'respJSON' => $result ,
+            // 'vh0'   => $res_vh0,
+            'my_v'  => $vfu_arr,
+            'vh'    => $res_vh,
+            'd_now' => $date_now
+            ));
+        exit;
         
-
-
-        // if($query->rowCount() > 0){                        //count($result)  for odbc
-            // foreach($result as $rs){
-            //     array_push($datas,array(
-            //         'id'    => $rs->id,
-            //         'title' => $rs->name,
-            //         'start' => $rs->ven_date.' '.$rs->ven_time,
-            //     ));
-            // }
-            if($result->img != null && $result->img != '' && file_exists('../../uploads/users/' . $result->img )){
-                $img_link = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/uploads/users/'. $result->img;
-
-            }else{
-                $img_link = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/assets/images/profiles/nopic.png';
-            }
-
-            $ven_select = [
-                "id" => $result->id,
-                "DN" => $result->DN,
-                "u_name" => $result->u_name,
-                "u_role" => $result->u_role,
-                "img" => $img_link,
-                "price" => $result->price,
-                "user_id" => $result->user_id,
-                "ven_com_id" => $result->ven_com_id,
-                "ven_com_idb" => $result->ven_com_idb,
-                "ven_com_name" => $result->ven_com_name,
-                "ven_com_num_all" => $result->ven_com_num_all,
-                "ven_date" => $result->ven_date,
-                "ven_date_th" => DateThai_full($result->ven_date),
-                "ven_month" => $result->ven_month,
-                "ven_name" => $result->ven_name,
-                "ven_time" => $result->ven_time,
-                "status" => $result->status,
-            ];
-
-            http_response_code(200);
-            echo json_encode(array(
-                'status' => true, 
-                'message' => 'สำเร็จ',
-                'respJSON' => $ven_select ,
-                // 'respJSON' => $result ,
-                'my_v'  => $vfu_arr,
-                'vh0'   => $res_vh0,
-                'vh'    => $res_vh,
-                'd_now' => $date_now
-                ));
-            exit;
-        // }
-     
-        // http_response_code(200);
-        // echo json_encode(array('status' => true, 'message' => 'ไม่พบข้อมูล ', 'respJSON' => $result));
     
     }catch(PDOException $e){
         // echo "Faild to connect to database" . $e->getMessage();

@@ -10,19 +10,20 @@ include "../connect.php";
 include "../function.php";
 $data = json_decode(file_get_contents("php://input"));
 
+// The request is using the POST method
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // $user_id = $data->user_id;
     $user_id = $_SESSION['AD_ID']; 
     
     $datas = array();
 
-    // The request is using the POST method
     try{
+        
         $sql = "SELECT vc.id , ven_month, ven_date1, ven_date2, ven_com_num_all, DN, u_role, user_id1, user_id2, vc.status
                 FROM ven_change as vc  
                 WHERE (vc.user_id2 = :user_id2 OR vc.user_id1 = :user_id1) AND (vc.status=1 OR vc.status=2)
 				ORDER BY vc.create_at DESC				
-                LIMIT 100";
+                LIMIT 20";
         $query = $conn->prepare($sql);
         $query->bindParam(':user_id2',$user_id, PDO::PARAM_INT);
         $query->bindParam(':user_id1',$user_id, PDO::PARAM_INT);
@@ -31,53 +32,52 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if($query->rowCount() > 0){                        //count($result)  for odbc
             foreach($result as $rs){
-                // $rs->DN == 'กลางวัน' ? $d = '☀️' : $d = '🌙';
-                $sql = "SELECT id , fname, profile.name, sname, img
+                $user1_name = '';
+                $user2_name = '';
+                $user1_img = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'];
+                $user2_img = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'];
+
+                /**ดึงข้อมูลprofile คนที่ 1 */
+                $sql = "SELECT id, user_id, fname, profile.name, sname, img
                         FROM profile   
-                        WHERE user_id = :user_id ";
+                        WHERE user_id = $rs->user_id1";
                 $query = $conn->prepare($sql);
-                $query->bindParam(':user_id',$rs->user_id1, PDO::PARAM_INT);
                 $query->execute();
                 $user1 = $query->fetch(PDO::FETCH_OBJ);
-
-                $sql = "SELECT id , fname, profile.name, sname, img
+                $user1_name = $user1->fname.$user1->name.' '.$user1->sname;
+                $user1_img .= ($user1->img != null && $user1->img != '' && file_exists('../../uploads/users/' . $user1->img)) 
+                                ? '/vengg/uploads/users/'. $user1->img 
+                                : '/vengg/assets/images/profiles/nopic.png'; 
+                   
+                /**ดึงข้อมูลprofile คนที่ 2 */              
+                $sql = "SELECT id, user_id, fname, profile.name, sname, img
                         FROM profile   
-                        WHERE user_id = :user_id ";
+                        WHERE user_id = $rs->user_id2";
                 $query = $conn->prepare($sql);
-                $query->bindParam(':user_id',$rs->user_id2, PDO::PARAM_INT);
                 $query->execute();
                 $user2 = $query->fetch(PDO::FETCH_OBJ);
+                $user2_name = $user2->fname.$user2->name.' '.$user2->sname;
+                $user2_img .= ($user2->img != null && $user2->img != '' && file_exists('../../uploads/users/' . $user2->img)) 
+                                ? '/vengg/uploads/users/'. $user2->img 
+                                : '/vengg/assets/images/profiles/nopic.png'; 
 
-                // $user1->img ? $img1 = $user1->img : $img1 = 'none.png';
-
-                if($user1->img != null && $user1->img != '' && file_exists('../../uploads/users/' . $user1->img )){
-                    $img_link = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/uploads/users/'. $user1->img;
-    
-                }else{
-                    $img_link = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/assets/images/profiles/nopic.png';
-                }
-
-                if($user2->img != null && $user2->img != '' && file_exists('../../uploads/users/' . $user2->img )){
-                    $img_link2 = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/uploads/users/'. $user2->img;
-    
-                }else{
-                    $img_link2 = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] . '/vengg/assets/images/profiles/nopic.png';
-                }
-                
-
+       
                 array_push($datas,array(
-                    'id'    => $rs->id,
+                    'id'        => $rs->id,
                     'ven_month' => $rs->ven_month,
+                    'ven_month_th' => DateThai_MY($rs->ven_month),
                     'ven_date1' => $rs->ven_date1,
                     'ven_date2' => $rs->ven_date2,
+                    'ven_date1_th' => DateThai_full($rs->ven_date1),
+                    'ven_date2_th' => DateThai_full($rs->ven_date2),
                     'ven_com_num_all' => $rs->ven_com_num_all,
-                    'DN' => $rs->DN,
-                    'u_role' => $rs->u_role,
-                    'user1' => $user1->fname.$user1->name.' '.$user1->sname,
-                    'img1' => $img_link,
-                    'user2' => $user2->fname.$user2->name.' '.$user2->sname,
-                    'img2' => $img_link2,
-                    'status' => $rs->status,
+                    'DN'        => $rs->DN,
+                    'u_role'    => $rs->u_role,
+                    'user1'     => $user1_name,
+                    'user2'     => $user2_name,
+                    'img1'      => $user1_img,
+                    'img2'      => $user2_img,
+                    'status'    => $rs->status,
                 ));
             }
             http_response_code(200);

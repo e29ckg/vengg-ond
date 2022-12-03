@@ -51,8 +51,8 @@ require_once('../../server/authen.php');
                                                 <div class="card-body">
                                                     <h5 class="card-title">{{d.user1}}</h5>
                                                     <p class="card-text">
-                                                        {{date_thai(d.ven_date1)}}<br>
-                                                        ตำสั่งที่ {{d.ven_com_num_all}} เวรเดือน {{date_thai_my(d.ven_month)}}  <br> 
+                                                        {{d.ven_date1_th}}<br>
+                                                        ตำสั่งที่ {{d.ven_com_num_all}} เวรเดือน {{d.ven_month_th}}  <br> 
                                                         {{d.DN}} | {{d.u_role}} {{d.price}}                                                        
                                                     </p>
                                                     <!-- {{d.img1}}  -->
@@ -70,8 +70,8 @@ require_once('../../server/authen.php');
                                                 <div class="card-body">
                                                     <h5 class="card-title">{{d.user2}}</h5>
                                                     <p class="card-text">
-                                                    {{date_thai(d.ven_date2)}}<br>
-                                                    ตำสั่งที่ {{d.ven_com_num_all}} เวรเดือน {{date_thai_my(d.ven_month)}}  <br> 
+                                                    {{d.ven_date2_th}}<br>
+                                                    คำสั่งที่ {{d.ven_com_num_all}} เวรเดือน {{d.ven_month_th}}  <br> 
                                                         {{d.DN}} | {{d.u_role}} {{d.price}}
                                                     </p>
                                                     <!-- {{d.img2}} -->

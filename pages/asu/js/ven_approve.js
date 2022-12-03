@@ -131,32 +131,7 @@ Vue.createApp({
         this.isLoading = false;
       })
     },
-    get_ven_month(){
-      let   m = new Date();
-      let y = m.getFullYear().toString()
-      for (let i = 0; i < 5; i++) {  
-        const d = new Date(y,m.getMonth()+i);
-        this.sel_ven_month.push({'ven_month':this.convertToYearMonthNum(d),'name': this.convertToDateThai(d)})
-      }
-    },
-    convertToYearMonthNum(date) {
-      var months_num = ["","01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12"];
-      return result   = date.getFullYear() + "-" + (months_num[( date.getMonth()+1 )]);
-    },
-    convertToDateThai(date) {
-      var month_th = ["","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
-      return result = month_th[( date.getMonth()+1 )]+" "+( date.getFullYear()+543 );
-    },
-    date_thai(day){
-      var monthNamesThai = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
-      var dayNames = ["วันอาทิตย์ที่","วันจันทร์ที่","วันอังคารที่","วันพุธที่","วันพฤหัสบดีที่","วันศุกร์ที่","วันเสาร์ที่"];
-      var monthNamesEng = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      var dayNamesEng = ['Sunday','Monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-      var d = new Date(day);
-      return d.getDate() + ' ' + monthNamesThai[d.getMonth()] + "  " + (d.getFullYear() + 543)
-    },
-
-
+    
     get_ven_name_subs(){
       this.isLoading = true
       axios.post('../../server/asu/get_ven_name_subs.php')

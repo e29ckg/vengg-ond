@@ -51,7 +51,7 @@ require_once('../../server/authen.php');
                                             <thead>
                                                 <tr>
                                                     <th colspan="2" class="text-start">
-                                                    เวรเดือน {{vag.ven_month}} 
+                                                    เวรเดือน {{vag.ven_month_th}} 
                                                     </th>
                                                 </tr>
                                             </thead>
@@ -60,10 +60,10 @@ require_once('../../server/authen.php');
                                                     <td >  
                                                         <!-- เลขคำสั่งที่ {{va.ven_Ch_num}} | ลงวันที่ {{va.ven_Ch_date}} | {{va.ven_Ch_name}} ({{va.ven_name}}) -->
                                                         {{va.id}} <br> 
-                                                        วันที่เขียน {{date_thai(va.create_at)}} 
+                                                        วันที่เขียน {{va.create_at_th}} 
                                                         <span class="badge bg-warning" v-if="va.status ==2">รออนุมัติ</span> <br>
                                                         {{va.name1}} <<>> {{va.name2}} <br>                                                          
-                                                        {{date_thai(va.ven_date1)}} <<>> {{date_thai(va.ven_date2)}}
+                                                        {{va.ven_date1_th}} <<>> {{va.ven_date2_th}}
                                                         <!-- {{va}} -->
 
                                                     </td>

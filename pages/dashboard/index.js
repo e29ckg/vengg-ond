@@ -65,13 +65,10 @@ Vue.createApp({
   }
   },
   mounted(){
-    this.url_base = window.location.protocol + '//' + window.location.host;
-    
-    
+    this.url_base = window.location.protocol + '//' + window.location.host;    
     this.ven_month = new Date();
     this.get_vens()
-    this.cal_render()
-    
+    // this.cal_render()    
   },
   watch: {
     q(){
@@ -133,11 +130,12 @@ Vue.createApp({
     get_vens(){
       axios.get('../../server/dashboard/get_vens.php')
       .then(response => {
-          // console.log(response.data.respJSON);
           if (response.data.status) {
-              this.datas = response.data.respJSON;
-              this.ssid = response.data.ssid
-              this.cal_render()
+            this.datas = response.data.respJSON;
+            this.ssid = response.data.ssid
+            this.cal_render()
+          }else{
+            this.cal_render()
           } 
       })
       .catch(function (error) {
@@ -164,23 +162,15 @@ Vue.createApp({
       this.$refs.show_modal_b.click()
     },
     change_save(){
-      
-      
-
       this.isLoading = true;
       axios.post('../../server/dashboard/change_save.php',{ch_v1:this.ch_v1, ch_v2:this.ch_v2})
       .then(response => {
-          // console.log(response.data);
           if (response.data.status) {
             this.get_vens()
             this.$refs.close_modal.click()
             this.$refs.close_modal_b.click()
             this.alert('success',response.data.message,1000) 
-            window.open('../history/index.php','_self')
-            // axios.post('../../server/service/line/sendline_user.php',{
-            //   username:'ven_admin', 
-            //   message:'มีการเปลียนเวร ' + this.ch_v1.u_name + '<->' + this.ch_v2.u_name + "\n" + this.ch_v1.ven_date +'+'+ this.ch_v2.ven_date 
-            // })
+            window.open('../history/index.php','_self')            
           } else{
             this.alert('warning',response.data.message,0) 
           }
@@ -267,16 +257,7 @@ Vue.createApp({
       })
 
     },
-
-    date_thai(day){
-      var monthNamesThai = ["มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม","สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม"];
-      var dayNames = ["วันอาทิตย์ที่","วันจันทร์ที่","วันอังคารที่","วันพุธที่","วันพฤหัสบดีที่","วันศุกร์ที่","วันเสาร์ที่"];
-      var monthNamesEng = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
-      var dayNamesEng = ['Sunday','Monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday'];
-      var d = new Date(day);
-      return d.getDate() + ' ' + monthNamesThai[d.getMonth()] + "  " + (d.getFullYear() + 543)
-    }, 
-
+   
     alert(icon,message,timer=0){
       swal.fire({
         icon: icon,
@@ -286,7 +267,5 @@ Vue.createApp({
       });
     },
   },
-  
-        
 
 }).mount('#dashboard')
