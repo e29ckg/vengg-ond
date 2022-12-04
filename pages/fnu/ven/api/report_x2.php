@@ -18,7 +18,7 @@ $error='';
 
 $data = json_decode(file_get_contents("php://input"));
 
-// $DATE_MONTH = date("2022-10");
+// $DATE_MONTH = date("2022-12");
 $DATE_MONTH = date($data->month);
 $users = array();
 $vens = array();
@@ -27,7 +27,8 @@ $ven_coms = array();
 
 
 $datas = array();
-// $DATE_MONTH = '2022-11';
+$data_j = array();
+$data_u = array();
 
 $price_all = 0;
 // http_response_code(200);
@@ -35,7 +36,7 @@ $price_all = 0;
 // exit;
 try{    
 
-    $sql = "SELECT user_id,fname,name,sname,phone,bank_account,bank_comment FROM profile WHERE status=10 ORDER BY st";
+    $sql = "SELECT user_id,fname,name,sname,workgroup, phone,bank_account,bank_comment FROM profile WHERE status=10 ORDER BY st ASC";
     $query = $conn->prepare($sql);
     $query->execute();
     $users = $query->fetchAll(PDO::FETCH_OBJ);
@@ -82,11 +83,11 @@ try{
         if(count($ven_users) > 0){   
             $vcs_arr = array();   
 
+            $price_sum = 0;
             foreach($ven_coms as $vcs){
                 $vsc_id = $vcs->id;
                 $vsc_name = $vcs->ven_name;
                 $vsc_price = 0;
-                // $price_sum = 0;
                 $v_count = 0;
 
                 foreach($ven_users as $vus){
@@ -94,16 +95,15 @@ try{
                         $vsc_price += $vus['price'];
                         ++$v_count;             
                     } 
-                    // $price_sum += $vus['price'];      
+                    $price_sum = $price_sum + $vus['price'];      
                 } 
-
+                $price = $vsc_price == 0 ? '-': Num_f($vsc_price);
                 array_push($vcs_arr,array(
-                    "id"=>$vcs->id,
-                    "ven_name" => $vsc_name,
-                    "dep" => $vsc_name,
-                    "price"=>$vsc_price,
-                    "v_count"=>$v_count
-                    // "price_sum"=>$price_sum,
+                    "id"        => $vcs->id,
+                    "ven_name"  => $vsc_name,
+                    "price"     => $vsc_price,
+                    "price_th"  => $price,
+                    "v_count"   => $v_count,
                 ));
                 
             }
@@ -111,11 +111,13 @@ try{
                 "uid" => $user->user_id,
                 "vcs_arr" => $vcs_arr,
                 "name" => $user->fname.$user->name.' '.$user->sname,
+                "workgroup" => $user->workgroup,
                 "vens" => $ven_users,
                 "D_c" => $D_c,
                 "N_c" => $N_c,
                 "D_price" => $D_price,
                 "N_price" => $N_price,   
+                "price_sum"=>$price_sum,
                 "phone" => $user->phone,
                 "bank_account" => $user->bank_account,
                 "bank_comment" => $user->bank_comment
@@ -132,11 +134,88 @@ try{
         ));
     }
 
+    
+    foreach($datas as $us){
+
+        if($us['workgroup'] == 'ผู้พิพากษา'){
+            
+            array_push($data_j,array(
+                "name"=>$us['name'],
+                "bank_comment"=>$us['bank_comment'],
+                "bank_account"=>$us['bank_account'],
+                "vcs_arr"=>$us['vcs_arr'],
+            ));
+                        
+        }else{
+            array_push($data_u,array(
+                "name"=>$us['name'],
+                "bank_comment"=>$us['bank_comment'],
+                "bank_account"=>$us['bank_account'],
+                "vcs_arr"=>$us['vcs_arr'],
+            ));
+        }        
+    }
+
+    $data_j_sum = array(); 
+    $data_u_sum = array();
+    $data_all_sum = array();
+    foreach($ven_coms as $vc){
+        $price = 0;
+        $price_all_c = 0;
+        foreach($data_j as $vcs){
+            foreach($vcs['vcs_arr'] as $vcs_r){
+                if($vcs_r['id'] == $vc->id){
+                    $price += $vcs_r['price'];
+                    $price_all_c +=  $vcs_r['price'];
+                }
+            }
+        }
+        array_push($data_j_sum,array(
+            "id"=>$vc->id,
+            "ven_com_num"=>$vc->ven_com_num,
+            "ven_com_date"=>$vc->ven_com_date,
+            "ven_name"=>$vc->ven_name,
+            "price"=>Num_f($price),
+        ));
+        
+        $price=0;
+        foreach($data_u as $vcs){
+            foreach($vcs['vcs_arr'] as $vcs_r){
+                if($vcs_r['id'] == $vc->id){
+                    $price += $vcs_r['price'];
+                    $price_all_c +=  $vcs_r['price'];
+                }
+            }
+        }
+        array_push($data_u_sum,array(
+            "id"=>$vc->id,
+            "ven_com_num"=>$vc->ven_com_num,
+            "ven_com_date"=>$vc->ven_com_date,
+            "ven_name"=>$vc->ven_name,
+            "price"=>Num_f($price),
+        ));
+
+        array_push($data_all_sum,array(
+            "id"=>$vc->id,
+            "ven_com_num"=>$vc->ven_com_num,
+            "ven_com_date"=>$vc->ven_com_date,
+            "ven_name"=>$vc->ven_name,
+            "price"=>Num_f($price_all_c),
+        ));
+    }
+
+
+
     http_response_code(200);
     echo json_encode(array(
         'status' => true, 
         'message' => 'Ok.', 
         'datas' => $datas,
+        'data_j' => $data_j,
+        'data_u' => $data_u,
+        'data_j_sum' => $data_j_sum,
+        'data_u_sum' => $data_u_sum,
+        'data_all_sum' => $data_all_sum,
         "price_all" => $price_all,
         "ven_coms"=>$ven_coms,
         'month' => DateThai_ym($DATE_MONTH),

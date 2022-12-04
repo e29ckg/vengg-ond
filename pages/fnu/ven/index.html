@@ -56,15 +56,15 @@
 
                 </h3>
             </div>
-            <div class="col-6">
-
+            <div class="col-8">
                 <table  class="table">
                     <thead>                        
                         <tr>
                             <td class="text-center">ลำดับ</td>
                             <td class="text-center">ชื่อ</td>
-                            <td class="text-center">☀️ กลางวัน(วัน)</td>
-                            <td class="text-center">🌙 กลางคืน(วัน)</td>
+                            <td class="text-center">☀️</td>
+                            <td class="text-center">🌙</td>
+                            <td class="text-center" v-for="vc in ven_coms">{{vc.ven_name}}</td>
                             <td class="text-end">จำนวนเงิน</td>
                         </tr>
                     </thead>
@@ -74,20 +74,20 @@
                                 <td>{{data.name}}</td>
                                 <td class="text-center">{{data.D_c}}</td>
                                 <td class="text-center">{{data.N_c}}</td>
-                                <td class="text-end">{{formatCurrency(data.D_price + data.N_price)}}</td>                    
+                                <td class="text-center" v-for="dva in data.vcs_arr">{{dva.v_count}}({{dva.price}})</td>
+                                <td class="text-end">{{data.price_sum}}</td>                    
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr>
-                            <td colspan="4" class="text-end">รวมทั้งสิ้น</td>
+                            <td :colspan="4 + ven_coms.length" class="text-end">รวมทั้งสิ้น</td>
                             <td class="text-end">{{formatCurrency(price_all)}}</td>
                         </tr>
-                    </tfoot>
-                    
+                    </tfoot>                    
                 </table>
                 <!-- {{datas}} -->
             </div>
-            <div class="col-6">
+            <div class="col-4">
                 <table class="table">
                     <thead>
                         <tr>
@@ -109,7 +109,11 @@
                         
                         <tr>
                             <td colspan="2"></td>
-                            <td ><a :href="'./report_x1.html?month='+year+'-'+month" target="_blank">หน้างบประกอบการอนุมัติ(ทุกคำสั่ง)</a></td>
+                            <td ><a :href="'./report_x1.html?month='+year+'-'+month" target="_blank">หน้างบประกอบ(ทุกคำสั่ง)</a></td>
+                        </tr>
+                        <tr>
+                            <td colspan="2"></td>
+                            <td ><a :href="'./report_x2.html?month='+year+'-'+month" target="_blank">รายละเดียดการเงิน(ศจ.ชัยนาท)</a></td>
                         </tr>
                         <tr>
                             <td colspan="2"></td>

@@ -81,26 +81,23 @@ try{
         
         if(count($ven_users) > 0){   
             $vcs_arr = array();   
-
+            
             foreach($ven_coms as $vcs){
-                $vsc_id = $vcs->id;
-                $vsc_name = $vcs->ven_name;
+                $price_sum = 0;
                 $vsc_price = 0;
-                // $price_sum = 0;
                 $v_count = 0;
                 foreach($ven_users as $vus){
-                    if($vus['ven_com_idb'] == $vcs->id && $vsc_id == $vus['ven_com_idb']){
+                    if($vus['ven_com_idb'] == $vcs->id ){
                         $vsc_price += $vus['price'];
                         ++$v_count;             
                     } 
-                    // $price_sum += $vus['price'];      
+                    $price_sum += $vus['price'];      
                 }    
                 array_push($vcs_arr,array(
                     "id"=>$vcs->id,
-                    "ven_name" => $vsc_name,
+                    "ven_name" => $vcs->ven_name,
                     "price"=>$vsc_price,
                     "v_count"=>$v_count
-                    // "price_sum"=>$price_sum,
                 ));
                 
             }
@@ -113,6 +110,7 @@ try{
                 "N_c" => $N_c,
                 "D_price" => $D_price,
                 "N_price" => $N_price,   
+                "price_sum"=>$price_sum,
                 "phone" => $user->phone,
                 "bank_account" => $user->bank_account,
                 "bank_comment" => $user->bank_comment

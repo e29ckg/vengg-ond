@@ -53,6 +53,9 @@ function DateThai_D($strDate)
 }
 
 function Num_f($num){
+    return number_format($num, 2, ".", ",");
+}
+function Num_f_th($num){
     return thainumDigit(number_format($num));
 }
 function Convert($amount_number)

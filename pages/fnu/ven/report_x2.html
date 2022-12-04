@@ -44,10 +44,10 @@
                     <thead>         
                         <tr>                            
                             <td colspan="10" class="text-center">
-                                หน้างบประกอบการอนุมัติโอนเงินเข้าบัญชีในระบบ KTB Corporate Online<br>
-                                เงินนอกงบประมาณศาลเยาวชนและครอบครัวจังหวัดประจวบคีรีขันธ์ บัญชีออมทรัพย์ 715-0-499995-3 บัญชีกระแสรายวัน 715-6-03476-6<br>
-                                
-                                ตามบันทึกศาลเยาวชนและครอบครัวจังหวัดประจวบคีรีขันธ์ ลงวันที่ {{datas.doc_date}} (เวรเดือน {{month}})
+                                รายละเดียดการเงินผ่านระบบ K-cash Connect Plus ธนาคารกสิกรไทย-งบดำเนินการ<br>
+                                งานอำนวยการ กิจกรรมสนับสนุนการพิจารณาคดีและบริหารทั่วไป<br>
+                                ค่าใช้จ่ายด้านบริหารจัดการ โอนครั้งที่................. <br>                                
+                                โดยมีผลอนุมัติเงินเข้าบัญชีวันที่...........................
                             </td>
                         </tr>               
                         <tr>
@@ -56,33 +56,34 @@
                             <td class="text-center">ธนาคาร/สาขา</td>
                             <td class="text-center">เลขบัญชีผู้รับโอน</td>
                             <td class="text-center" v-for="vc in ven_coms">{{vc.ven_name}}</td>
-                            <td class="text-center">เวรเลือกตั้ง</td>
                         </tr>
                     </thead>
                     <tbody class="text-nowrap">
-                        <tr v-for="data,index in datas" >
+                        <tr v-for="data,index in data_j" >
                                 <td class="text-center">{{index + 1}}</td>
                                 <td>{{data.name}}</td>
                                 <td>{{data.bank_comment}}</td>                    
-                                <td>{{data.bank_account}}</td>
-                                <td class="text-center" v-for="vc in data.vcs_arr">{{vc.price}}</td>                   
-                                <td></td>                    
+                                <td class="text-center">{{data.bank_account}}</td>
+                                <td class="text-end" v-for="vc in data.vcs_arr">{{vc.price_th}}</td>  
                         </tr>
                         <tr>
-                            <td colspan="3"></td>
-                            <td>รวม</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                        </tr>    
+                            <td colspan="4" class="text-end">รวม</td> 
+                            <td class="text-end  bg-warning" v-for="djs in data_j_sum">{{djs.price}}</td> 
+                        </tr>
+                        <tr v-for="data,index in data_u" >
+                            <td class="text-center">{{index + 1}}</td>
+                            <td>{{data.name}}</td>
+                            <td>{{data.bank_comment}}</td>                    
+                            <td class="text-center">{{data.bank_account}}</td>
+                            <td class="text-end" v-for="vc in data.vcs_arr">{{vc.price_th}}</td>  
+                        </tr>  
                         <tr>
-                            <td colspan="3"></td>
-                            <td>รวมทั้งสิ้น</td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td colspan="4" class="text-end">รวม</td> 
+                            <td class="text-end bg-warning" v-for="dus in data_u_sum">{{dus.price}}</td>
+                        </tr> 
+                        <tr>
+                            <td colspan="4" class="text-end">รวมทั้งสิ้น</td>
+                            <td class="text-end bg-danger" v-for="das in data_all_sum">{{das.price}}</td> 
                         </tr>    
                     </tbody>
                     <tfoot>
@@ -114,12 +115,13 @@
         data() {
             return {
                 datas: [],
+                data_j: [],
+                data_u: [],
+                data_j_sum: [],
+                data_u_sum: [],
+                data_all_sum: [],
                 ven_coms: [],
-                price_all: '',
-                DN1:0,
-                DN1_PRICE_DAY:3700,
-                DN2:0,
-                DN2_PRICE_DAY:7500,
+                price_all: '',                
                 DN_total:0,
                 month:'',
                 year:''
@@ -141,12 +143,15 @@
                         // console.log(response.data);
                         if (response.data.status) {
                             this.datas = response.data.datas;
+                            this.data_j = response.data.data_j;
+                            this.data_u = response.data.data_u;
+                            this.data_j_sum = response.data.data_j_sum;
+                            this.data_u_sum = response.data.data_u_sum;
+                            this.data_all_sum = response.data.data_all_sum;
                             this.ven_coms = response.data.ven_coms;
                             this.price_all = response.data.price_all;
                             this.month = response.data.month;
-                            this.DN1 = response.data.day_num * this.DN1_PRICE_DAY;
-                            this.DN2 = response.data.holiday_num * this.DN2_PRICE_DAY;
-                            this.DN_total = this.DN1 + this.DN2;
+                           
                             console.log(this.datas);
                             // Swal.fire({
                             //     icon: 'success',

@@ -18,12 +18,14 @@ $datas = array();
 
     try{
 
-        $sql = "SELECT name, price, color FROM ven_name_sub";
+        $sql = "SELECT vns.name as u_role,vns.price,vns.color, vn.name,vn.DN
+                FROM ven_name_sub AS vns
+                INNER JOIN ven_name AS vn ON vn.id = vns.ven_name_id";
         $query = $conn->prepare($sql);
         $query->execute();
         $res = $query->fetchAll(PDO::FETCH_OBJ);
 
-        $sql = "SELECT v.id, v.ven_date, v.ven_time, v.u_role, v.price, p.name, p.sname FROM ven as v 
+        $sql = "SELECT v.id, v.ven_date, v.ven_time, v.u_role, v.price, v.ven_com_name, p.name, p.sname FROM ven as v 
                 INNER JOIN `profile` as p ON v.user_id = p.user_id
                 WHERE (v.status = 1 OR v.status = 2 OR v.status = 5) AND p.`status` = 10
                 ORDER BY v.ven_date DESC, v.ven_time ASC
@@ -34,7 +36,7 @@ $datas = array();
 
         if($query->rowCount() > 0){                        //count($result)  for odbc
             foreach($result as $rs){
-                $bgcolor = getColor($rs->u_role, $rs->price);
+                $bgcolor = getColor($res, $rs->u_role, $rs->price, $rs->ven_com_name);
                 array_push($datas,array(
                     'id'    => $rs->id,
                     'title' => $rs->name. ' '. $rs->sname,
@@ -57,10 +59,10 @@ $datas = array();
     }
 }
 
-function getColor($d,$price){    
+function getColor($res,$d,$price,$v_name){    
     $color = '';
-    foreach($GLOBALS['res'] as $rs){
-        if($rs->name == $d && $rs->price == $price){
+    foreach($res as $rs){
+        if($rs->u_role == $d && $rs->price == $price && $rs->name == $v_name ){
             $color = $rs->color;
             break;
         }

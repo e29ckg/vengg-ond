@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try{        
         $id     = $data->id;
 
-        $sql = "SELECT * FROM ven_change WHERE ven_id1 = '$id' OR ven_id2='$id' OR ven_id1_old = '$id' OR ven_id2_old='$id'";
+        $sql = "SELECT * FROM ven_change WHERE (ven_id1 = '$id' OR ven_id2='$id' OR ven_id1_old = '$id' OR ven_id2_old='$id') AND (status=1 OR status=2)";
         $query = $conn->prepare($sql);
         $query->execute();
         $res = $query->fetch(PDO::FETCH_OBJ);

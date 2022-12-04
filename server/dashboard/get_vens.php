@@ -45,7 +45,7 @@ $datas = array();
         if($query->rowCount() > 0){                        //count($result)  for odbc
             foreach($result as $rs){
                 $rs->DN == 'กลางวัน' ? $d = '☀️' : $d = '🌙';
-                $bgcolor = getColor($rs->u_role, $rs->price,$rs->ven_com_name);
+                $bgcolor = getColor($res, $rs->u_role, $rs->price, $rs->ven_com_name);
                 if($rs->status == 2 ){
                     $bgcolor ='Yellow' ;
                     $textC = 'black';
@@ -88,9 +88,9 @@ $datas = array();
     }
 }
 
-function getColor($d,$price,$v_name){    
+function getColor($res,$d,$price,$v_name){    
     $color = '';
-    foreach($GLOBALS['res'] as $rs){
+    foreach($res as $rs){
         if($rs->u_role == $d && $rs->price == $price && $rs->name == $v_name ){
             $color = $rs->color;
             break;
