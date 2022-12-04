@@ -60,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }  
         if($act == 'delete'){
             $id     = $ven_name->id;
+            
             $sql = "DELETE FROM ven_name WHERE id = $id";
             $conn->exec($sql);
 
