@@ -12,7 +12,7 @@ Vue.createApp({
       ven_name_sub_form : {name : '', price:'',color:''},
       ven_name_sf_act:'insert',
       isLoading : false,
-      colors:['Magenta','BlueViolet','Violet','red','Green','YellowGreen','Brown','Chocolate','DarkBlue','DarkCyan','Maroon']
+      colors:['BlueViolet','Blue','goldenrod','Green','cadetblue','Magenta','Violet','red','YellowGreen','Brown','Chocolate','DarkBlue','DarkCyan','Maroon']
     }
   },
   mounted(){

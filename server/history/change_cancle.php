@@ -50,13 +50,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $query2->bindParam(':id',$id, PDO::PARAM_STR);
             $query2->execute();
             $conn->commit();
+
             if($query2->rowCount()){   
 
                 /**google calendar */
-                if(__GOOGLE_CALENDAR__){
-                    if($result->gcal_id1){gcal_update($result->gcal_id1,$result->u_name_old1,'',1);}
-                    if($result->gcal_id2){gcal_update($result->gcal_id2,$result->u_name_old2,'',1);}
-                }
+                // if(__GOOGLE_CALENDAR__){
+                //     if($result->gcal_id1){gcal_update($result->gcal_id1,$result->u_name_old1,'',1);}
+                //     if($result->gcal_id2){gcal_update($result->gcal_id2,$result->u_name_old2,'',1);}
+                // }
 
                 //ส่ง line ot ven_admin
                 $sql = "SELECT token FROM line WHERE name = 'ven_admin'";
@@ -71,11 +72,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 http_response_code(200);
                 echo json_encode(array('status' => true, 'message' => 'สำเร็จ'));
                 exit;
+            }else{
+                http_response_code(200);
+                echo json_encode(array('status' => false, 'message' => 'ไม่พบใบเปลี่ยนเวรนี้'));
+                exit;
             }  
             
+        }else{
+            http_response_code(200);
+            echo json_encode(array('status' => false, 'message' => 'ไม่พบใบเปลี่ยนเวรนี้'));
+            exit;
         }
     
-    }catch(PDOException $e){
+    }catch(Exception $e){
         $conn->rollback();
         // echo "Faild to connect to database" . $e->getMessage();
         http_response_code(400);

@@ -71,6 +71,7 @@ Vue.createApp({
 
               } else{
                 this.alert("warning",response.data.message,timer=0)
+                this.get_ven_ch();
               }
           })
           .catch(function (error) {
@@ -105,7 +106,7 @@ Vue.createApp({
     },
     print_2(id){
       this.isLoading = true;
-      axios.post('../../server/history/print.php',{id:id})
+      axios.post('../../server/history/print2.php',{id:id})
       .then(response => {
         if (response.data.status) {
           this.alert("success",response.data.message,timer=1000)

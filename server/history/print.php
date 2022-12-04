@@ -166,6 +166,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
      
         http_response_code(200);
         echo json_encode(array('status' => true, 'message' => 'ไม่พบข้อมูล '));
+        exit;
     
     }catch(PDOException $e){
         // echo "Faild to connect to database" . $e->getMessage();
