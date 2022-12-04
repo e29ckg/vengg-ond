@@ -24,14 +24,15 @@ $datas = array();
     // The request is using the POST method
     
     try{
-        $sql = "SELECT name, price, color FROM ven_name_sub";
+        $sql = "SELECT vns.name as u_role,vns.price,vns.color, vn.name,vn.DN
+                FROM ven_name_sub AS vns
+                INNER JOIN ven_name AS vn ON vn.id = vns.ven_name_id";
         $query = $conn->prepare($sql);
-        // $query->bindParam(':kkey',$data->kkey, PDO::PARAM_STR);
         $query->execute();
         $res = $query->fetchAll(PDO::FETCH_OBJ);
         
 
-        $sql = "SELECT id, ven_date, ven_time, user_id, u_name, u_role, DN, price, ven.status
+        $sql = "SELECT id, ven_date, ven_time, user_id, u_name, u_role, DN, price,ven_com_name, ven.status
         FROM ven    
         WHERE status = 1 OR status = 2
         ORDER BY ven_date DESC, ven_time ASC
@@ -44,7 +45,7 @@ $datas = array();
         if($query->rowCount() > 0){                        //count($result)  for odbc
             foreach($result as $rs){
                 $rs->DN == 'กลางวัน' ? $d = '☀️' : $d = '🌙';
-                $bgcolor = getColor($rs->u_role, $rs->price);
+                $bgcolor = getColor($rs->u_role, $rs->price,$rs->ven_com_name);
                 if($rs->status == 2 ){
                     $bgcolor ='Yellow' ;
                     $textC = 'black';
@@ -68,7 +69,12 @@ $datas = array();
             }
             
             http_response_code(200);
-            echo json_encode(array('status' => true, 'message' => 'สำเร็จ', 'respJSON' => $datas, 'ssid' => $ssid));
+            echo json_encode(array('status' => true, 
+                                    'message' => 'สำเร็จ', 
+                                    'respJSON' => $datas, 
+                                    'ssid' => $ssid,
+                                    'res' => $res,
+                                ));
             exit;
         }
      
@@ -82,10 +88,10 @@ $datas = array();
     }
 }
 
-function getColor($d,$price){    
+function getColor($d,$price,$v_name){    
     $color = '';
     foreach($GLOBALS['res'] as $rs){
-        if($rs->name == $d && $rs->price == $price){
+        if($rs->u_role == $d && $rs->price == $price && $rs->name == $v_name ){
             $color = $rs->color;
             break;
         }
