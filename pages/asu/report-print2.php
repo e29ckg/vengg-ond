@@ -33,7 +33,7 @@ require_once('../../server/authen.php');
             <h5>รายชื่อ ผู้พิพากษาและเจ้าหน้าที่ (ตรวจสอบการจับม รับและส่งตัวผู้ถูกจับตามหมายจับ, ปล่อยชั่วคราว, <br>
                 ผัดฟ้องตาม พ.ร.บ.คุ้มครองเด็กฯ และ พ.ร.บ.ผู้ถูกกระทำด้วยความรุนแรงฯ หมายค้น-จับ)
               </h5>
-            <h5>ประจำเดือน {{date_thai_my(datas.vc.ven_month)}} ตั้งแต่เวลา 08.30-19.30 น.</h5>
+            <h5>ประจำเดือน {{date_thai_my(datas.vc.ven_month)}} ตั้งแต่เวลา 08.30-16.30 น.</h5>
             <!-- {{datas.vc}} -->
         </div>
         <table class="table table-bordered d-print-inline d-print-table ">
