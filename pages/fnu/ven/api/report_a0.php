@@ -126,7 +126,6 @@ try{
                     array_push($work_day,$ven->ven_date);
                 }
 
-
             }
 
            
@@ -134,15 +133,15 @@ try{
                 
                 $price_total_all += $price_one * ($weekdays + $holiday);
                 array_push($datas,array(
-                    'user_id'=>$user->user_id,
-                    'name'  => $user->fname.$user->name.' '.$user->sname,
+                    'user_id'   =>$user->user_id,
+                    'name'      => $user->fname.$user->name.' '.$user->sname,
                     'bank_account'  => $user->bank_account,
                     'bank_comment'  => $user->bank_comment,
-                    'phone'  => $user->phone,
-                    'work_day'=>$work_day,
-                    'price_one'=>$price_one,
-                    'weekdays' => $weekdays,
-                    'holiday' => $holiday,
+                    'phone'     => $user->phone,
+                    'work_day'  =>$work_day,
+                    'price_one' =>Num_f($price_one),
+                    'weekdays'  => $weekdays,
+                    'holiday'   => $holiday,
                     'price_all' => $price_one * ($weekdays + $holiday),
 
                 ));

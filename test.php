@@ -28,16 +28,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 	$datas =array();
 
 	// $sql = "SELECT * FROM ven WHERE ven_month='2022-11' AND status=2 AND gcal_id IS NULL";
-	$sql = "SELECT * FROM ven WHERE ven_month='2022-11' AND gcal_id IS NOT NULL";
-	$query = $conn->prepare($sql);  
+	// $sql = "SELECT * FROM ven WHERE ven_month='2022-11' AND gcal_id IS NOT NULL";
+	// $query = $conn->prepare($sql);  
 	// $query->bindParam(':id',$id, PDO::PARAM_STR);
-	$query->execute();
-	$result = $query->fetchAll(PDO::FETCH_OBJ);
-	if($query->rowCount()){
-		$n = 0;
-		foreach($result as $rs){
-			$name = $rs->u_name;
-			$start = $rs->ven_date.' '.$rs->ven_time;
+	// $query->execute();
+	// $result = $query->fetchAll(PDO::FETCH_OBJ);
+	// if($query->rowCount()){
+	// 	$n = 0;
+	// 	foreach($result as $rs){
+	// 		$name = $rs->u_name;
+	// 		$start = $rs->ven_date.' '.$rs->ven_time;
 			// $start = '2022-10-22 22:29:00';
 
 			/**เพิม */
@@ -46,16 +46,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 			// $gcal_id =$res->resp->id;
 			
 			/** ลบ */
-			$res = gcal_remove($rs->gcal_id);
-			$sql = "UPDATE ven SET gcal_id =:gcal_id WHERE id = :id";   
-			$gcal_id = null;
+			// $res = gcal_remove($rs->gcal_id);
+			// $sql = "UPDATE ven SET gcal_id =:gcal_id WHERE id = :id";   
+			// $gcal_id = null;
 
-			$query = $conn->prepare($sql);
-			$query->bindParam(':gcal_id',$gcal_id, PDO::PARAM_STR);
-			$query->bindParam(':id',$rs->id, PDO::PARAM_INT);
-			$query->execute(); 
+			// $query = $conn->prepare($sql);
+			// $query->bindParam(':gcal_id',$gcal_id, PDO::PARAM_STR);
+			// $query->bindParam(':id',$rs->id, PDO::PARAM_INT);
+			// $query->execute(); 
 
-			echo $rs->id .' | '.$res->resp->id."<br>";
+			// echo $rs->id .' | '.$res->resp->id."<br>";
 
 			// array_push($datas,array(
 			// 	'id'    => $rs->id,
@@ -63,21 +63,21 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
 			// ));
 			
-			$n++;
-			if($n==10){
-				$n=0;
-				sleep(1);
-				echo "sleep 1 s<br>";
-			}
-		}
-		http_response_code(200);
-		echo json_encode(array('status' => true, 'massege' => 'สำเร็จ', 'respJSON' => $datas));
-		exit;
-	}else{
-		http_response_code(200);
-		echo json_encode(array('status' => false, 'massege' => 'null',));
-		exit;
-	}
+			// $n++;
+			// if($n==10){
+			// 	$n=0;
+			// 	sleep(1);
+			// 	echo "sleep 1 s<br>";
+			// }
+		// }
+	// 	http_response_code(200);
+	// 	echo json_encode(array('status' => true, 'massege' => 'สำเร็จ', 'respJSON' => $datas));
+	// 	exit;
+	// }else{
+	// 	http_response_code(200);
+	// 	echo json_encode(array('status' => false, 'massege' => 'null',));
+	// 	exit;
+	// }
 
 }    
 

@@ -30,10 +30,10 @@ require_once('../../server/authen.php');
                 <!-- {{users}} -->
                 <section class="row" v-for="vn,vni in ven_names">
                     <div v-for="vns, vnsi in ven_name_subs" v-if="ven_name_subs.length > 0">                         
-                        <div class="col" >
+                        <div class="card col" >
                             <div class="card-body" v-if="vn.id == vns.ven_name_id">
-                                <h5 class="card-title" :style="'background-color: '+vns.color+' ;'" >{{vn.name}} ({{vn.DN == 'กลางวัน' ? '☀️' : '🌙'}} {{vn.DN}}) {{vns.name}} </h5>
-                                <ul class="list-group list-group-flush"  >
+                                <h5 class="card-title" :style="'background-color: '+vns.color+' ; color:white;'" >{{vn.name}} ({{vn.DN == 'กลางวัน' ? '☀️' : '🌙'}} {{vn.DN}}) {{vns.name}} </h5>
+                                <!-- <ul class="list-group list-group-flush"  > -->
                                     <div v-if="ven_users.length > 0" v-for="vu,vui in ven_users" >
                                         <li class="list-group-item" v-if="vu.ven_name == vn.name && vns.name == vu.uvn">
                                             {{vn.DN == 'กลางวัน' ? '☀️' : '🌙'}}{{vu.order + ' ' +vu.u_name + ' '}}  
@@ -46,11 +46,11 @@ require_once('../../server/authen.php');
                                         <button class="btn btn-success me-2" @click="vu_add(vni,vnsi)">เพิ่มที่ละคน</button>
                                         <button class="btn btn-success" @click="vu_add_user_all(vni,vnsi)">{{isLoading ? 'Loading...' : 'เพิ่ม USER ทั้งหมด'}}</button>
                                     </li>
-                                </ul>
+                                <!-- </ul> -->
                                 
                             </div>
-
                         </div>
+                        
                     </div>
                 </section>
 

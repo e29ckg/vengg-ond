@@ -133,7 +133,7 @@ require_once('../../server/authen.php');
                                             <td>{{user.bank_account}}</td>
                                         </tr>
                                         <tr>
-                                            <th scope="row">สาขา</th>
+                                            <th scope="row">ธนาคาร/สาขา</th>
                                             <td>{{user.bank_comment}}</td>
                                         </tr>                                            
                                     </tbody>
@@ -228,7 +228,7 @@ require_once('../../server/authen.php');
                                             <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
                                         </div>
                                         <div class="col mb-3">
-                                            <label for="bank_comment" class="form-label">สาขา</label>
+                                            <label for="bank_comment" class="form-label">ธนาคาร/สาขา</label>
                                             <input type="text" class="form-control" id="bank_comment" v-model="user_form.bank_comment">
                                         </div>                                           
                                         <div class="col mb-3">
@@ -308,7 +308,7 @@ require_once('../../server/authen.php');
                                             <!-- <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div> -->
                                         </div>
                                         <div class="col mb-3">
-                                            <label for="bank_comment_uuf" class="form-label">สาขา</label>
+                                            <label for="bank_comment_uuf" class="form-label">ธนาคาร/สาขา</label>
                                             <input type="text" class="form-control" id="bank_comment_uff" v-model="user_form.bank_comment">
                                         </div>                                           
                                         <div class="col mb-3">

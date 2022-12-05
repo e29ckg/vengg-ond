@@ -45,7 +45,8 @@ try{
     $query->execute();
     $vens = $query->fetchAll(PDO::FETCH_OBJ);
     
-    $sql = "SELECT * FROM ven_com WHERE ven_month='$DATE_MONTH' ORDER BY ven_com_num ASC";
+    $sql = "SELECT * FROM ven_com WHERE ven_month='$DATE_MONTH' ORDER BY id ASC";
+    // $sql = "SELECT * FROM ven_com WHERE ven_month='$DATE_MONTH' ORDER BY ven_com_num ASC";
     $query = $conn->prepare($sql);
     $query->execute();
     $ven_coms = $query->fetchAll(PDO::FETCH_OBJ);
@@ -135,6 +136,7 @@ try{
         "price_all" => $price_all,
         "ven_coms"=>$ven_coms,
         'month' => DateThai_ym($DATE_MONTH),
+        'date_doc' => DateThai_full(date("Y-m-d")),
     ));
 
     

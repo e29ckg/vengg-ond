@@ -32,17 +32,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $ven_date_next_m = '';
     $ven_date_next_y = '';
     $ven_date_next_time = '08:30';
-    $users = array();
+    $users[0] = array("name" => '',"dep" => '');
+    $users[1] = array("name" => '',"dep" => '');
     
 
     // The request is using the POST method
     try{
-        $sql = "SELECT v.id, v.ven_date, v.ven_com_name, v.DN, v.u_name, p.dep, vc.ven_com_num, vc.ven_com_date 
+        $sql = "SELECT v.id, v.ven_date, v.ven_com_name, v.DN, v.u_name, p.dep, p.workgroup, vc.ven_com_num, vc.ven_com_date 
                 FROM ven as v 
-                INNER JOIN profile as p
-                ON v.user_id = p.user_id
-                INNER JOIN ven_com as vc
-                ON vc.id = v.ven_com_idb
+                INNER JOIN profile as p ON v.user_id = p.user_id
+                INNER JOIN ven_com as vc ON vc.id = v.ven_com_idb
                 WHERE v.ven_date = '$ven_date' AND v.DN = '$DN' AND (v.`status` =1 OR v.`status` =2)
                 ORDER BY v.ven_time ASC";
         $query = $conn->prepare($sql);
@@ -51,12 +50,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         if($query->rowCount() > 0){                       
             foreach($result as $rs){
+
                 $ven_com_num = $rs->ven_com_num;
                 $ven_com_date = $rs->ven_com_date;
-                array_push($users,array(
-                    "name" => $rs->u_name,
-                    "dep" => $rs->dep
-                ));
+
+                if($rs->workgroup == 'ผู้พิพากษา'){
+                    $users[0] = array("name" => $rs->u_name,"dep" => $rs->dep);
+                }else{
+                    $users[1] = array("name" => $rs->u_name,"dep" => $rs->dep);
+                }
+                // array_push($users,array(
+                //     "name" => $rs->u_name,
+                //     "dep" => $rs->dep
+                // ));
             }
 
         }
@@ -100,9 +106,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'resp' => $datas
         ));
         exit;
-     
-        http_response_code(200);
-        echo json_encode(array('status' => true, 'message' => 'ไม่พบข้อมูล '));
     
     }catch(PDOException $e){
         // echo "Faild to connect to database" . $e->getMessage();

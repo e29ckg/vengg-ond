@@ -38,7 +38,7 @@ require_once('../../server/authen.php');
                                             <thead>
                                                 <tr>
                                                     <th colspan="2" class="text-start">
-                                                        เวรเดือน {{cvg.ven_month}} 
+                                                        เวรเดือน {{cvg.ven_month_th}} 
                                                         <button type="button" class="btn btn-danger" :disabled='isLoading' @click="con_f(cvg.ven_month)">
                                                             {{isLoading ? 'Londing..': 'เผยแพร่'}}</button>
                                                     </th>
@@ -48,7 +48,7 @@ require_once('../../server/authen.php');
                                             <tbody  v-for="vc in ven_coms">
                                                 <tr v-if="vc.ven_month == cvg.ven_month">
                                                         <td >  
-                                                            เลขคำสั่งที่ {{vc.ven_com_num}} | ลงวันที่ {{vc.ven_com_date}} | {{vc.ven_com_name}} ({{vc.ven_name}})
+                                                            เลขคำสั่งที่ {{vc.ven_com_num}} | ลงวันที่ {{vc.ven_com_date_th}} | {{vc.ven_com_name}} ({{vc.ven_name}})
                                                             <!-- | {{vc.ref}} | {{vc.status}}  -->
     
                                                         </td>

@@ -27,7 +27,10 @@ try {
 
 //error handler function
 function customError($errno, $errstr) {
-    echo "Error: [$errno] $errstr";
+    // echo "Error: [$errno] $errstr";
+    http_response_code(200);
+    $response = array('status'=>false,'message' => "Error: [$errno] $errstr");
+    echo json_encode($response);
     exit();
 }
 
