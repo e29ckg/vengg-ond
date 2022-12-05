@@ -35,7 +35,7 @@ function customError($errno, $errstr) {
 }
 
 //set error handler
-set_error_handler("customError");
+// set_error_handler("customError");
 
 //trigger error
 // echo($test);

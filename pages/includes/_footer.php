@@ -6,7 +6,7 @@
             </p>
         </div>
         <div class="float-end">
-            <p> <?='Current PHP version: ' . phpversion();?> </p>
+            <!-- <p> <?='Current PHP version: ' . phpversion();?> </p> -->
         </div>
     </div>
 </footer>

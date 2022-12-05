@@ -24,7 +24,7 @@ function pathCurrent() {
     return $moduleName . "/" . $basename;
 }
 
-if( !isset($_SESSION['AD_ID'] ) ){
+if( !isset($_SESSION['AD_ID']) || !isset($_SESSION['AD_ROLE']) ){
     header('Location: ../../login.php');  
 }
 
