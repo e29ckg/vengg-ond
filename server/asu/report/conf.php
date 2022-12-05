@@ -63,24 +63,23 @@ $datas = array();
                 $start = $rs->ven_date.' '.$rs->ven_time;
 
                 /**เพิม */
-                // if(__GOOGLE_CALENDAR__){
-                //     $res = json_decode(gcal_insert($name,$start));
-                //     if($res){
-                //         $gcal_id = $res->resp->id;               
-                //         $sql = "UPDATE ven SET gcal_id =:gcal_id WHERE id = :id";    
+                if(__GOOGLE_CALENDAR__){
+                    $res = json_decode(gcal_insert($name,$start));
+                    if($res){
+                        $gcal_id = $res->resp->id;               
+                        $sql = "UPDATE ven SET gcal_id =:gcal_id WHERE id = :id";    
         
-                //         $query = $conn->prepare($sql);
-                //         $query->bindParam(':gcal_id',$gcal_id, PDO::PARAM_STR);
-                //         $query->bindParam(':id',$rs->id, PDO::PARAM_INT);
-                //         $query->execute(); 
+                        $query = $conn->prepare($sql);
+                        $query->bindParam(':gcal_id',$gcal_id, PDO::PARAM_STR);
+                        $query->bindParam(':id',$rs->id, PDO::PARAM_INT);
+                        $query->execute(); 
                         
-                //         array_push($datas,array(
-                //             'id'    => $rs->id,
-                //             'gcal_id' => $res->resp->id
-        
-                //         ));
-                //     }
-                // }
+                        array_push($datas,array(
+                            'id'    => $rs->id,
+                            'gcal_id' => $res->resp->id        
+                        ));
+                    }
+                }
 
 
                 

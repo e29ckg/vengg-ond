@@ -3,7 +3,7 @@
 session_start();
 // error_reporting(E_ALL);
 error_reporting(0);
-define("__GOOGLE_CALENDAR__",0);
+define("__GOOGLE_CALENDAR__",false);
 
 date_default_timezone_set("Asia/Bangkok");
 
@@ -25,3 +25,14 @@ try {
     exit();
 }
 
+//error handler function
+function customError($errno, $errstr) {
+    echo "Error: [$errno] $errstr";
+    exit();
+}
+
+//set error handler
+set_error_handler("customError");
+
+//trigger error
+// echo($test);

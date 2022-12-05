@@ -194,7 +194,7 @@ Vue.createApp({
             this.$refs.close_modal.click()
             this.$refs.close_modal_b.click()
             this.alert('success',response.data.message,1000) 
-            window.open('../history/index.php','_blank')
+            window.open('../history/index.php','_self')
           } else{
             this.alert('warning',response.data.message,0) 
           }

@@ -35,15 +35,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             exit;                
 
         }else{
-            // if(__GOOGLE_CALENDAR__){            
-            //     $sql = "SELECT gcal_id FROM ven WHERE id = $id";
-            //     $query = $conn->prepare($sql);
-            //     $query->execute();
-            //     if($query->rowCount()){
-            //         $rs = $query->fetch(PDO::FETCH_OBJ);
-            //         gcal_remove($rs->gcal_id);    
-            //     }                
-            // }
+            if(__GOOGLE_CALENDAR__){            
+                $sql = "SELECT gcal_id FROM ven WHERE id = $id";
+                $query = $conn->prepare($sql);
+                $query->execute();
+                if($query->rowCount()){
+                    $rs = $query->fetch(PDO::FETCH_OBJ);
+                    gcal_remove($rs->gcal_id);    
+                }                
+            }
             $sql = "DELETE FROM ven WHERE id = $id";
             $conn->exec($sql);
     
@@ -53,8 +53,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         }
 
-      
-        
         
     }catch(PDOException $e){
         // echo "Faild to connect to database" . $e->getMessage();

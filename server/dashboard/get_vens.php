@@ -7,19 +7,13 @@ header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Ac
 header("Content-Type: application/json; charset=utf-8");
 
 include "../connect.php";
-
 // $data = json_decode(file_get_contents("php://input"));
 
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
  
-if(isset($_SESSION['AD_ID'])){
-    $ssid = $_SESSION['AD_ID'];
+$ssid = isset($_SESSION['AD_ID']) ? $_SESSION['AD_ID'] : '';
 
-}else{
-    $ssid = '';
-}
 $datas = array();
-
 
     // The request is using the POST method
     
@@ -73,7 +67,7 @@ $datas = array();
                                     'message' => 'สำเร็จ', 
                                     'respJSON' => $datas, 
                                     'ssid' => $ssid,
-                                    'res' => $res,
+                                    'res' => $res
                                 ));
             exit;
         }

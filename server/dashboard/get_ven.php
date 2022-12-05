@@ -100,7 +100,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         foreach($res_vfu as $rsvfu){
 
             $img_link = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] ;
-            $img_link .= $rsvfu->img != null && $rsvfu->img != '' && file_exists('../../uploads/users/' . $rsvfu->img ) ? '/vengg/uploads/users/'. $rsvfu->img : '/vengg/assets/images/profiles/nopic.png';
+            $img_link .= $rsvfu->img != null && $rsvfu->img != '' && file_exists('../../uploads/users/' . $rsvfu->img ) 
+                            ? '/vengg/uploads/users/'. $rsvfu->img 
+                            : '/vengg/assets/images/profiles/nopic.png';
 
             array_push($vfu_arr,array(
                 "id" => $rsvfu->id,
@@ -124,7 +126,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
           
         $img = $_SERVER['REQUEST_SCHEME'].'://'. $_SERVER['HTTP_HOST'] ;
-        $img .= $result->img != null && $result->img != '' && file_exists('../../uploads/users/' . $result->img ) ? '/vengg/uploads/users/'. $result->img : '/vengg/assets/images/profiles/nopic.png';
+        $img .= $result->img != null && $result->img != '' && file_exists('../../uploads/users/' . $result->img ) 
+                ? '/vengg/uploads/users/'. $result->img 
+                : '/vengg/assets/images/profiles/nopic.png';
 
         $ven_select = [
             "id" => $result->id,

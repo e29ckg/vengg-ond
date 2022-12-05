@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $rsv1 = $query->fetch(PDO::FETCH_OBJ);
         if($query->rowCount() == 0){
             http_response_code(200);
-            echo json_encode(array('status' => false, 'message' => 'ใบเวรนี้ '.$ch_v1->id.' ไม่สามารถเปลี่ยนได้'));
+            echo json_encode(array('status' => false, 'message' => 'กรุณาตรวจสอบประวัติการเปลี่ยน'));
             exit;
         }
 
@@ -192,9 +192,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->commit();
 
         /** google calendar */
-        // if(__GOOGLE_CALENDAR__){
-        //     gcal_update($rsv1->gcal_id,$u_name2,$rsv1->u_name.'>>>'.$u_name2,5);
-        // }
+        if(__GOOGLE_CALENDAR__){
+            gcal_update($rsv1->gcal_id,$u_name2,$rsv1->u_name.'>>>'.$u_name2,5);
+        }
 
         /** ส่ง line to ven_admin */
         $sql = "SELECT token FROM line WHERE name = 'ven_admin'";
@@ -211,7 +211,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         http_response_code(200);
-        echo json_encode(array('status' => true, 'message' => 'ok', 'responseJSON' =>'' ));
+        echo json_encode(array('status' => true, 'message' => 'ok', 'responseJSON' => ''));
         exit;  
         
     }catch(PDOException $e){

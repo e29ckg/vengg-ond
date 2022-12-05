@@ -242,11 +242,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->commit();
 
         /** google calendar */
-        // if(__GOOGLE_CALENDAR__){
-        //     gcal_update($rsv1->gcal_id,$rsv2->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);
-        //     gcal_update($rsv2->gcal_id,$rsv1->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);
-            
-        // }
+        if(__GOOGLE_CALENDAR__){
+            gcal_update($rsv1->gcal_id,$rsv2->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);
+            gcal_update($rsv2->gcal_id,$rsv1->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);            
+        }
+        
         //ส่ง line ot ven_admin
         $sql = "SELECT token FROM line WHERE name = 'ven_admin'";
         $query_line = $conn->prepare($sql);
