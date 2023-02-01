@@ -192,9 +192,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->commit();
 
         /** google calendar */
-        // if(__GOOGLE_CALENDAR__){
-        //     gcal_update($rsv1->gcal_id,$u_name2,$rsv1->u_name.'>>>'.$u_name2,5);
-        // }
+        if(__GOOGLE_CALENDAR__){
+            gcal_update($rsv1->gcal_id,$u_name2,$rsv1->u_name.'>>>'.$u_name2,5);
+        }
 
         /** ส่ง line to ven_admin */
         $sql = "SELECT token FROM line WHERE name = 'ven_admin'";

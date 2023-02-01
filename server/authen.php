@@ -25,15 +25,17 @@ function pathCurrent() {
 }
 
 if( !isset($_SESSION['AD_ID']) || !isset($_SESSION['AD_ROLE']) ){
-    header('Location: ../../login.php');  
+    header('Location: ../../login.php'); 
+    die(); 
 }
 
-/** หน้าที่ admin เข้าไม่ได้ */
+/** หน้าที่ Member เข้าไม่ได้ */
 $menuAdmin = array("asu/index", "asu/work_name", "asu/user_ven", "asu/ven_com", "asu/ven_set","asu/report","asu/ven_approve","users/index");
 
 if($_SESSION['AD_ROLE'] == '1'){
     if(in_array(pathCurrent(), $menuAdmin)){
         header('Location: ../dashboard');
+        die();
     }
 }
 

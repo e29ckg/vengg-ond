@@ -100,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 if($rsv2->DN == 'กลางวัน' && $ru->ven_date == $ven_date_d1 && $ru->DN == 'กลางคืน'){
                     http_response_code(200);
-                    echo json_encode(array('status' => false, 'message' => $rsv1->u_name."\n".'วันที่ '.DateThai($ven_date_u1).' มีเวรกลางคืน'));
+                    echo json_encode(array('status' => false, 'message' => $rsv1->u_name."\n".'วันที่ '.DateThai($ven_date_d1).' มีเวรกลางคืน'));
                     exit;
                 }
                 if($rsv2->DN == 'กลางคืน'  && $ru->ven_date == $ven_date_u1 && $ru->DN == 'กลางวัน'){
@@ -130,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 }
                 if($rsv1->DN == 'กลางวัน' && $ru->ven_date == $ven_date_d1 && $ru->DN == 'กลางคืน'){
                     http_response_code(200);
-                    echo json_encode(array('status' => false, 'message' => $rsv2->u_name."\n".'วันที่ '.DateThai($ven_date_u1).' มีเวรกลางคืน'));
+                    echo json_encode(array('status' => false, 'message' => $rsv2->u_name."\n".'วันที่ '.DateThai($ven_date_d1).' มีเวรกลางคืน'));
                     exit;
                 }
                 if($rsv1->DN == 'กลางคืน'  && $ru->ven_date == $ven_date_u1 && $ru->DN == 'กลางวัน'){
@@ -242,10 +242,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $conn->commit();
 
         /** google calendar */
-        // if(__GOOGLE_CALENDAR__){
-        //     gcal_update($rsv1->gcal_id,$rsv2->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);
-        //     gcal_update($rsv2->gcal_id,$rsv1->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);            
-        // }
+        if(__GOOGLE_CALENDAR__){
+            gcal_update($rsv1->gcal_id,$rsv2->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);
+            gcal_update($rsv2->gcal_id,$rsv1->u_name,$rsv2->u_name.'<<>>'.$rsv1->u_name,5);            
+        }
         
         //ส่ง line ot ven_admin
         $sql = "SELECT token FROM line WHERE name = 'ven_admin'";

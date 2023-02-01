@@ -82,8 +82,7 @@ Vue.createApp({
       var calendar = new FullCalendar.Calendar(calendarEl, {
         initialView : 'dayGridMonth',
         initialDate : this.ven_month,
-        firstDay    : 1,
-        height      : 1200,
+        height      : 1240,
         locale      : 'th',
         firstDay    : 1,
         // allDay      : true,

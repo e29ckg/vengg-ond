@@ -54,10 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if($query2->rowCount()){   
 
                 /**google calendar */
-                // if(__GOOGLE_CALENDAR__){
-                //     if($result->gcal_id1){gcal_update($result->gcal_id1,$result->u_name_old1,'',1);}
-                //     if($result->gcal_id2){gcal_update($result->gcal_id2,$result->u_name_old2,'',1);}
-                // }
+                if(__GOOGLE_CALENDAR__){
+                    if($result->gcal_id1){gcal_update($result->gcal_id1,$result->u_name_old1,'',1);}
+                    if($result->gcal_id2){gcal_update($result->gcal_id2,$result->u_name_old2,'',1);}
+                }
 
                 //ส่ง line ot ven_admin
                 $sql = "SELECT token FROM line WHERE name = 'ven_admin'";

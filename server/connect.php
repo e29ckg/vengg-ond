@@ -22,7 +22,7 @@ try {
     http_response_code(200);
     $response = array('status'=>false,'message' => 'การเชื่อมต่อฐานข้อมูลล้มเหลว:'  . $e->getMessage());
     echo json_encode($response);
-    exit();
+    die();
 }
 
 //error handler function
@@ -31,7 +31,7 @@ function customError($errno, $errstr) {
     http_response_code(200);
     $response = array('status'=>false,'message' => "Error: [$errno] $errstr");
     echo json_encode($response);
-    exit();
+    die();
 }
 
 //set error handler

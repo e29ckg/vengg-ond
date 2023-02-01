@@ -15,6 +15,7 @@ include "../../function.php";
 $data = json_decode(file_get_contents("php://input"));
 
 $sms_err = array();
+$datas = array();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if($_SESSION['AD_ROLE'] != 9){
@@ -22,73 +23,63 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo json_encode(array('staus' => false, 'message' => 'ไม่มีสิทธิ์'));
         exit;
     }
-   
 
-$datas = array();
     // The request is using the POST method
     try{
 
-        // $sql = "SELECT ven WHERE ven_name = '$data->ven_name' AND  ven_month = '$data->ven_month'";
-        // $query = $conn->prepare($sql);       
-        // $query->execute(); 
-        // $result = $query->fetchAll(PDO::FETCH_OBJ);
-        // foreach($result as $r){
-        //     if($r->ven_com_idb ==''){
-        //         array_push($sms_err,'คำสั่งเบิก เวร'.$r->ven_name.' วันที่ '.$r->ven_date);
-        //     }
-        // }
-        // if($sms_err){
-        //     http_response_code(200);
-        //     echo json_encode(array('status' => true, 'message' => $sms_err));
-        //     exit;
-        // }
-
-
         $ven_month = $data->ven_month;
-        // $sql = "UPDATE ven SET status = 1 WHERE ven_name = '$data->ven_name' AND  ven_month = '$data->ven_month'";
         $sql = "UPDATE ven SET status = 1 WHERE status = 2 AND ven_month = '$ven_month'";
         $query = $conn->prepare($sql);       
         $query->execute();   
         
         /**เพิม google*/
-        // $sql2 = "SELECT * FROM ven WHERE ven_month='$ven_month' AND (status=1 OR status=2) AND (gcal_id IS NULL OR gcal_id='')";
-        // $query_g = $conn->prepare($sql2);  
-        // $query_g->execute();
-        
-        // if($query_g->rowCount()){
-        //     $result = $query_g->fetchAll(PDO::FETCH_OBJ);
-            
-            // $n = 0;
-            // foreach($result as $rs){
-                // $name = $rs->u_name;
-                // $start = $rs->ven_date.' '.$rs->ven_time;
+        $sql2 = "SELECT * FROM ven WHERE ven_month='$ven_month' 
+                AND (status=1 OR status=2) 
+                AND (gcal_id IS NULL OR gcal_id='')
+                ORDER BY ven_date ASC, ven_time ASC";
+        $query_g = $conn->prepare($sql2);  
+        $query_g->execute();
 
-                // if(__GOOGLE_CALENDAR__){
-                //     $res = json_decode(gcal_insert($name,$start));
-                //     if($res){
-                //         $gcal_id = $res->resp->id;               
-                //         $sql = "UPDATE ven SET gcal_id =:gcal_id WHERE id = :id";    
-        
-                //         $query = $conn->prepare($sql);
-                //         $query->bindParam(':gcal_id',$gcal_id, PDO::PARAM_STR);
-                //         $query->bindParam(':id',$rs->id, PDO::PARAM_INT);
-                //         $query->execute(); 
-                        
-                //         array_push($datas,array(
-                //             'id'    => $rs->id,
-                //             'gcal_id' => $res->resp->id        
-                //         ));
-                //     }
-                // }
+        if($query_g->rowCount()){
+            $result = $query_g->fetchAll(PDO::FETCH_OBJ);
+
+            $n = 0;
+            $ven_date = '';
+            $ven_time = '';
+            $vn = 10;
+            foreach($result as $rs){
+                $rs->DN == 'กลางวัน' ? $ven_time = '08:30:' : $ven_time = '16:30:';
+                if($ven_date == $rs->ven_date){
+                    $vn++;
+                }
+                $ven_date = $rs->ven_date;
+                $ven_time .= (string)$vn;
                 
-                // $n++;
-                // if($n==10){
-                //     $n=0;
-                //     sleep(1);                    // echo "sleep 1 s<br>";
-                // }
-            // }
-           
-        // }
+                $name = $rs->u_name;
+                $start = $rs->ven_date.' '.$ven_time;
+
+                $date = new DateTime($start);
+                $start = $date->format(DateTime::ATOM);
+
+                if(__GOOGLE_CALENDAR__){
+                    $res = json_decode(gcal_insert($name,$start));
+                    if($res){
+                        $gcal_id = $res->resp->id;               
+                        $sql = "UPDATE ven SET gcal_id =:gcal_id WHERE id = :id";    
+
+                        $query = $conn->prepare($sql);
+                        $query->bindParam(':gcal_id',$gcal_id, PDO::PARAM_STR);
+                        $query->bindParam(':id',$rs->id, PDO::PARAM_INT);
+                        $query->execute(); 
+                        
+                        array_push($datas,array(
+                            'id'    => $rs->id,
+                            'gcal_id' => $res->resp->id        
+                        ));
+                    }
+                }
+            }
+        }
 
         if($query->rowCount()){
             http_response_code(200);

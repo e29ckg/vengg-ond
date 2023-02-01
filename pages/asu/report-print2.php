@@ -50,7 +50,7 @@ require_once('../../server/authen.php');
                 <tr v-for="d in datas.respJSON">
                     <td>{{date_thai_dt(d.ven_date)}}</td>
                     <td>
-                      <li class="list-group-item" v-for="dun in d.u_name">{{dun}}</li>
+                      <li class="list-group-item" v-for="dun,index in d.u_name">{{index+1}}. {{dun}}</li>
                     </td>                    
                     <td>
                       <li class="list-group-item" v-for="dud in d.u_dep"> {{dud}}</li>

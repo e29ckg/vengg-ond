@@ -31,6 +31,21 @@ function DateThai($strDate){
     $strYearCut = substr($strYear,2,2);
     return "$strDay $strMonthThai $strYearCut";
 }
+function DateThai_N_full($strDate){
+    $strYear= date("Y",strtotime($strDate))+543;
+    $strMonth= date("n",strtotime($strDate));
+    $strDay= date("j",strtotime($strDate));
+    $strD= date("N",strtotime($strDate));
+    $strHour= date("H",strtotime($strDate));
+    $strMinute= date("i",strtotime($strDate));
+    $strSeconds= date("s",strtotime($strDate));
+    $strMonthCut = Array("","มกราคม","กุมภาพันธ์","มีนาคม","เมษายน","พฤษภาคม","มิถุนายน","กรกฎาคม",
+                        "สิงหาคม","กันยายน","ตุลาคม","พฤศจิกายน","ธันวาคม");
+    $strDayCut = Array("","จันทร์","อังคาร","พุธ","พฤหัสบดี","ศุกร์","เสาร์","อาทิตย์");
+    $strMonthThai=$strMonthCut[$strMonth];
+    $strDayThai=$strDayCut[$strD];
+    return "วัน".$strDayThai."ที่ ". "$strDay $strMonthThai $strYear";
+}
 function DateThai_full($strDate)
 {
     if($strDate == ''){
@@ -137,26 +152,34 @@ function thainumDigit($num){
 
 
 function sendLine($sToken,$sMessage){
-    $chOne = curl_init(); 
-	curl_setopt( $chOne, CURLOPT_URL, "https://notify-api.line.me/api/notify"); 
-	curl_setopt( $chOne, CURLOPT_SSL_VERIFYHOST, 0); 
-	curl_setopt( $chOne, CURLOPT_SSL_VERIFYPEER, 0); 
-	curl_setopt( $chOne, CURLOPT_POST, 1); 
-	curl_setopt( $chOne, CURLOPT_POSTFIELDS, "message=".$sMessage); 
-	$headers = array( 'Content-type: application/x-www-form-urlencoded', 'Authorization: Bearer '.$sToken.'', );
-	curl_setopt($chOne, CURLOPT_HTTPHEADER, $headers); 
-	curl_setopt( $chOne, CURLOPT_RETURNTRANSFER, 1); 
-	$result = curl_exec( $chOne );
-    //Result error 
-	// if(curl_error($chOne)) 
-	// { 
-	// 	return 'error:' . curl_error($chOne); 
-	// } 
-	// else { 
-	// 	$result_ = json_decode($result, true); 
-	// 	return "status : ".$result_['status']; echo "message : ". $result_['message'];
-	// } 
-	curl_close( $chOne );
+    
+    $access_token = $sToken;
+    $message = $sMessage;
+  
+    $data = array(
+      'message' => $message
+    );
+  
+    $options = array(
+      'http' => array(
+        'method' => 'POST',
+        'header' => "Authorization: Bearer {$access_token}\r\n" .
+                    "Content-Type: application/x-www-form-urlencoded\r\n",
+        'content' => http_build_query($data),
+      ),
+    );
+  
+    $context = stream_context_create($options);
+    $response = file_get_contents('https://notify-api.line.me/api/notify', false, $context);
+    $response_decoded = json_decode($response, true);
+  
+    if ($response_decoded['status'] == 200) {
+      // notification was sent successfully
+      return true;
+    } else {
+      // an error occurred
+      return $response_decoded['message'];
+    }
 
 }
 
@@ -199,7 +222,7 @@ function gcal_update($gcal_id,$name,$desc=null,$colerId=1){
 }
 
 function gcal_send_date($message_data){
-    $url = 'http://127.0.0.1:8888/vengg/server/service/google_calendar/calendar.php';
+    $url = 'http://127.0.0.1/service/google/calendar/calendar.php';
     $headers = array('Method: POST', 'Content-type: application/json');
     $message_data = json_encode($message_data);
 

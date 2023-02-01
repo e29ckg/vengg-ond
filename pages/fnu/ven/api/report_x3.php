@@ -146,6 +146,7 @@ try{
                 "bank_comment"=>$us['bank_comment'],
                 "bank_account"=>$us['bank_account'],
                 "price_sum"=>$us['price_sum'],
+                "price_sum_th"=>Num_f($us['price_sum']),
                 "vcs_arr"=>$us['vcs_arr'],
             ));
                         
@@ -155,6 +156,7 @@ try{
                 "bank_comment"=>$us['bank_comment'],
                 "bank_account"=>$us['bank_account'],
                 "price_sum"=>$us['price_sum'],
+                "price_sum_th"=>Num_f($us['price_sum']),
                 "vcs_arr"=>$us['vcs_arr'],
             ));
         }        
@@ -163,7 +165,10 @@ try{
     $data_j_sum = array(); 
     $data_u_sum = array();
     $data_all_sum = array();
+    $price_all_sum = 0;
     foreach($ven_coms as $vc){
+        $price_j_sum = 0;
+        $price_u_sum = 0;
         $price = 0;
         $price_all_c = 0;
         foreach($data_j as $vcs){
@@ -171,8 +176,10 @@ try{
                 if($vcs_r['id'] == $vc->id){
                     $price += $vcs_r['price'];
                     $price_all_c +=  $vcs_r['price'];
+                    $price_all_sum +=  $vcs_r['price'];
                 }
             }
+            $price_j_sum +=  $vcs['price_sum'];
         }
         array_push($data_j_sum,array(
             "id"=>$vc->id,
@@ -182,14 +189,17 @@ try{
             "price"=>Num_f($price),
         ));
         
+        
         $price=0;
         foreach($data_u as $vcs){
             foreach($vcs['vcs_arr'] as $vcs_r){
                 if($vcs_r['id'] == $vc->id){
                     $price += $vcs_r['price'];
                     $price_all_c +=  $vcs_r['price'];
+                    $price_all_sum +=  $vcs_r['price'];
                 }
             }
+            $price_u_sum +=  $vcs['price_sum'];
         }
         array_push($data_u_sum,array(
             "id"=>$vc->id,
@@ -207,6 +217,16 @@ try{
             "price"=>Num_f($price_all_c),
         ));
     }
+
+    array_push($data_j_sum,array(
+        "price"=>Num_f($price_j_sum)
+    ));
+    array_push($data_u_sum,array(
+        "price"=>Num_f($price_u_sum)
+    ));
+    array_push($data_all_sum,array(
+        "price"=>Num_f($price_all_sum),
+    ));
 
 
 

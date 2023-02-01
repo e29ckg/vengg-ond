@@ -109,21 +109,23 @@ try{
 
             foreach($vens as $ven){
                 if($user->user_id == $ven->user_id){
-                    $price_one = $ven->price;
-                    $price += $ven->price;
-                    
-                    if(ck_holiday($ven->ven_date,$HLD )){
-                        $holiday ++;
-                    }else{
-                        $weekdays ++;
+                    if($ven->price > 0){
+                        $price_one = $ven->price;
+                        $price += $ven->price;
+                        
+                        if(ck_holiday($ven->ven_date,$HLD )){
+                            $holiday ++;
+                        }else{
+                            $weekdays ++;
+                        }
+                        if($ven->DN == 'กลางวัน'){
+                            $time = ' เวลา 08.30 - 16.30 น.';
+                        }
+                        if($ven->DN == 'กลางคืน'){
+                            $time = ' เวลา 16.30 - 08.30 น.';
+                        }
+                        array_push($work_day,$ven->ven_date);
                     }
-                    if($ven->DN == 'กลางวัน'){
-                        $time = ' เวลา 08.30 - 16.30 น.';
-                    }
-                    if($ven->DN == 'กลางคืน'){
-                        $time = ' เวลา 16.30 - 08.30 น.';
-                    }
-                    array_push($work_day,$ven->ven_date);
                 }
 
             }

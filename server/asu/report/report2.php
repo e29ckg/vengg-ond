@@ -104,6 +104,7 @@ $datas = array();
 
                 array_push($datas,array(
                     'ven_date'  => $r,
+                    'ven_date_th'  => DateThai_N_full($r),
                     'u_name'    => $u_name,
                     'u_dep'    => $u_dep,
                     'cmt'       => $cmt,
