@@ -39,6 +39,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $ven_com_date       = "";  
             $ven_com_idb        = "";   
             $ven_com_name       = $res->ven_com_name;   
+            $ven_month          = $res->ven_month;   
             $name1              = "";   
             $name2              = "";   
             $name_dep1          = "";   
@@ -77,7 +78,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $name_dep2   = $res_p->dep; 
 
             $res->DN == 'กลางวัน' ? $time = '08.30 – 16.30' : $time = '16.30 – 08.30 ';  
-            $ven_date1       = DateThai_full($res->ven_date1).' ตั้งแต่เวลา '.$time.' นาฬิกา';   
+            $ven_date1 = DateThai_full($res->ven_date1).' ตั้งแต่เวลา '.$time.' นาฬิกา';   
             $vd1       = DateThai_full($res->ven_date1).' เวลา '.$time.' นาฬิกา';   
             if($res->ven_id2 !=''){
                 $ven_date2       = ' และข้าพเจ้าจะมาปฎิบัติหน้าที่แทน '. $name2 .' ในวันที่ '.DateThai_full($res->ven_date2).' ตั้งแต่เวลา '.$time.' นาฬิกา'; 
@@ -90,7 +91,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $sql = "SELECT id, create_at
                     FROM ven_change 
                     WHERE (ven_id1 = '$res->ven_id1_old') OR (ven_id2 = '$res->ven_id1_old') 
-                        OR (ven_id1 = '$res->ven_id2_old') OR (ven_id2 = '$res->ven_id2_old')";
+                    OR (ven_id1 = '$res->ven_id2_old') OR (ven_id2 = '$res->ven_id2_old')";
             
             $query = $conn->prepare($sql);
             $query->execute();
@@ -105,39 +106,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
 
-// if(isset($model->ven_id1_old)){
-//     $modelV = VenChange::find()
-//     ->where(['ven_id1'   => $model->ven_id1_old])
-//     ->orWhere(['ven_id2' => $model->ven_id1_old])
-//     ->andWhere("id <> '$model->id'")
-//     ->orderBy(['id' => SORT_DESC])
-//     ->one(); 
-
-//     if(isset($modelV)){
-//         // foreach ($model_VC as $modelV):                
-//             $sms    .= ' และใบเปลี่ยนเวร';
-//             // $sms .= 'เลขที่ '.$modelV->id;
-//             $sms    .= 'ลงวันที่ '. Ven::DateThai_full($modelV->create_at);
-//             $sms    .= ' (เลขอ้างอิง '. $modelV->id .')';
-//         // endforeach;
-//         // $Pdf_print = '_pdf_AA';
-//     }
-// }
-
             /**สร้างเอกสาร docx */
-            $templateProcessor = new TemplateProcessor('ven_tm.docx');//เลือกไฟล์ template ที่เราสร้างไว้
+            $name_doc = 'ven_tm.docx';
+            if($res->DN =='กลางวัน'){ $name_doc = 'venholiday.docx';}
+            if($res->DN =='กลางคืน'){ $name_doc = 'vennight.docx';}
+            $templateProcessor = new TemplateProcessor($name_doc);//เลือกไฟล์ template ที่เราสร้างไว้
             $templateProcessor->setValue('doc_date', $doc_date);//อัดตัวแปร รายตัว
             $templateProcessor->setValue('ven_ch_id', $res->id);//อัดตัวแปร รายตัว
             $templateProcessor->setValue('ven_com_num_all', $ven_com_num_all);//อัดตัวแปร รายตัว
             $templateProcessor->setValue('ven_com_date', $ven_com_date);
             $templateProcessor->setValue('ven_com_name', $ven_com_name);
             $templateProcessor->setValue('comment', $vcod_doc);
+            $templateProcessor->setValue('ven_month', $ven_month);
             $templateProcessor->setValue('name1', $name1);
             $templateProcessor->setValue('name2', $name2);
             $templateProcessor->setValue('name_dep1', $name_dep1);
             $templateProcessor->setValue('name_dep2', $name_dep2);
             $templateProcessor->setValue('ven_date1', $ven_date1);
-            $templateProcessor->setValue('ven_date2', $ven_date2);
+            $templateProcessor->setValue('ven_date2', $ven_date2);            
             $templateProcessor->saveAs('../../uploads/ven.docx');//สั่งให้บันทึกข้อมูลลงไฟล์ใหม่
 
            
